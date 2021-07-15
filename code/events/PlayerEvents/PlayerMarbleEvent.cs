@@ -11,7 +11,7 @@ public class PlayerMarbleEvent : EventBase
     }
 
     public override void OnEvent(Entity ent){
-        var ply = (ent as PlatesPlayer);
-        ply.SetModel("models/marble.vmdl");
+        //var ply = (ent as PlatesPlayer);
+        //.SetModel("models/marble.vmdl");
     }
 }
