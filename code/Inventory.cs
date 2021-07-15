@@ -24,8 +24,8 @@ partial class Inventory : BaseInventory
 		if ( !entity.IsValid() )
 			return false;
 
-		if ( IsCarryingType( entity.GetType() ) )
-			return false;
+		// if ( IsCarryingType( entity.GetType() ) )
+		// 	return false;
 
 		return base.Add( entity, makeActive );
 	}

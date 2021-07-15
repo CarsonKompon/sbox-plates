@@ -17,23 +17,22 @@ public class PlateLavaSpinnerEvent : EventBase
     }
 }
 
-public class PlateLavaSpinnerEnt : ModelEntity
+public class PlateLavaSpinnerEnt : Prop
 {
 
     public float size = 1;
 
-    public PlateLavaSpinnerEnt(){}
+    public PlateLavaSpinnerEnt() {}
     public PlateLavaSpinnerEnt(Vector3 pos, Plate plate){
         PlatesGame.GameEnts.Add(this);
         Position = pos;
 
         SetModel("models/lava_spinner.vmdl");
-        MoveType = MoveType.Physics;
-		//SetupPhysicsFromModel(PhysicsMotionType.Static);
+		SetupPhysicsFromModel(PhysicsMotionType.Dynamic);
         size = plate.Scale;
         RenderColor = Color.Red;
 
-        Parent = plate;
+        //Parent = plate;
     }
 
     [Event.Tick]
@@ -47,7 +46,8 @@ public class PlateLavaSpinnerEnt : ModelEntity
 
     protected override void OnPhysicsCollision( CollisionEventData eventData )
     {
-        eventData.Entity.TakeDamage( DamageInfo.Generic( 99999f ) );
+        Log.Info("fuckin steak baby yeah");
+        eventData.Entity.TakeDamage( DamageInfo.Generic( 5f ) );
         base.OnPhysicsCollision( eventData );
     }
 }

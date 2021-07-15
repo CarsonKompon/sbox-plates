@@ -49,9 +49,7 @@ public partial class PlatesGame : Sandbox.Game
 			new PlatesHudEntity();
 
 			//Load events from attribute
-			foreach(EventBase _ev in Library.GetAttributes<EventBase>()){
-				Events.Add(_ev.Create<EventBase>());
-			}
+			InitEvents();
 
 		}
 
@@ -62,9 +60,8 @@ public partial class PlatesGame : Sandbox.Game
 
 	}
 
-	//Reload Events on Hotload (Makes life easier while developing)
-	[Event.Hotload]
-	public static void OnHotload(){
+	[Event.Hotload] //Reload Events on Hotload (Makes life easier while developing)
+	public static void InitEvents(){
 		Events = new();
 		//Load events from attribute
 		foreach(EventBase _ev in Library.GetAttributes<EventBase>()){
