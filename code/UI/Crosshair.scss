@@ -1,0 +1,113 @@
+﻿crosshair
+{
+    position: absolute;
+    transform: translateX( -50% ) translateY( -0% );
+    mix-blend-mode: lighten;
+    width: 1px;
+    height: 1px;
+ 
+    .element
+    {
+        position: absolute;
+    }
+ 
+ 
+ 
+        .el0
+        {
+          background-color: #ff0;
+            border-radius: 1000px;
+          width: 6px;
+            height: 1px;
+          right: 8px;
+        }
+ 
+        .el1
+        {
+            left: 8px;
+          background-color: #ff0;
+            border-radius: 1000px;
+          width: 6px;
+            height: 1px;
+        }
+ 
+        .el2
+        {
+            bottom: 5px;
+          background-color: #ff0;
+            border-radius: 1000px;
+          width: 1px;
+            height: 6px;
+        }
+ 
+        .el3
+        {
+            top: 5px;
+          background-color: #ff0;
+            border-radius: 1000px;
+          width: 1px;
+            height: 6px;
+        }
+        opacity: 0.2;
+        transition: opacity 0.3s ease-out;
+ 
+        .el0, .el1, .el2, .el3
+        {
+            background-color: #ff0;
+            border-radius: 0;
+            transition: all 0.5s ease-out;
+        }
+ 
+        .el0, .el1
+        {
+            width: 10px;
+            top: -1px;
+            height: 3px;
+            border-radius: 2px;
+        }
+ 
+        .el2, .el3
+        {
+            width: 3px;
+            left: -1px;
+            height: 10px;
+            border-radius: 2px;
+        }
+ 
+ 
+        &.fire
+        {
+            opacity: 0.9;
+            transition: opacity 0.04s ease-out;
+ 
+            .el0, .el1, .el2, .el3
+            {
+                transition: all 0.013s ease-in;
+                background-color: #fa0;
+            }
+ 
+            .el0
+            {
+                right: 130px;
+                width: 3px;
+            }
+ 
+            .el1
+            {
+                left: 130px;
+                width: 3px;
+            }
+ 
+            .el2
+            {
+                bottom: 130px;
+                height: 3px;
+            }
+ 
+            .el3
+            {
+                top: 130px;
+                height: 3px;
+            }
+        }
+}
