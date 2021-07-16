@@ -13,7 +13,7 @@ public class PlateLavaSpinnerEvent : EventBase
     }
     
     public override void OnEvent(Plate plate){
-        var spinner = new PlateLavaSpinnerEnt(plate.Position + Vector3.Up * 5, plate);
+        var spinner = new PlateLavaSpinnerEnt(plate.Position + Vector3.Up * 5, plate.Scale);
     }
 }
 
@@ -23,13 +23,13 @@ public class PlateLavaSpinnerEnt : Prop
     public float size = 1;
 
     public PlateLavaSpinnerEnt() {}
-    public PlateLavaSpinnerEnt(Vector3 pos, Plate plate){
+    public PlateLavaSpinnerEnt(Vector3 pos, float scale){
         PlatesGame.GameEnts.Add(this);
         Position = pos;
 
         SetModel("models/lava_spinner.vmdl");
 		SetupPhysicsFromModel(PhysicsMotionType.Dynamic);
-        size = plate.Scale;
+        size = scale;
         RenderColor = Color.Red;
 
         //Parent = plate;

@@ -69,6 +69,162 @@
 ]
 
 // 
+// SWB_EXPLOSIVES.RPG7Hotdog : SWB_EXPLOSIVES.RPG7 
+// 
+@PointClass = swb_explosives_rpg7_hotdog : ""
+[
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
+	enable_shadows(boolean) [ group="Render Properties" ] : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : ""
+]
+
+// 
+// SWB_EXPLOSIVES.RPG7 : SWB_Base.WeaponBaseEntity 
+// 
+@PointClass = swb_explosives_rpg7 : ""
+[
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
+	enable_shadows(boolean) [ group="Render Properties" ] : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : ""
+]
+
+// 
+// SWB_CSS.AK47 : SWB_Base.WeaponBase 
+// 
+@PointClass = swb_css_ak47 : ""
+[
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
+	enable_shadows(boolean) [ group="Render Properties" ] : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : ""
+]
+
+// 
+// SWB_CSS.AK47Dual : SWB_CSS.AK47 
+// 
+@PointClass = swb_css_ak47_dual : ""
+[
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
+	enable_shadows(boolean) [ group="Render Properties" ] : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : ""
+]
+
+// 
+// SWB_CSS.AWP : SWB_Base.WeaponBaseSniper 
+// 
+@PointClass = swb_css_awp : ""
+[
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
+	enable_shadows(boolean) [ group="Render Properties" ] : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : ""
+]
+
+// 
+// SWB_CSS.Deagle : SWB_Base.WeaponBase 
+// 
+@PointClass = swb_css_deagle : ""
+[
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
+	enable_shadows(boolean) [ group="Render Properties" ] : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : ""
+]
+
+// 
+// SWB_CSS.DeagleDual : SWB_CSS.Deagle 
+// 
+@PointClass = swb_css_deagle_dual : ""
+[
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
+	enable_shadows(boolean) [ group="Render Properties" ] : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : ""
+]
+
+// 
+// SWB_CSS.GrenadeHE : SWB_Base.WeaponBaseEntity 
+// 
+@PointClass = swb_css_grenade_he : ""
+[
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
+	enable_shadows(boolean) [ group="Render Properties" ] : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : ""
+]
+
+// 
+// SWB_CSS.Knife : SWB_Base.WeaponBaseMelee 
+// 
+@PointClass = swb_css_knife : ""
+[
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
+	enable_shadows(boolean) [ group="Render Properties" ] : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : ""
+]
+
+// 
+// SWB_CSS.M249 : SWB_Base.WeaponBase 
+// 
+@PointClass = swb_css_m249 : ""
+[
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
+	enable_shadows(boolean) [ group="Render Properties" ] : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : ""
+]
+
+// 
+// SWB_CSS.M249HE : SWB_Base.WeaponBaseEntity 
+// 
+@PointClass = swb_css_m249_he : ""
+[
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
+	enable_shadows(boolean) [ group="Render Properties" ] : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : ""
+]
+
+// 
+// SWB_CSS.M4A1 : SWB_Base.WeaponBase 
+// 
+@PointClass = swb_css_m4a1 : ""
+[
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
+	enable_shadows(boolean) [ group="Render Properties" ] : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : ""
+]
+
+// 
+// SWB_CSS.Super90 : SWB_Base.WeaponBaseShotty 
+// 
+@PointClass = swb_css_super90 : ""
+[
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
+	enable_shadows(boolean) [ group="Render Properties" ] : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : ""
+]
+
+// 
 // Sandbox.Plate : Sandbox.Prop 
 // 
 @PointClass model() = ent_plate : ""

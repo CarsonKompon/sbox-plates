@@ -153,7 +153,7 @@ public partial class PlatesGame : Sandbox.Game
 		GameState = 1;
 		EventSubtext = "";
 
-		SetGlows(false);
+		ResetGlows();
 		
 		if(NextEvent != null) CurrentEvent = NextEvent;
 		else CurrentEvent = Events[random.Next(0,Events.Count)];
@@ -174,7 +174,7 @@ public partial class PlatesGame : Sandbox.Game
 	public static void PerformEvent(){
 		GameState = 2;
 		Entity ent;
-		SetGlows(false);
+		ResetGlows();
 		if(CurrentEvent.type == EventType.Player){
 			if(InGamePlayers.Count == 0){
 				AffectedPlayers--;
@@ -217,15 +217,24 @@ public partial class PlatesGame : Sandbox.Game
 
 	public static void SetGlows(bool active){
 		foreach(var plate in Entity.All.OfType<Plate>()){
-				plate.GlowActive = active;
-				plate.GlowColor = Color.Blue;
+			plate.GlowActive = active;
+			plate.GlowColor = Color.Blue;
+		}
+		for(var i=0;i<InGamePlayers.Count;i++){
+			if(InGamePlayers[i].Pawn is ModelEntity ply){
+				ply.GlowActive = active;
+				ply.GlowColor = Color.Blue;
 			}
-			for(var i=0;i<InGamePlayers.Count;i++){
-				if(InGamePlayers[i].Pawn is ModelEntity ply){
-					ply.GlowActive = active;
-					ply.GlowColor = Color.Blue;
-				}
+		}
+	}
+
+	public static void ResetGlows(){
+		for(var i=0;i<InGamePlayers.Count;i++){
+			if(InGamePlayers[i].Pawn is ModelEntity ply){
+				ply.GlowActive = false;
+				ply.GlowColor = Color.Blue;
 			}
+		}
 	}
 
 	public override void OnKilled( Client client, Entity pawn )
