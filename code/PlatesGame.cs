@@ -229,6 +229,10 @@ public partial class PlatesGame : Sandbox.Game
 	}
 
 	public static void ResetGlows(){
+		foreach(var plate in Entity.All.OfType<Plate>()){
+			plate.GlowActive = false;
+			plate.GlowColor = Color.Blue;
+		}
 		for(var i=0;i<InGamePlayers.Count;i++){
 			if(InGamePlayers[i].Pawn is ModelEntity ply){
 				ply.GlowActive = false;
