@@ -244,6 +244,7 @@ public partial class PlatesGame : Sandbox.Game
 	public override void OnKilled( Client client, Entity pawn )
 	{
 		base.OnKilled( client, pawn );
+
 		foreach(var plate in Entity.All.OfType<Plate>())
 		{
 			if(plate.owner == client.SteamId){
@@ -256,7 +257,6 @@ public partial class PlatesGame : Sandbox.Game
 			Winner = InGamePlayers[0];
 		}
 		InGamePlayers.Remove(client);
-		
 	}
 
 	public static void EndGame(){

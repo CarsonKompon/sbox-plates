@@ -41,7 +41,7 @@ public class TeslaCoilEnt : Prop
             nearest = Entity.All.OfType<Player>().OrderBy( x => Vector3.DistanceBetween( x.Position, Position ) ).ToArray()[0];
             var distance = Vector3.DistanceBetween( nearest.Position, Position );
             if(distance <= 150){
-                DebugOverlay.Line(Position + Vector3.Up * 70, nearest.Position + Vector3.Up * 40);
+                DebugOverlay.Line(Position + Rotation.Up * 70, nearest.Position + nearest.Rotation.Up * 40);
                 nearest.TakeDamage(DamageInfo.Generic( 0.2f ));
             }
         }
