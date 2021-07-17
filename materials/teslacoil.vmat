@@ -13,7 +13,7 @@ Layer0
 	//---- Color ----
 	g_flModelTintAmount "1.000"
 	g_vColorTint "[1.000000 1.000000 1.000000 0.000000]"
-	TextureColor "models/material.002_base_color.png"
+	TextureColor "materials/Material.002_Base_Color.png"
 
 	//---- Fade ----
 	g_flFadeExponent "1.000"
@@ -26,13 +26,13 @@ Layer0
 	g_flDirectionalLightmapStrength "1.000"
 
 	//---- Metalness ----
-	TextureMetalness "models/material.002_metallic.png"
+	TextureMetalness "materials/Material.002_Metallic.png"
 
 	//---- Normal ----
-	TextureNormal "models/material.002_normal.png"
+	TextureNormal "materials/Material.002_Normal.png"
 
 	//---- Roughness ----
-	TextureRoughness "models/material.002_roughness.png"
+	TextureRoughness "materials/Material.002_Roughness.png"
 
 	//---- Texture Coordinates ----
 	g_nScaleTexCoordUByModelScaleAxis "0"

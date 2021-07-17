@@ -52,11 +52,11 @@
 					{
 						_class = "PhysicsShapeBox"
 						parent_bone = ""
-						surface_prop = "letter_g"
+						surface_prop = "letter_a"
 						collision_prop = "default"
-						origin = [ 20.02092, -0.710356, 0.004123 ]
+						origin = [ 2.993122, -0.183548, -0.000798 ]
 						angles = [ 0.0, 0.0, 0.0 ]
-						dimensions = [ 63.975929, 42.009411, 14.015055 ]
+						dimensions = [ 57.359955, 54.421303, 14.023511 ]
 					},
 				]
 			},
@@ -66,8 +66,8 @@
 				[
 					{
 						_class = "RenderMeshFile"
-						name = "G_low"
-						filename = "models/letters/G_low.fbx"
+						name = "A_Up"
+						filename = "models/letters/A_Up.fbx"
 						import_translation = [ 0.0, 0.0, 0.0 ]
 						import_rotation = [ 0.0, 0.0, 0.0 ]
 						import_scale = 1.0

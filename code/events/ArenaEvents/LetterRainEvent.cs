@@ -23,6 +23,11 @@ public class LetterRainEnt : Entity
 {
     Random random = new Random();
     public float timer = 2*60;
+    private string[] letters = {
+        "a_low", "a_up",
+        "b_low",
+        "g_low"
+    };
 
     public LetterRainEnt(float time = 2*60){
         PlatesGame.GameEnts.Add(this);
@@ -35,11 +40,12 @@ public class LetterRainEnt : Entity
             timer -= 1.0f/60.0f;
             if(random.Next(0,40) == 1){
                 var ent = new Prop();
+                ent.EntityName = "Raining Letter";
                 ent.Scale = 2;
                 ent.Position = new Vector3(random.Next(-1500,1500), random.Next(-1500,1500), 10000);
                 ent.Rotation = Rotation.From(new Angles((float)random.NextDouble()*360,(float)random.NextDouble()*360,(float)random.NextDouble()*360));
                 ent.Velocity = new Vector3(0,0,-1000000);
-                ent.SetModel("models/letters/g_low.vmdl");
+                ent.SetModel("models/letters/" + letters[random.Next(0,letters.Length)] + ".vmdl");
                 ent.RenderColor = Color.FromBytes(random.Next(0,255),random.Next(0,255),random.Next(0,255));
                 PlatesGame.GameEnts.Add(ent);
             }
