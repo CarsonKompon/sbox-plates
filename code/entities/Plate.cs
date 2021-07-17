@@ -14,6 +14,7 @@ namespace Sandbox
 		public Plate(){}
 
 		public Plate(Vector3 pos, float size, ulong own, string name){
+			Tags.Add("plate");
 			Position = pos;
 			owner = own;
 			ownerName = name;
@@ -35,6 +36,7 @@ namespace Sandbox
 		public void Tick(){
 			if(IsServer){
 				Scale = MathC.Lerp(Scale,toScale,0.125f);
+				DebugOverlay.Box(1,new Vector3(0,0,0), new Vector3(200,200,200));
 			}
 			if(toScale <= 0) Kill();
 		}

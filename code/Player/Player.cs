@@ -60,7 +60,7 @@ public partial class PlatesPlayer : Player
 		Dress();
 
 		Inventory.Add( new Fists() );
-		//Inventory.Add( new SWB_EXPLOSIVES.RPG7() );
+		//Inventory.Add( new SWB_CSS.Knife() );
 		//Inventory.Add( new GravGun() );
 		//Inventory.Add( new Tool() );
 		//Inventory.Add( new Pistol() );

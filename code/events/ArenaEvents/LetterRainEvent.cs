@@ -43,7 +43,7 @@ public class LetterRainEnt : Entity
     public void Tick(){
         if(timer > 0){
             timer -= 1.0f/60.0f;
-            if(random.Next(0,40) == 1){
+            if(random.Next(0,200) == 1){
                 var ent = new Prop();
                 ent.EntityName = "Raining Letter";
                 ent.Scale = 2;
