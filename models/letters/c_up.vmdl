@@ -15,7 +15,7 @@
 						game_keys = 
 						{
 							base = ""
-							allowstatic = false
+							allowstatic = true
 							bakelighting = true
 							spawn_motion_disabled = false
 							health = -1.0
@@ -50,22 +50,13 @@
 				children = 
 				[
 					{
-						_class = "PhysicsShapeCylinder"
-						parent_bone = ""
-						surface_prop = "letter_b"
-						collision_prop = "default"
-						radius = 21.307003
-						point0 = [ 10.0, 1.0, -7.0027 ]
-						point1 = [ 10.0, 1.0, 7.07965 ]
-					},
-					{
 						_class = "PhysicsShapeBox"
 						parent_bone = ""
-						surface_prop = "letter_b"
+						surface_prop = "letter_c"
 						collision_prop = "default"
-						origin = [ 2.70804, -14.915852, -0.007197 ]
+						origin = [ 3.181226, 0.414581, 0.009649 ]
 						angles = [ 0.0, 0.0, 0.0 ]
-						dimensions = [ 58.278904, 11.052784, 14.066801 ]
+						dimensions = [ 61.52763, 51.250145, 14.184605 ]
 					},
 				]
 			},
@@ -75,8 +66,8 @@
 				[
 					{
 						_class = "RenderMeshFile"
-						name = "b_low"
-						filename = "models/letters/b_low.fbx"
+						name = "C_Up"
+						filename = "models/letters/C_Up.fbx"
 						import_translation = [ 0.0, 0.0, 0.0 ]
 						import_rotation = [ 0.0, 0.0, 0.0 ]
 						import_scale = 1.0

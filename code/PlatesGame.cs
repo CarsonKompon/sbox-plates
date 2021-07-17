@@ -247,7 +247,7 @@ public partial class PlatesGame : Sandbox.Game
 		foreach(var plate in Entity.All.OfType<Plate>())
 		{
 			if(plate.owner == client.SteamId){
-				plate.Delete();
+				plate.Kill();
 				break;
 			}
 		}
@@ -261,7 +261,7 @@ public partial class PlatesGame : Sandbox.Game
 	public static void EndGame(){
 		EventSubtext = "";
 		if(InGamePlayers.Count > 0) Winner = InGamePlayers[0];
-		foreach(var plate in Entity.All.OfType<Plate>()) plate.Delete();
+		foreach(var plate in Entity.All.OfType<Plate>()) plate.Kill();
 		foreach(var ev in GameEnts){
 			if(ev.IsValid()) ev.Delete();
 		}

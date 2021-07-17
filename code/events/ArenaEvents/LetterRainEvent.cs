@@ -25,8 +25,13 @@ public class LetterRainEnt : Entity
     public float timer = 2*60;
     private string[] letters = {
         "a_low", "a_up",
-        "b_low",
-        "g_low"
+        "b_low", "b_up",
+        "c_up",
+        "g_low", "g_up",
+        "l_low", "l_up",
+        "m_low", "m_up",
+        "p_low", "p_up",
+        "t_low", "t_up"
     };
 
     public LetterRainEnt(float time = 2*60){
@@ -44,7 +49,7 @@ public class LetterRainEnt : Entity
                 ent.Scale = 2;
                 ent.Position = new Vector3(random.Next(-1500,1500), random.Next(-1500,1500), 10000);
                 ent.Rotation = Rotation.From(new Angles((float)random.NextDouble()*360,(float)random.NextDouble()*360,(float)random.NextDouble()*360));
-                ent.Velocity = new Vector3(0,0,-1000000);
+                //ent.Velocity = new Vector3(0,0,-1000000);
                 ent.SetModel("models/letters/" + letters[random.Next(0,letters.Length)] + ".vmdl");
                 ent.RenderColor = Color.FromBytes(random.Next(0,255),random.Next(0,255),random.Next(0,255));
                 PlatesGame.GameEnts.Add(ent);

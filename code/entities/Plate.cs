@@ -36,7 +36,13 @@ namespace Sandbox
 			if(IsServer){
 				Scale = MathC.Lerp(Scale,toScale,0.125f);
 			}
-			if(toScale <= 0) Delete();
+			if(toScale <= 0) Kill();
 		}
+
+		public void Kill(){
+			MoveTo(Vector3.Up,1);
+			DeleteAsync(0.1f);
+		}
+
 	}
 }
