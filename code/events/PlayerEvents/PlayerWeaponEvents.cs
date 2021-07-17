@@ -6,7 +6,7 @@ public class PlayerPistolEvent : EventBase
 {
     public PlayerPistolEvent(){
         name = "player_pistol";
-        text = " player(s) will get a Deagle with 5 shots in ";
+        text = " player(s) will get a Deagle with 6 shots in ";
         type = EventType.Player;
     }
 

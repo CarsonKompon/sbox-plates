@@ -6,6 +6,28 @@
 		children = 
 		[
 			{
+				_class = "GameDataList"
+				children = 
+				[
+					{
+						_class = "GenericGameData"
+						game_class = "prop_data"
+						game_keys = 
+						{
+							base = ""
+							allowstatic = true
+							bakelighting = true
+							spawn_motion_disabled = false
+							health = -1.0
+							min_impact_damage_speed = 50.0
+							impact_damage = 125.0
+							parent_bodygroup_name = ""
+							parent_bodygroup_value = 0
+						}
+					},
+				]
+			},
+			{
 				_class = "MaterialGroupList"
 				children = 
 				[
@@ -14,7 +36,7 @@
 						remaps = 
 						[
 							{
-								from = ""
+								from = "text.vmat"
 								to = "dev/helper/reflectivity_90b.vmat"
 							},
 						]
@@ -30,11 +52,11 @@
 					{
 						_class = "PhysicsShapeBox"
 						parent_bone = ""
-						surface_prop = "default"
+						surface_prop = "letter_a"
 						collision_prop = "default"
-						origin = [ 0.0, 0.0, 0.0 ]
+						origin = [ 10.510923, -0.724077, 0.004665 ]
 						angles = [ 0.0, 0.0, 0.0 ]
-						dimensions = [ 233.5, 5.0, 5.0 ]
+						dimensions = [ 44.968861, 38.245842, 14.015266 ]
 					},
 				]
 			},
@@ -44,8 +66,8 @@
 				[
 					{
 						_class = "RenderMeshFile"
-						name = "lava_spinner"
-						filename = "models/lava_spinner.fbx"
+						name = "A_low"
+						filename = "models/letters/A_low.fbx"
 						import_translation = [ 0.0, 0.0, 0.0 ]
 						import_rotation = [ 0.0, 0.0, 0.0 ]
 						import_scale = 1.0
@@ -61,31 +83,9 @@
 					},
 				]
 			},
-			{
-				_class = "GameDataList"
-				children = 
-				[
-					{
-						_class = "GenericGameData"
-						game_class = "prop_data"
-						game_keys = 
-						{
-							base = ""
-							allowstatic = true
-							bakelighting = true
-							spawn_motion_disabled = false
-							health = -1.0
-							min_impact_damage_speed = 0.0
-							impact_damage = 10.0
-							parent_bodygroup_name = ""
-							parent_bodygroup_value = 0
-						}
-					},
-				]
-			},
 		]
-		model_archetype = "physics_prop_model"
-		primary_associated_entity = "prop_physics"
+		model_archetype = ""
+		primary_associated_entity = ""
 		anim_graph_name = ""
 	}
 }

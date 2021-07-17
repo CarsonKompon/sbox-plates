@@ -31,6 +31,7 @@ public class PlateLavaSpinnerEnt : Prop
 		SetupPhysicsFromModel(PhysicsMotionType.Dynamic);
         size = scale;
         RenderColor = Color.Red;
+        Health = 0.4f;
 
         //Parent = plate;
     }
@@ -46,8 +47,7 @@ public class PlateLavaSpinnerEnt : Prop
 
     protected override void OnPhysicsCollision( CollisionEventData eventData )
     {
-        Log.Info("fuckin steak baby yeah");
-        eventData.Entity.TakeDamage( DamageInfo.Generic( 5f ) );
+        eventData.Entity.TakeDamage( DamageInfo.Generic( 10f ) );
         base.OnPhysicsCollision( eventData );
     }
 }

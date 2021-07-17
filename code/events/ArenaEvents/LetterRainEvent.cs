@@ -3,28 +3,28 @@ using Sandbox;
 using System;
 
 [EventBase]
-public partial class BarrelRainEvent : EventBase
+public partial class LetterRainEvent : EventBase
 {
-    public BarrelRainEvent(){
-        name = "arena_barrel_rain";
-        text = "Explosive Barrels will rain from the sky in ";
-        subtext = "Explosive Barrels will rain from the sky for 2 minutes.";
+    public LetterRainEvent(){
+        name = "arena_letter_rain";
+        text = "Letters will rain from the sky in ";
+        subtext = "Letters will rain from the sky for 2 minutes.";
         type = EventType.Arena;
         minAffected = 1;
         maxAffected = 1;
     }
 
     public override void OnEvent(){
-        new BarrelRainEnt(2*60);
+        new LetterRainEnt(2*60);
     }
 }
 
-public class BarrelRainEnt : Entity
+public class LetterRainEnt : Entity
 {
     Random random = new Random();
     public float timer = 2*60;
 
-    public BarrelRainEnt(float time = 2*60){
+    public LetterRainEnt(float time = 2*60){
         PlatesGame.GameEnts.Add(this);
         timer = time;
     }
@@ -33,12 +33,14 @@ public class BarrelRainEnt : Entity
     public void Tick(){
         if(timer > 0){
             timer -= 1.0f/60.0f;
-            if(random.Next(0,500) == 1){
+            if(random.Next(0,40) == 1){
                 var ent = new Prop();
                 ent.Scale = 2;
                 ent.Position = new Vector3(random.Next(-1500,1500), random.Next(-1500,1500), 10000);
                 ent.Rotation = Rotation.From(new Angles((float)random.NextDouble()*360,(float)random.NextDouble()*360,(float)random.NextDouble()*360));
-                ent.SetModel("models/rust_props/barrels/fuel_barrel.vmdl");
+                ent.Velocity = new Vector3(0,0,-1000000);
+                ent.SetModel("models/letters/g_low.vmdl");
+                ent.RenderColor = Color.FromBytes(random.Next(0,255),random.Next(0,255),random.Next(0,255));
                 PlatesGame.GameEnts.Add(ent);
             }
             if(timer <= 0) this.Delete();

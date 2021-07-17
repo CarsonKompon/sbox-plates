@@ -50,7 +50,6 @@ public partial class PlatesGame : Sandbox.Game
 
 			//Load events from attribute
 			InitEvents();
-
 		}
 
 		if ( IsClient )
