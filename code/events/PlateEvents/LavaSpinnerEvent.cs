@@ -14,6 +14,7 @@ public class PlateLavaSpinnerEvent : EventBase
     
     public override void OnEvent(Plate plate){
         var spinner = new PlateLavaSpinnerEnt(plate.Position + Vector3.Up * 5, plate.Scale);
+        plate.PlateEnts.Add(spinner);
     }
 }
 

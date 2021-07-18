@@ -40,6 +40,8 @@ public partial class PlatesPlayer : Player
 		SetModel( "models/citizen/citizen.vmdl" );
 
 		Scale = 1.0f;
+		RenderAlpha = 1;
+		Velocity = Vector3.Zero;
 
 		Controller = new PlatesWalkController();
 		(Controller as PlatesWalkController).AutoJump = true;

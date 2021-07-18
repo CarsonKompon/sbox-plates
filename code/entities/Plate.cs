@@ -1,4 +1,4 @@
-using System;
+using System.Collections.Generic;  
 
 namespace Sandbox
 {
@@ -10,6 +10,7 @@ namespace Sandbox
 		[Net] public string ownerName {get;set;}
 
 		[Net] public float toScale {get;set;} = 1;
+		[Net] public List<Entity> PlateEnts {get;set;} = new();
 
 		public Plate(){}
 
@@ -37,8 +38,8 @@ namespace Sandbox
 			if(IsServer){
 				Scale = MathC.Lerp(Scale,toScale,0.125f);
 				//DebugOverlay.Box(Position+CollisionBounds.Mins, Position+CollisionBounds.Maxs);
+				if(Scale <= 0) Kill();
 			}
-			if(toScale <= 0) Kill();
 		}
 
 		public void Kill(){

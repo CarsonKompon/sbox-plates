@@ -14,6 +14,9 @@ public class PlateReturnToNormalEvent : EventBase
         Plate newPlate = new Plate(plate.Position, 1, plate.owner, plate.ownerName);
         newPlate.GlowActive = true;
 		newPlate.GlowColor = Color.Blue;
+        foreach(var ent in plate.PlateEnts){
+            ent.Delete();
+        }
         plate.Delete();
     }
 }

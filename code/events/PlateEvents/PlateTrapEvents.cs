@@ -21,5 +21,6 @@ public class PlateBarrelTrapEvent : EventBase
         barrel.Position += Vector3.Forward * random.Next(-50,50) * plate.Scale;
         barrel.SetupPhysicsFromModel(PhysicsMotionType.Dynamic);
         PlatesGame.GameEnts.Add(barrel);
+        plate.PlateEnts.Add(barrel);
     }
 }

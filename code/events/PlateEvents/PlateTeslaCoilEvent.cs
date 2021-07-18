@@ -20,6 +20,7 @@ public class PlateTeslaCoilEvent : EventBase
         coil.Position = plate.Position + Vector3.Up * 10;
         coil.Position += Vector3.Left * random.Next(-50,50) * plate.Scale;
         coil.Position += Vector3.Forward * random.Next(-50,50) * plate.Scale;
+        plate.PlateEnts.Add(coil);
     }
 }
 
