@@ -36,7 +36,7 @@ namespace Sandbox
 		public void Tick(){
 			if(IsServer){
 				Scale = MathC.Lerp(Scale,toScale,0.125f);
-				DebugOverlay.Box(1,new Vector3(0,0,0), new Vector3(200,200,200));
+				//DebugOverlay.Box(Position+CollisionBounds.Mins, Position+CollisionBounds.Maxs);
 			}
 			if(toScale <= 0) Kill();
 		}

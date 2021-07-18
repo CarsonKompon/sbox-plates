@@ -1,7 +1,7 @@
 using Sandbox;
 using System;
 
-//[EventBase]
+[EventBase]
 public class PlateFlipEvent : EventBase
 {
     public PlateFlipEvent(){
@@ -28,8 +28,11 @@ public partial class PlateFlipEnt : Entity
     [Event.Tick]
     public void Tick(){
         if(IsServer){
-            //Rotation += Rotation.FromYaw(1);
-            plate.Rotation *= Rotation.FromRoll(1f);
+            if(plate.IsValid()){
+                plate.Rotation *= Rotation.FromRoll(1f);
+                return;
+            }else Delete();
         }
     }
+    
 }

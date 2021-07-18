@@ -44,6 +44,12 @@ public class TeslaCoilEnt : Prop
                 DebugOverlay.Line(Position + Rotation.Up * 70, nearest.Position + nearest.Rotation.Up * 40);
                 nearest.TakeDamage(DamageInfo.Generic( 0.2f ));
             }
+        }else if(IsClient){
+            nearest = Entity.All.OfType<Player>().OrderBy( x => Vector3.DistanceBetween( x.Position + x.Rotation.Up * 40, Position + Rotation.Up * 70 ) ).ToArray()[0];
+            var distance = Vector3.DistanceBetween( nearest.Position, Position );
+            if(distance <= 150){
+                DebugOverlay.Line(Position + Rotation.Up * 70, nearest.Position + nearest.Rotation.Up * 40);
+            }
         }
     }
 }

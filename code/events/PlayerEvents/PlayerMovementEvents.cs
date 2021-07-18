@@ -1,4 +1,5 @@
 using Sandbox;
+using System;
 
 [EventBase]
 public class PlayerSpeedUpEvent : EventBase
@@ -61,4 +62,58 @@ public class PlayerJumpDownEvent : EventBase
         wc.JumpPower -= 0.25f;
         if(wc.JumpPower < 0) wc.JumpPower = 0;
     }
+}
+
+[EventBase]
+public class PlayerWalkBackwardsEvent : EventBase
+{
+    public PlayerWalkBackwardsEvent(){
+        name = "player_walk_backwards";
+        text = " player(s) will walk backwards in ";
+        type = EventType.Player;
+    }
+
+    public override void OnEvent(Entity ent){
+        PlatesPlayer ply = ent as PlatesPlayer;
+        var wc = (ply.Controller as PlatesWalkController);
+        wc.InputMultiplier *= -1;
+    }
+}
+
+[EventBase]
+public class PlayerWalkRandomlyEvent : EventBase
+{
+    public PlayerWalkRandomlyEvent(){
+        name = "player_walk_randomly";
+        text = " player(s) will walk randomly in ";
+        type = EventType.Player;
+    }
+
+    public override void OnEvent(Entity ent){
+        PlatesPlayer ply = ent as PlatesPlayer;
+        var wc = (ply.Controller as PlatesWalkController);
+        new WalkRandomlyEnt(wc);
+    }
+}
+
+public class WalkRandomlyEnt : Entity
+{
+    Random random = new Random();
+    public PlatesWalkController walkController;
+
+    public WalkRandomlyEnt(PlatesWalkController wc){
+        walkController = wc;
+        PlatesGame.GameEnts.Add(this);
+    }
+
+    [Event.Tick]
+    public void Tick(){
+        if(IsServer){
+            if(random.Next(0,100) == 1){
+                walkController.ForwardInput = ((float)random.NextDouble() * 2.0f) - 1.0f;
+                walkController.SidewaysInput = ((float)random.NextDouble() * 2.0f) - 1.0f;
+            }
+        }
+    }
+
 }
