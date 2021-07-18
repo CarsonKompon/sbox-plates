@@ -23,7 +23,9 @@ public class LetterRainEnt : Entity
 {
     Random random = new Random();
     public float timer = 2*60;
+    //Names of all letter models
     private string[] letters = {
+        "ampersand",
         "a_low", "a_up",
         "b_low", "b_up",
         "c_up",
@@ -31,7 +33,10 @@ public class LetterRainEnt : Entity
         "l_low", "l_up",
         "m_low", "m_up",
         "p_low", "p_up",
-        "t_low", "t_up"
+        "t_low", "t_up",
+        "w_low",
+        "x_up",
+        "y_up"
     };
 
     public LetterRainEnt(float time = 2*60){
