@@ -41,6 +41,7 @@ public partial class PlatesPlayer : Player
 
 		Scale = 1.0f;
 		RenderAlpha = 1;
+		GlowActive = false;
 		Velocity = Vector3.Zero;
 
 		Controller = new PlatesWalkController();
