@@ -2,10 +2,10 @@ using Sandbox;
 
 partial class PlatesPlayer
 {
-	ModelEntity pants;
-	ModelEntity jacket;
-	ModelEntity shoes;
-	ModelEntity hat;
+	public ModelEntity pants;
+	public ModelEntity jacket;
+	public ModelEntity shoes;
+	public ModelEntity hat;
 
 	bool dressed = false;
 

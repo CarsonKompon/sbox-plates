@@ -28,7 +28,7 @@ public partial class PlatesGame : Sandbox.Game
 	[Net] public static int AffectedPlayers {get;set;} = 0;
 	[Net] public static int TotalAffectedPlayers {get;set;} = 0;
 	[Net] public static List<Client> InGamePlayers {get;set;} = new();
-	[Net] public static Client Winner {get;set;}
+	[Net] public static List<Client> Winners {get;set;} = new();
 	[Net] public static List<Entity> GameEnts {get;set;} = new();
 
 	public static List<EventBase> Events = new List<EventBase>();
@@ -90,7 +90,7 @@ public partial class PlatesGame : Sandbox.Game
 				}
 			}else if(GameState == -1){
 				GameTimer -= 1.0f/60.0f;
-				EventText = "Game Over! Winner: " + Winner.Name;
+				EventText = "Game Over! Winner: " + Winners[Winners.Count-1].Name;
 				if(MathF.Ceiling(GameTimer) <= 0){
 					for(var i=0;i<InGamePlayers.Count;i++){
 						(InGamePlayers[i].Pawn as PlatesPlayer)?.Respawn();
@@ -249,20 +249,26 @@ public partial class PlatesGame : Sandbox.Game
 			}
 		}
 
-		if(InGamePlayers.Count == 1){
-			Winner = InGamePlayers[0];
+		if(InGamePlayers.Contains(client)){
+			Winners.Add(client);
+			InGamePlayers.Remove(client);
 		}
-		InGamePlayers.Remove(client);
 	}
 
 	public static void EndGame(){
 		EventSubtext = "";
-		if(InGamePlayers.Count > 0) Winner = InGamePlayers[0];
+		if(InGamePlayers.Count > 0) Winners.Add(InGamePlayers[0]);
+		/*
 		foreach(var podium in Entity.All.OfType<WinnersPodium>()){
-			if(podium.WinPosition == 1){
+			Log.Info("this is happening");
+			//TODO: FIX CRASH THAT OCCURS AFTER THIS AFFECTS #1 WINNER'S PODIUM
+			if(podium.IsValid() && podium.WinPosition <= Winners.Count){
 				podium.SetModel( "models/citizen/citizen.vmdl" );
+				podium.Dress(Winners[Winners.Count-podium.WinPosition].Pawn as PlatesPlayer);
+				Log.Info("this has happened");
 			}
 		}
+		*/
 		foreach(var plate in Entity.All.OfType<Plate>()) plate.Kill();
 		foreach(var ev in GameEnts){
 			if(ev.IsValid()) ev.Delete();
