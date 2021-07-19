@@ -30,3 +30,20 @@ public class PlayerRocketLauncherEvent : EventBase
         ply.Inventory.Add(new SWB_EXPLOSIVES.RPG7());
     }
 }
+
+[EventBase]
+public class PlayerKnifeEvent : EventBase
+{
+    public PlayerKnifeEvent(){
+        name = "player_knife";
+        text = " player(s) will get a Knife in ";
+        type = EventType.Player;
+        minAffected = 1;
+        maxAffected = 6;
+    }
+
+    public override void OnEvent(Entity ent){
+        var ply = (ent as PlatesPlayer);
+        ply.Inventory.Add(new SWB_CSS.Knife());
+    }
+}
