@@ -50,6 +50,12 @@ public class TeslaCoilEnt : Prop
             var distance = Vector3.DistanceBetween( nearest.Position, Position );
             if(distance <= 150){
                 DebugOverlay.Line(Position + Rotation.Up * 70, nearest.Position + nearest.Rotation.Up * 40);
+                /*
+                var part = Particles.Create("particles/tesla.vpcf");
+                part.SetEntity(0,nearest);
+                part.SetEntity(1,this);
+                part.Destroy
+                */
             }
         }
     }
