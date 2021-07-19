@@ -43,7 +43,7 @@ namespace Sandbox
 		}
 
 		public void Kill(){
-			MoveTo(Vector3.Up,1);
+			MoveTo(Position+Vector3.Up,1);
 			DeleteAsync(0.1f);
 		}
 

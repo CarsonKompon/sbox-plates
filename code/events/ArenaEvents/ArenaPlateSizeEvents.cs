@@ -36,3 +36,40 @@ public class ArenaPlateShrink10Event : EventBase
             plate.toScale -= 0.10f;
     }
 }
+
+[EventBase]
+public class ArenaPlateShrinkHalfEvent : EventBase
+{
+    public ArenaPlateShrinkHalfEvent(){
+        name = "arena_shrink_half";
+        text = "All plates will shrink in half in ";
+        subtext = "";
+        type = EventType.Arena;
+        minAffected = 1;
+        maxAffected = 1;
+    }
+
+    public override void OnEvent(){
+        foreach(var plate in Entity.All.OfType<Plate>())
+            plate.toScale *= 0.5f;
+    }
+}
+
+
+[EventBase]
+public class ArenaPlateGrowDoubleEvent : EventBase
+{
+    public ArenaPlateGrowDoubleEvent(){
+        name = "arena_grow_double";
+        text = "All plates will double in size in ";
+        subtext = "";
+        type = EventType.Arena;
+        minAffected = 1;
+        maxAffected = 1;
+    }
+
+    public override void OnEvent(){
+        foreach(var plate in Entity.All.OfType<Plate>())
+            plate.toScale *= 2f;
+    }
+}
