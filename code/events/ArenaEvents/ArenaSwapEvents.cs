@@ -24,6 +24,8 @@ public class PlayerSwapEvent : EventBase
         ply1.Pawn.Position = ply2.Pawn.Position;
         ply2.Pawn.Position = ply1Pos;
         subtext =  ply1.Name + " and " + ply2.Name + " have swapped";
+        (ply1.Pawn as PlatesPlayer).GlowActive = true;
+        (ply2.Pawn as PlatesPlayer).GlowActive = true;
     }
 }
 
@@ -49,5 +51,7 @@ public class PlateSwapEvent : EventBase
         ply1.Position = ply2.Position;
         ply2.Position = ply1Pos;
         subtext =  ply1.ownerName + " and " + ply2.ownerName + "s plates have swapped";
+        ply1.GlowActive = true;
+        ply2.GlowActive = true;
     }
 }

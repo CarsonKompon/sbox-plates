@@ -14,8 +14,11 @@ public class ArenaPlateGrow10Event : EventBase
     }
 
     public override void OnEvent(){
-        foreach(var plate in Entity.All.OfType<Plate>())
+        foreach(var plate in Entity.All.OfType<Plate>()){
             plate.toScale += 0.10f;
+            plate.GlowActive = true;
+            plate.GlowColor = Color.Blue;
+        }
     }
 }
 
@@ -32,8 +35,11 @@ public class ArenaPlateShrink10Event : EventBase
     }
 
     public override void OnEvent(){
-        foreach(var plate in Entity.All.OfType<Plate>())
+        foreach(var plate in Entity.All.OfType<Plate>()){
             plate.toScale -= 0.10f;
+            plate.GlowActive = true;
+            plate.GlowColor = Color.Blue;
+        }
     }
 }
 
@@ -50,8 +56,11 @@ public class ArenaPlateShrinkHalfEvent : EventBase
     }
 
     public override void OnEvent(){
-        foreach(var plate in Entity.All.OfType<Plate>())
+        foreach(var plate in Entity.All.OfType<Plate>()){
             plate.toScale *= 0.5f;
+            plate.GlowActive = true;
+            plate.GlowColor = Color.Blue;
+        }
     }
 }
 
@@ -69,7 +78,10 @@ public class ArenaPlateGrowDoubleEvent : EventBase
     }
 
     public override void OnEvent(){
-        foreach(var plate in Entity.All.OfType<Plate>())
+        foreach(var plate in Entity.All.OfType<Plate>()){
             plate.toScale *= 2f;
+            plate.GlowActive = true;
+            plate.GlowColor = Color.Blue;
+        }
     }
 }

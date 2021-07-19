@@ -16,6 +16,7 @@ public partial class LetterRainEvent : EventBase
 
     public override void OnEvent(){
         new LetterRainEnt(2*60);
+        PlatesGame.SetGlows(true);
     }
 }
 

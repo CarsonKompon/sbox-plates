@@ -16,6 +16,7 @@ public partial class BarrelRainEvent : EventBase
 
     public override void OnEvent(){
         new BarrelRainEnt(2*60);
+        PlatesGame.SetGlows(true);
     }
 }
 

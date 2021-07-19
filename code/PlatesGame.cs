@@ -201,7 +201,6 @@ public partial class PlatesGame : Sandbox.Game
 		}
 		// CurrentEvent.OnEvent(ent);
 		if(CurrentEvent.type == EventType.Arena){
-			SetGlows(true);
 			Sound.FromWorld("plates_buzzer", Vector3.Zero);
 		}else{
 			Sound.FromEntity("plates_buzzer", ent);
