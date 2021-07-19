@@ -40,7 +40,6 @@ public class SkeletonDrawingEnt : Entity
 
     [Event.Tick]
     public void Tick(){
-        Log.Info("fuck");
         if(IsServer){
             if(!ent.IsValid()) Delete();
             else DebugOverlay.Skeleton(ent, Color.White);
