@@ -22,7 +22,6 @@ public partial class LetterRainEvent : EventBase
 
 public class LetterRainEnt : Entity
 {
-    Random random = new Random();
     public float timer = 2*60;
     //Names of all letter models
     private string[] letters = {
@@ -49,15 +48,15 @@ public class LetterRainEnt : Entity
     public void Tick(){
         if(timer > 0){
             timer -= 1.0f/60.0f;
-            if(random.Next(0,200) == 1){
+            if(Rand.Int(0,200) == 1){
                 var ent = new Prop();
                 ent.EntityName = "Raining Letter";
                 ent.Scale = 2;
-                ent.Position = new Vector3(random.Next(-1500,1500), random.Next(-1500,1500), 10000);
-                ent.Rotation = Rotation.From(new Angles((float)random.NextDouble()*360,(float)random.NextDouble()*360,(float)random.NextDouble()*360));
+                ent.Position = new Vector3(Rand.Int(-1500,1500), Rand.Int(-1500,1500), 10000);
+                ent.Rotation = Rotation.From(new Angles(Rand.Float()*360,Rand.Float()*360,Rand.Float()*360));
                 //ent.Velocity = new Vector3(0,0,-1000000);
-                ent.SetModel("models/letters/" + letters[random.Next(0,letters.Length)] + ".vmdl");
-                ent.RenderColor = Color.FromBytes(random.Next(0,255),random.Next(0,255),random.Next(0,255));
+                ent.SetModel("models/letters/" + Rand.FromArray(letters) + ".vmdl");
+                ent.RenderColor = Color.FromBytes(Rand.Int(0,255),Rand.Int(0,255),Rand.Int(0,255));
                 PlatesGame.GameEnts.Add(ent);
             }
             if(timer <= 0) this.Delete();

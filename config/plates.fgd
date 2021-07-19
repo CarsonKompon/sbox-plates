@@ -96,6 +96,19 @@
 ]
 
 // 
+// WinnersPodium : Sandbox.ModelEntity 
+// 
+@PointClass editormodel( "models/citizen/citizen.vmdl" ) = winners_podium : ""
+[
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
+	winposition(integer) : "Win Position" : 1 : ""
+	enable_shadows(boolean) [ group="Render Properties" ] : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : ""
+]
+
+// 
 // SWB_EXPLOSIVES.RPG7Hotdog : SWB_EXPLOSIVES.RPG7 
 // 
 @PointClass = swb_explosives_rpg7_hotdog : ""

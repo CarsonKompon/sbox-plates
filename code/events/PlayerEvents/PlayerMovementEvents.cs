@@ -98,7 +98,6 @@ public class PlayerWalkRandomlyEvent : EventBase
 
 public class WalkRandomlyEnt : Entity
 {
-    Random random = new Random();
     public PlatesWalkController walkController;
 
     public WalkRandomlyEnt(PlatesWalkController wc){
@@ -109,9 +108,9 @@ public class WalkRandomlyEnt : Entity
     [Event.Tick]
     public void Tick(){
         if(IsServer){
-            if(random.Next(0,100) == 1){
-                walkController.ForwardInput = ((float)random.NextDouble() * 2.0f) - 1.0f;
-                walkController.SidewaysInput = ((float)random.NextDouble() * 2.0f) - 1.0f;
+            if(Rand.Int(1,100) == 1){
+                walkController.ForwardInput = (Rand.Float() * 2.0f) - 1.0f;
+                walkController.SidewaysInput = (Rand.Float() * 2.0f) - 1.0f;
             }
         }
     }

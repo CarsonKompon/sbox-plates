@@ -5,8 +5,6 @@ using System;
 public class PlayerBalloonEvent : EventBase
 {
 
-    Random random = new Random();
-
     public PlayerBalloonEvent(){
         name = "player_balloons";
         text = " player(s) will be attached to balloons in ";

@@ -18,8 +18,6 @@ using System.Collections.Generic;
 public partial class PlatesGame : Sandbox.Game
 {
 
-	public static Random random = new Random();
-
 	[Net] public static float GameTimer {get;set;} = 30;
 	[Net] public static int GameState {get;set;} = 0;
 	[Net] public static string EventText {get;set;} = "";
@@ -155,10 +153,10 @@ public partial class PlatesGame : Sandbox.Game
 		ResetGlows();
 		
 		if(NextEvent != null) CurrentEvent = NextEvent;
-		else CurrentEvent = Events[random.Next(0,Events.Count)];
+		else CurrentEvent = Rand.FromList(Events);
 		NextEvent = null;
 
-		AffectedPlayers = random.Next(CurrentEvent.minAffected,CurrentEvent.maxAffected);
+		AffectedPlayers = Rand.Int(CurrentEvent.minAffected,CurrentEvent.maxAffected-1);
 		TotalAffectedPlayers = AffectedPlayers;
 		GameTimer = 4;
 		
@@ -180,7 +178,7 @@ public partial class PlatesGame : Sandbox.Game
 				GameTimer = 1;
 				return;
 			}
-			var ply = InGamePlayers[random.Next(0,InGamePlayers.Count)];
+			var ply = InGamePlayers[Rand.Int(0,InGamePlayers.Count-1)];
 			ent = ply.Pawn;
 			EventSubtext = EventSubtext + ply.Name;
 			CurrentEvent.OnEvent(ent);
@@ -190,7 +188,7 @@ public partial class PlatesGame : Sandbox.Game
 				GameTimer = 1;
 				return;
 			}
-			var plat = Entity.All.OfType<Plate>().OrderBy(x => random.NextDouble()).ToArray()[0];
+			var plat = Entity.All.OfType<Plate>().OrderBy(x => Rand.Double()).ToArray()[0];
 			ent = plat;
 			EventSubtext = EventSubtext + plat.ownerName;
 			CurrentEvent.OnEvent(ent as Plate);
@@ -260,6 +258,11 @@ public partial class PlatesGame : Sandbox.Game
 	public static void EndGame(){
 		EventSubtext = "";
 		if(InGamePlayers.Count > 0) Winner = InGamePlayers[0];
+		foreach(var podium in Entity.All.OfType<WinnersPodium>()){
+			if(podium.WinPosition == 1){
+				podium.SetModel( "models/citizen/citizen.vmdl" );
+			}
+		}
 		foreach(var plate in Entity.All.OfType<Plate>()) plate.Kill();
 		foreach(var ev in GameEnts){
 			if(ev.IsValid()) ev.Delete();
@@ -291,7 +294,7 @@ public partial class PlatesGame : Sandbox.Game
 		var _playerCount = Client.All.Count;
 		var _curPlayer = 0;
 
-		foreach(var plate in Entity.All.OfType<Plate>().OrderBy(x => random.NextDouble()) )
+		foreach(var plate in Entity.All.OfType<Plate>().OrderBy(x => Rand.Double()) )
 		{
 			 if(_curPlayer >= _playerCount){
 				 plate.Delete();

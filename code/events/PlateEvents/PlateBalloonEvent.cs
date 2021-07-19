@@ -5,7 +5,6 @@ using System;
 public class PlateBalloonEvent : EventBase
 {
 
-    Random random = new Random();
 
     public PlateBalloonEvent(){
         name = "plate_balloons";

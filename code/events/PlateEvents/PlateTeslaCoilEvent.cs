@@ -6,8 +6,6 @@ using System;
 public class PlateTeslaCoilEvent : EventBase
 {
 
-    Random random = new Random();
-
     public PlateTeslaCoilEvent(){
         name = "plate_tesla_coil";
         text = " plate(s) will receive a tesla coil in ";
@@ -18,8 +16,8 @@ public class PlateTeslaCoilEvent : EventBase
         var coil = new TeslaCoilEnt();
         coil.SetModel("models/teslacoil.vmdl");
         coil.Position = plate.Position + Vector3.Up * 10;
-        coil.Position += Vector3.Left * random.Next(-50,50) * plate.Scale;
-        coil.Position += Vector3.Forward * random.Next(-50,50) * plate.Scale;
+        coil.Position += Vector3.Left * Rand.Int(-50,50) * plate.Scale;
+        coil.Position += Vector3.Forward * Rand.Int(-50,50) * plate.Scale;
         plate.PlateEnts.Add(coil);
     }
 }

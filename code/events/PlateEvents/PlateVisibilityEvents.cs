@@ -4,7 +4,6 @@ using System;
 [EventBase]
 public class PlateColourEvent : EventBase
 {
-    Random random = new Random();
 
     public PlateColourEvent(){
         name = "plate_colour";
@@ -13,7 +12,7 @@ public class PlateColourEvent : EventBase
     }
 
     public override void OnEvent(Plate plate){
-        plate.RenderColor = Color.FromBytes(random.Next(0,255),random.Next(0,255),random.Next(0,255));
+        plate.RenderColor = Color.FromBytes(Rand.Int(0,255),Rand.Int(0,255),Rand.Int(0,255));
     }
 }
 

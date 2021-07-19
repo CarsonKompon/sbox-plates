@@ -5,7 +5,6 @@ using System.Linq;
 [EventBase]
 public class PlayerSwapEvent : EventBase
 {
-    Random random = new Random();
 
     public PlayerSwapEvent(){
         name = "arena_player_swap";
@@ -16,7 +15,7 @@ public class PlayerSwapEvent : EventBase
     }
 
     public override void OnEvent(){
-        var ar = Client.All.OrderBy(x => random.NextDouble()).ToArray();
+        var ar = Client.All.OrderBy(x => Rand.Double()).ToArray();
         if(ar.Length < 2) return;
         var ply1 = ar[0];
         var ply2 = ar[1];
@@ -32,8 +31,6 @@ public class PlayerSwapEvent : EventBase
 [EventBase]
 public class PlateSwapEvent : EventBase
 {
-    Random random = new Random();
-
     public PlateSwapEvent(){
         name = "arena_plate_swap";
         text = "2 plates will swap places in ";
@@ -43,7 +40,7 @@ public class PlateSwapEvent : EventBase
     }
 
     public override void OnEvent(){
-        var ar = Entity.All.OfType<Plate>().OrderBy(x => random.NextDouble()).ToArray();
+        var ar = Entity.All.OfType<Plate>().OrderBy(x => Rand.Double()).ToArray();
         if(ar.Length < 2) return;
         var ply1 = ar[0];
         var ply2 = ar[1];

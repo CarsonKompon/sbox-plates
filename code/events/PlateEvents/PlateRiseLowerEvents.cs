@@ -32,7 +32,6 @@ public class PlateLowerEvent : EventBase
 [EventBase]
 public class PlateRiseRandomEvent : EventBase
 {
-    Random random = new Random();
     public PlateRiseRandomEvent(){
         name = "plate_rise";
         text = " plate(s) will rise or lower a random amount in ";
@@ -40,7 +39,7 @@ public class PlateRiseRandomEvent : EventBase
     }
 
     public override void OnEvent(Plate plate){
-        plate.MoveTo(plate.Position + Vector3.Up * random.Next(-100,100), 1);
+        plate.MoveTo(plate.Position + Vector3.Up * Rand.Int(-100,100), 1);
     }
 }
 
