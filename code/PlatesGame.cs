@@ -196,8 +196,8 @@ public partial class PlatesGame : Sandbox.Game
 			CurrentEvent.OnEvent(ent as Plate);
 		}else{
 			ent = null;
-			EventSubtext = CurrentEvent.subtext;
 			CurrentEvent.OnEvent();
+			EventSubtext = CurrentEvent.subtext;
 		}
 		// CurrentEvent.OnEvent(ent);
 		if(CurrentEvent.type == EventType.Arena){
