@@ -17,4 +17,12 @@ public class EventBase : LibraryAttribute{
 
 }
 
+public class RoundTypeBase : LibraryAttribute{
+    public virtual string name {get;set;} = "Normal";
+    public virtual string command {get;set;} = "round_normal";
+
+    public virtual void OnEvent() {}
+
+}
+
 public enum EventType{ Player,Plate,Arena }
