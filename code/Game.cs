@@ -137,6 +137,7 @@ public partial class PlatesGame : Sandbox.Game
 		StartingPlayers = Client.All.Count;		
 		ResetPlayers();
 		InGamePlayers = new();
+		Winners = new();
 		for(var i=0;i<Client.All.Count;i++){
 			InGamePlayers.Add(Client.All[i]);
 		}
@@ -258,8 +259,8 @@ public partial class PlatesGame : Sandbox.Game
 	public static void EndGame(){
 		EventSubtext = "";
 		if(InGamePlayers.Count > 0) Winners.Add(InGamePlayers[0]);
-		/*
-		foreach(var podium in Entity.All.OfType<WinnersPodium>()){
+		
+		foreach(var podium in Entity.All.OfType<WinnersPodium>().ToList()){
 			Log.Info("this is happening");
 			//TODO: FIX CRASH THAT OCCURS AFTER THIS AFFECTS #1 WINNER'S PODIUM
 			if(podium.IsValid() && podium.WinPosition <= Winners.Count){
@@ -268,7 +269,7 @@ public partial class PlatesGame : Sandbox.Game
 				Log.Info("this has happened");
 			}
 		}
-		*/
+		
 		foreach(var plate in Entity.All.OfType<Plate>()) plate.Kill();
 		foreach(var ev in GameEnts){
 			if(ev.IsValid()) ev.Delete();
