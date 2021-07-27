@@ -283,6 +283,12 @@ public partial class PlatesGame : Sandbox.Game
 			}
 		}
 		
+		var _r = Rand.Int(1,17);
+		Log.Info("plates_round_end_" + _r);
+		Sound.FromScreen("plates_round_end_" + _r);
+
+		//TODO: Round End UI
+
 		foreach(var plate in Entity.All.OfType<Plate>()) plate.Kill();
 		foreach(var ev in GameEnts){
 			if(ev.IsValid()) ev.Delete();
