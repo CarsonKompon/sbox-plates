@@ -7,15 +7,21 @@
 	font-size: 18px;
 	font-weight: 500;
 	color: white;
-	width: 100%;
-	height: 100%;
-	align-items: center;
-	justify-content: center;
+	right: 0px;
+	top: 0px;
+	width: -20%;
+	//height: 100%;
+	align-items: right;
+	justify-content: right;
 	opacity: 0;
-	background-color: rgba( 0, 0, 0, 0.9 );
+	background-color: rgba( 0, 0, 0, 0.1 );
 	transition: all 0.1s ease-out;
 	transform: scale( 1.05 );
 	transform-origin: 50% 50%;
+	padding-top: 30px;
+	padding-left: 30px;
+  	padding-right: 30px;
+	padding-bottom: 30px;
 
 	&.open
 	{
