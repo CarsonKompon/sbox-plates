@@ -261,12 +261,9 @@ public partial class PlatesGame : Sandbox.Game
 		if(InGamePlayers.Count > 0) Winners.Add(InGamePlayers[0]);
 		
 		foreach(var podium in Entity.All.OfType<WinnersPodium>().ToList()){
-			Log.Info("this is happening");
-			//TODO: FIX CRASH THAT OCCURS AFTER THIS AFFECTS #1 WINNER'S PODIUM
 			if(podium.IsValid() && podium.WinPosition <= Winners.Count){
 				podium.SetModel( "models/citizen/citizen.vmdl" );
 				podium.Dress(Winners[Winners.Count-podium.WinPosition].Pawn as PlatesPlayer);
-				Log.Info("this has happened");
 			}
 		}
 		
