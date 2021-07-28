@@ -117,6 +117,7 @@ public class BigPlatesRoundType : RoundTypeBase
     }
 }
 ```
+**NOTE: DO NOT REMOVE `[RoundTypeBase]`!!! THIS IS HOW WE LOAD THE CLASS AUTOMAGICALLY ON GAME START/HOTLOAD**
 
 `name` - The name of the round shown in-game
 
