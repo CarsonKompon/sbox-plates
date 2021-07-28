@@ -2,7 +2,7 @@
 
 A game of chance inspired by [Plates of Fate: Mayhem](https://www.roblox.com/games/564086481/Plates-of-Fate-Mayhem) and [Plates of Fate: Remastered](https://www.roblox.com/games/4783966408/Plates-of-Fate-Remastered)
 
-## How to make your own Events
+# How to make your own Events
 
 Here's an example of an empty event class that does nothing
 ```c#
@@ -25,7 +25,7 @@ public class ExampleEvent : EventBase
 
 `type` - Can be `EventType.Plate`, `EventType.Player` or `EventType.Arena` depending on how you want your event to act (More details below)
 
-##Plate Events
+## Plate Events
 
 When `type = EventType.Plate`, the affected Plate is highlighted and the `OnEvent(Plate plate)` function is called.
 
@@ -45,7 +45,7 @@ public class PlateGrow10Event : EventBase
 }
 ```
 
-##Player Events
+## Player Events
 
 When `type = EventType.Player`, the affected Player is highlighted and the `OnEvent(Entity entity)` function is called.
 
@@ -65,7 +65,7 @@ public class PlayerGrowEvent : EventBase
 }
 ```
 
-##Arena Events
+## Arena Events
 
 When `type = EventType.Arena`, nothing is highlighted and the `OnEvent()` function is called.
 
@@ -99,7 +99,7 @@ public class ArenaPlateGrow10Event : EventBase
 
 (Arena events typically have both set to `1` but you can set them to whatever you want in any other event type)
 
-##How to make your own Round Type
+# How to make your own Round Type
 
 Here's an example of a round type that does nothing
 
@@ -117,6 +117,7 @@ public class BigPlatesRoundType : RoundTypeBase![Plates](https://i.imgur.com/2ib
     }
 }
 ```
+**NOTE: DO NOT REMOVE `[RoundTypeBase]`!!! THIS IS HOW WE LOAD THE CLASS AUTOMAGICALLY ON GAME START/HOTLOAD**
 
 `name` - The name of the round shown in-game
 
@@ -124,7 +125,7 @@ public class BigPlatesRoundType : RoundTypeBase![Plates](https://i.imgur.com/2ib
 
 `OnEvent()` - This function is called at the start of the game after all plates have been initialized
 
-##Console Commands
+# Console Commands
 
 These are useful debug tools for testing newly added events and round types.
 
