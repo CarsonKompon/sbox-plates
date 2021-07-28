@@ -26,6 +26,7 @@ public partial class PlatesGame : Sandbox.Game
 	[Net] public static EventBase CurrentEvent {get;set;}
 	[Net] public static RoundTypeBase CurrentRound {get;set;}
 	[Net] public static EventBase NextEvent {get;set;} = null;
+	[Net] public static RoundTypeBase NextRound {get;set;} = null;
 	[Net] public static int AffectedPlayers {get;set;} = 0;
 	[Net] public static int TotalAffectedPlayers {get;set;} = 0;
 	[Net] public static List<Client> InGamePlayers {get;set;} = new();
@@ -137,6 +138,7 @@ public partial class PlatesGame : Sandbox.Game
 		}
 	}
 
+	//Game Start
 	[ServerCmd("plates_start", Help = "Skips the waiting for players timer")]
 	public static void StartGame(){
 		StartingPlayers = Client.All.Count;
@@ -151,13 +153,20 @@ public partial class PlatesGame : Sandbox.Game
 
 		//Round Type Check
 		//TODO: Make UI for what round type a game is on start
-		if(Rand.Int(0,1) == 0){
-			CurrentRound = Rand.FromList(RoundTypes);
+		if(NextRound != null){
+			CurrentRound = NextRound;
 			CurrentRound.OnEvent();
+			NextRound = null;
 		}else{
-			CurrentRound = new RoundTypeBase();
+			if(Rand.Int(0,1) == 0){ //50% chance of a random round type
+				CurrentRound = Rand.FromList(RoundTypes);
+				CurrentRound.OnEvent();
+			}else{ //Otherwise, Normal Round
+				CurrentRound = new RoundTypeBase();
+			}
 		}
-		Log.Info("Current Round Type: " + CurrentRound.name);
+		RoundInfo.NewRound(CurrentRound.name);
+		//Log.Info("Current Round Type: " + CurrentRound.name);
 
 		GetNewEvent();
 		GameState = 1;
@@ -340,6 +349,15 @@ public partial class PlatesGame : Sandbox.Game
 		foreach(var _ev in Events){
 			if(_ev.name == eventName){
 				NextEvent = _ev;
+			}
+		}
+	}
+
+	[ServerCmd( "plates_round", Help = "Sets the round type for the next game" )]
+	public static void SetRoundTypeFromName(string roundName){
+		foreach(var _rt in RoundTypes){
+			if(_rt.command == roundName){
+				NextRound = _rt;
 			}
 		}
 	}

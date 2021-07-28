@@ -6,7 +6,7 @@ using Sandbox;
 public class KnifeRoundType : RoundTypeBase
 {
     public KnifeRoundType(){
-        name = "Knives";
+        name = "Knife Party";
         command = "round_knife";
     }
 

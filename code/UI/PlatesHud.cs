@@ -18,7 +18,8 @@ public partial class PlatesHudEntity : HudEntity<RootPanel>
 			RootPanel.AddChild<VoiceList>();
 			RootPanel.AddChild<KillFeed>();
 			RootPanel.AddChild<Scoreboard<ScoreboardEntry>>();
-			RootPanel.AddChild<Logo>();
+			//RootPanel.AddChild<Logo>();
+			RootPanel.AddChild<RoundInfo>();
 			RootPanel.AddChild<Vitals>();
 			RootPanel.AddChild<EventHud>();
 			RootPanel.AddChild<EventSub>();
