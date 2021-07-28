@@ -1,4 +1,4 @@
-![Plates](Plates.png)
+![Plates](https://i.imgur.com/2ibvDk8.png)
 
 A game of chance inspired by [Plates of Fate: Mayhem](https://www.roblox.com/games/564086481/Plates-of-Fate-Mayhem) and [Plates of Fate: Remastered](https://www.roblox.com/games/4783966408/Plates-of-Fate-Remastered)
 
@@ -105,7 +105,7 @@ Here's an example of a round type that does nothing
 
 ```c#
 [RoundTypeBase]
-public class BigPlatesRoundType : RoundTypeBase![Plates](https://i.imgur.com/2ibvDk8.png)
+public class BigPlatesRoundType : RoundTypeBase
 {
     public BigPlatesRoundType(){
         name = "Nothing";
