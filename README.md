@@ -1,4 +1,4 @@
-![Plates](/Plates.png)
+![Plates](Plates.png)
 
 A game of chance inspired by [Plates of Fate: Mayhem](https://www.roblox.com/games/564086481/Plates-of-Fate-Mayhem) and [Plates of Fate: Remastered](https://www.roblox.com/games/4783966408/Plates-of-Fate-Remastered)
 
