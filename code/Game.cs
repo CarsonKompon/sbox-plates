@@ -82,6 +82,7 @@ public partial class PlatesGame : Sandbox.Game
 		player.Respawn();
 	}
 
+
 	[Event.Tick]
 	public void Tick()
 	{
