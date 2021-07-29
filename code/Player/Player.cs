@@ -64,7 +64,7 @@ public partial class PlatesPlayer : Player
 
 		Dress();
 
-		Inventory = new Inventory( this );
+		//Inventory = new Inventory( this );
 
 		Inventory.Add( new Fists() );
 		//Inventory.Add( new SWB_CSS.Knife() );
