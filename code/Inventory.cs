@@ -16,7 +16,7 @@ partial class Inventory : BaseInventory
 		if ( !base.CanAdd( entity ) )
 			return false;
 
-		return !IsCarryingType( entity.GetType() );
+		return true;//!IsCarryingType( entity.GetType() );
 	}
 
 	public override bool Add( Entity entity, bool makeActive = false )
@@ -24,10 +24,48 @@ partial class Inventory : BaseInventory
 		if ( !entity.IsValid() )
 			return false;
 
-		if ( IsCarryingType( entity.GetType() ) )
+		//if ( IsCarryingType( entity.GetType() ) )
+		//	return false;
+
+		//return base.Add( entity, makeActive );
+
+		Host.AssertServer();
+
+		//
+		// Can't pickup if already owned
+		//
+		if ( entity.Owner != null )
 			return false;
 
-		return base.Add( entity, makeActive );
+		//
+		// Let the inventory reject the entity
+		//
+		//if ( !CanAdd( entity ) )
+		//	return false;
+
+		//
+		// Let the entity reject the inventory
+		//
+		if ( !entity.CanCarry( Owner ) )
+			return false;
+
+		//
+		// Passed!
+		//
+
+		entity.Parent = Owner;
+
+		//
+		// Let the item do shit
+		//
+		entity.OnCarryStart( Owner );
+
+		if ( makeActive )
+		{
+			SetActive( entity );
+		}
+
+		return true;
 	}
 
 	public bool IsCarryingType( Type t )

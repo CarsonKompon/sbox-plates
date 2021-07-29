@@ -50,6 +50,8 @@ public partial class PlatesPlayer : Player
 		Animator = new StandardPlayerAnimator();
 		Camera = LastCamera;
 
+		Inventory.DeleteContents();
+
 		if ( DevController is NoclipController )
 		{
 			DevController = null;
@@ -61,6 +63,8 @@ public partial class PlatesPlayer : Player
 		EnableShadowInFirstPerson = true;
 
 		Dress();
+
+		Inventory = new Inventory( this );
 
 		Inventory.Add( new Fists() );
 		//Inventory.Add( new SWB_CSS.Knife() );
