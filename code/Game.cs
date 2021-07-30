@@ -302,6 +302,7 @@ public partial class PlatesGame : Sandbox.Game
 		//TODO: Round End UI
 
 		foreach(var ply in InGamePlayers) (ply.Pawn as PlatesPlayer).Respawn();
+		InGamePlayers = new();
 		foreach(var plate in Entity.All.OfType<Plate>()) plate.Delete();
 		foreach(var ev in GameEnts){
 			if(ev.IsValid()) ev.Delete();

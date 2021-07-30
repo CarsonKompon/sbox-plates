@@ -57,11 +57,14 @@ namespace Sandbox
 		}
 
 		public void Kill(){
-			isDead = true;
-			RenderColor = Color.Red;
-			deathTime = DateTime.Now;
-			MoveTo(Position+Vector3.Up,1);
-			DeleteAsync(7);
+			if(!isDead){
+				Sound.FromEntity("plates_death", this);
+				isDead = true;
+				RenderColor = Color.Red;
+				deathTime = DateTime.Now;
+				MoveTo(Position+Vector3.Up,1);
+				DeleteAsync(7);
+			}
 		}
 
 	}
