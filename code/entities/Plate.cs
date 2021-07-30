@@ -62,7 +62,7 @@ namespace Sandbox
 				isDead = true;
 				RenderColor = Color.Red;
 				deathTime = DateTime.Now;
-				MoveTo(Position+Vector3.Up,1);
+				MoveTo(Position+Vector3.Up,8);
 				DeleteAsync(7);
 			}
 		}
