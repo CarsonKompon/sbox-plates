@@ -135,3 +135,10 @@ These are useful debug tools for testing newly added events and round types.
 
 `plates_round <round_name>` - Sets the round type of the next game.
 
+# Other Useful Information
+
+If you're creating a custom Entity that you want to be properly cleaned up on Game End, add this to your entity's constructor:
+```c#
+PlatesGame.GameEnts.Add(this);
+```
+
