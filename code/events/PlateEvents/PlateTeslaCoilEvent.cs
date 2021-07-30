@@ -22,7 +22,7 @@ public class PlateTeslaCoilEvent : EventBase
     }
 }
 
-public class TeslaCoilEnt : Prop
+public class TeslaCoilEnt : ModelEntity
 {
 
     public Player nearest;

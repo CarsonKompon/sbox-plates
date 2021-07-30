@@ -80,7 +80,7 @@ public partial class PlatesPlayer : Player
 	{
 		base.OnKilled();
 
-		BecomeRagdollOnClient( Velocity, lastDamage.Flags, lastDamage.Position, lastDamage.Force, GetHitboxBone( lastDamage.HitboxIndex ) );
+		BecomeRagdollOnClient( Velocity, lastDamage.Flags, lastDamage.Position, lastDamage.Force*2, GetHitboxBone( lastDamage.HitboxIndex ) );
 		LastCamera = Camera;
 		Camera = new SpectateRagdollCamera();
 

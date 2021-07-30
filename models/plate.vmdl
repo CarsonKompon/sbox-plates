@@ -15,7 +15,7 @@
 						[
 							{
 								from = "material.vmat"
-								to = "dev/helper/reflectivity_90b.vmat"
+								to = "materials/plate.vmat"
 							},
 						]
 						use_global_default = false
@@ -28,23 +28,13 @@
 				children = 
 				[
 					{
-						_class = "PhysicsMeshFile"
-						name = "plate"
+						_class = "PhysicsShapeBox"
 						parent_bone = ""
 						surface_prop = "default"
 						collision_prop = "default"
-						recenter_on_parent_bone = false
-						offset_origin = [ 0.0, 0.0, 0.0 ]
-						offset_angles = [ 0.0, 0.0, 0.0 ]
-						filename = "models/plate.fbx"
-						import_scale = 1.0
-						maxMeshVertices = 0
-						qemError = 0.0
-						import_filter = 
-						{
-							exclude_by_default = false
-							exception_list = [  ]
-						}
+						origin = [ 0.0, 0.0, 0.0 ]
+						angles = [ 0.0, 0.0, 0.0 ]
+						dimensions = [ 233.649994, 233.649994, 5.0 ]
 					},
 				]
 			},
@@ -67,6 +57,28 @@
 						{
 							exclude_by_default = false
 							exception_list = [  ]
+						}
+					},
+				]
+			},
+			{
+				_class = "GameDataList"
+				children = 
+				[
+					{
+						_class = "GenericGameData"
+						game_class = "prop_data"
+						game_keys = 
+						{
+							base = ""
+							allowstatic = true
+							bakelighting = true
+							spawn_motion_disabled = false
+							health = -1.0
+							min_impact_damage_speed = -1.0
+							impact_damage = -1.0
+							parent_bodygroup_name = ""
+							parent_bodygroup_value = 0
 						}
 					},
 				]

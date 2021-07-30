@@ -286,6 +286,8 @@ public partial class PlatesGame : Sandbox.Game
 		EventSubtext = "";
 		if(InGamePlayers.Count > 0) Winners.Add(InGamePlayers[0]);
 		
+
+		//Set winners podiums
 		foreach(var podium in Entity.All.OfType<WinnersPodium>().ToList()){
 			if(podium.IsValid() && podium.WinPosition <= Winners.Count){
 				podium.SetModel( "models/citizen/citizen.vmdl" );
@@ -293,13 +295,14 @@ public partial class PlatesGame : Sandbox.Game
 			}
 		}
 		
+		//Play Round End Music
 		var _r = Rand.Int(1,17);
-		Log.Info("plates_round_end_" + _r);
 		Sound.FromScreen("plates_round_end_" + _r);
 
 		//TODO: Round End UI
 
-		foreach(var plate in Entity.All.OfType<Plate>()) plate.Kill();
+		foreach(var ply in InGamePlayers) (ply.Pawn as PlatesPlayer).Respawn();
+		foreach(var plate in Entity.All.OfType<Plate>()) plate.Delete();
 		foreach(var ev in GameEnts){
 			if(ev.IsValid()) ev.Delete();
 		}
