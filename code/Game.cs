@@ -308,7 +308,7 @@ public partial class PlatesGame : Sandbox.Game
 			if(ev.IsValid()) ev.Delete();
 		}
 		GameEnts = new();
-		GameTimer = 6;
+		GameTimer = 10;
 		GameState = -1;
 	}
 
