@@ -31,7 +31,7 @@ public class SmellBadEnt : Entity
         if(ent.IsValid()){
             var part = Particles.Create("particles/stinky.vpcf");
             part.SetPosition(0,ent.Position + Vector3.Up*40);
-            if(IsServer){
+            if(IsServer && Client.All.Count > 1){
                 var nearest = Entity.All.OfType<Player>().OrderBy( x => Vector3.DistanceBetween( x.Position + x.Rotation.Up * 40, ent.Position + Rotation.Up * 40 ) ).ToArray()[1];
                 var distance = Vector3.DistanceBetween( nearest.Position, ent.Position );
                 if(distance <= 100){

@@ -25,6 +25,13 @@ public partial class PlatesHudEntity : HudEntity<RootPanel>
 			RootPanel.AddChild<EventSub>();
 			RootPanel.AddChild<InventoryBar>();
 
+			//Load additional UI
+			foreach(LoadUI _ui in Library.GetAttributes<LoadUI>()){
+				//Events.Add(_ui.Create<EventBase>());
+				var type = _ui.GetType();
+				RootPanel.AddChild(_ui.Create<Panel>());
+			}
+
 			if(IsServer){
 				RootPanel.AddChild<DevTools>();
 			}

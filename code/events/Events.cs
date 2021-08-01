@@ -26,3 +26,5 @@ public class RoundTypeBase : LibraryAttribute{
 }
 
 public enum EventType{ Player,Plate,Arena }
+
+public class LoadUI : LibraryAttribute{}
