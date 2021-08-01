@@ -1,6 +1,7 @@
-![Plates](https://i.imgur.com/2ibvDk8.png)
-
-A game of chance inspired by [Plates of Fate: Mayhem](https://www.roblox.com/games/564086481/Plates-of-Fate-Mayhem) and [Plates of Fate: Remastered](https://www.roblox.com/games/4783966408/Plates-of-Fate-Remastered)
+<p align="center">
+  <img src="https://i.imgur.com/SAKDEGU.png">
+  <p align="center">A game of chance inspired by <a href="https://www.roblox.com/games/564086481/Plates-of-Fate-Mayhem">Plates of Fate: Mayhem</a> and <a href="https://www.roblox.com/games/4783966408/Plates-of-Fate-Remastered">Plates of Fate: Remastered</a>
+</p>
 
 # How to make your own Events
 
@@ -134,4 +135,11 @@ These are useful debug tools for testing newly added events and round types.
 `plates_event <event_name>` - Sets the next event in the current game.
 
 `plates_round <round_name>` - Sets the round type of the next game.
+
+# Other Useful Information
+
+If you're creating a custom Entity that you want to be properly cleaned up on Game End, add this to your entity's constructor:
+```c#
+PlatesGame.GameEnts.Add(this);
+```
 
