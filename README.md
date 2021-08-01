@@ -143,3 +143,11 @@ If you're creating a custom Entity that you want to be properly cleaned up on Ga
 PlatesGame.GameEnts.Add(this);
 ```
 
+If you're making custom UI for one of your events, create a class that looks something like this:
+```c#
+[LoadUI]
+public class ExampleUI : Panel
+{
+}
+```
+The class must derive `Panel` and must have `[LoadUI]` the line above to be added to the RootPanel on game start.
