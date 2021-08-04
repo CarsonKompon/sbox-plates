@@ -18,14 +18,27 @@ public class Vitals : Panel
 	}
 
 	public override void Tick(){
-		var player = Local.Pawn;
-		var walkController = ((player as PlatesPlayer).Controller as PlatesWalkController);
-		if(player == null) return;
+		var player = Local.Pawn as PlatesPlayer;
 
-		HP.Text = $"HP: {player.Health.CeilToInt()}";
 		var plateSize = "N/A";
-		var pl = (player as PlatesPlayer).CurrentPlate;
+		var pl = player.CurrentPlate;
 		if(pl.IsValid()) plateSize = MathF.Ceiling(pl.toScale*92) + "\""; 
-		Info.Text = $"Speed: {String.Format("{0:0.00}", walkController.Speed)}x\nJump: {String.Format("{0:0.00}", walkController.JumpPower)}x\nPlate Size: {plateSize}";
+
+		if(player.Controller is PlatesWalkController){
+			var walkController = ((player as PlatesPlayer).Controller as PlatesWalkController);
+			if(player == null) return;
+
+			HP.Text = $"HP: {player.Health.CeilToInt()}";
+			Info.Text = $"Speed: {String.Format("{0:0.00}", walkController.Speed)}x\nJump: {String.Format("{0:0.00}", walkController.JumpPower)}x\nPlate Size: {plateSize}";
+		}
+		/*
+		else if(player.Controller is MarbleController){
+			var walkController = ((player as PlatesPlayer).Controller as MarbleController);
+			if(player == null) return;
+
+			HP.Text = $"HP: {player.Health.CeilToInt()}";
+			Info.Text = $"Speed: 1.00x\nJump: 0.00x\nPlate Size: {plateSize}";
+		}
+		*/
 	}
 }
