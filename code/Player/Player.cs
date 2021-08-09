@@ -11,17 +11,15 @@ public partial class PlatesPlayer : Player
 
 	private DamageInfo lastDamage;
 
-	[Net]
-	public Plate CurrentPlate {get;set;}
+	[Net] public Plate CurrentPlate {get;set;}
 
-	[Net]
-	public PawnController VehicleController { get; set; }
+	[Net] public PawnController VehicleController { get; set; }
 
-	[Net]
-	public Camera VehicleCamera { get; set; }
+	[Net] public Camera VehicleCamera { get; set; }
 
-	[Net]
-	public PawnAnimator VehicleAnimator { get; set; }
+	[Net] public PawnAnimator VehicleAnimator { get; set; }
+
+	[Net] public bool BlurFX { get; set; } = false;
 
 	public ICamera LastCamera { get; set; }
 
@@ -36,14 +34,19 @@ public partial class PlatesPlayer : Player
 		base.Spawn();
 	}
 
+	public void ResetValues(){
+		GlowActive = false;
+		BlurFX = false;
+	}
+
 	public override void Respawn()
 	{
 		SetModel( "models/citizen/citizen.vmdl" );
 
 		Scale = 1.0f;
 		RenderAlpha = 1;
-		GlowActive = false;
 		Velocity = Vector3.Zero;
+		ResetValues();
 
 		Controller = new PlatesWalkController();
 		(Controller as PlatesWalkController).AutoJump = true;
@@ -87,6 +90,8 @@ public partial class PlatesPlayer : Player
 
 		EnableAllCollisions = false;
 		EnableDrawing = false;
+
+		ResetValues();
 
 		Inventory.DropActive();
 		Inventory.DeleteContents();

@@ -40,5 +40,7 @@ public class Vitals : Panel
 			Info.Text = $"Speed: 1.00x\nJump: 0.00x\nPlate Size: {plateSize}";
 		}
 		*/
+
+		SetClass( "blur", (Local.Pawn as PlatesPlayer).BlurFX );
 	}
 }
