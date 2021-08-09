@@ -10,6 +10,7 @@ public class Vitals : Panel
 
 	public Label HP;
 	public Label Info;
+	
 	public Vitals(){
 		VitalsPanel = Add.Panel("vitals");
 		InfoPanel = Add.Panel("info");

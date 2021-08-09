@@ -2,7 +2,9 @@ Vitals
 {
 	font-family: Poppins;
 	text-shadow: 1px 1px 5px black;
-	width: 100%;
+	position: absolute;
+	right: 0px;
+	width: 90%;
 	height: 100%;
 	backdrop-filter: blur( 0px );
 	transition: all 10s ease-out;
@@ -35,6 +37,16 @@ Vitals
 		bottom: 25px;
 		text-align: justify;
 	}
+}
+
+AvatarHud
+{
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	width: 10%;
+	height: 10%;
+	//justify-content: bottom;
 }
 
 EventSub

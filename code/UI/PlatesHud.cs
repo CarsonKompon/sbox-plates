@@ -4,6 +4,8 @@ using Sandbox.UI;
 [Library]
 public partial class PlatesHudEntity : HudEntity<RootPanel>
 {
+	public static AvatarHud avHud;
+
 	public PlatesHudEntity()
 	{
 		if ( IsClient )
@@ -11,6 +13,7 @@ public partial class PlatesHudEntity : HudEntity<RootPanel>
 			//RootPanel.SetTemplate( "/plateshud.html" );
 			RootPanel.StyleSheet.Load("/ui/plateshud.scss");
 
+			avHud = RootPanel.AddChild<AvatarHud>();
 			RootPanel.AddChild<NameTags>();
 			RootPanel.AddChild<PlateNameTags>();
 			RootPanel.AddChild<Crosshair>();

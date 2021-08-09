@@ -68,6 +68,7 @@ public partial class PlatesPlayer : Player
 
 		Dress();
 
+
 		//Inventory = new Inventory( this );
 
 		Inventory.Add( new Fists() );
