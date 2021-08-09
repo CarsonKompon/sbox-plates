@@ -15,7 +15,7 @@ public class PlayerSwapEvent : EventBase
     }
 
     public override void OnEvent(){
-        var ar = Client.All.OrderBy(x => Rand.Double()).ToArray();
+        var ar = PlatesGame.InGamePlayers.OrderBy(x => Rand.Double()).ToArray();
         if(ar.Length < 2) return;
         var ply1 = ar[0];
         var ply2 = ar[1];
