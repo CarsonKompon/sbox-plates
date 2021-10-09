@@ -36,7 +36,7 @@ namespace SWB_Base
         {
             Primary.Spread /= 1000;
 
-            var owner = GetClientOwner();
+            var owner = Client;
             if ( owner.Camera is ThirdPersonCamera )
             {
                 switchBackToThirdP = true;
@@ -45,7 +45,7 @@ namespace SWB_Base
 
             if ( IsLocalPawn )
             {
-                ViewModelEntity.RenderAlpha = 0;
+                ViewModelEntity.RenderColor = ViewModelEntity.RenderColor.WithAlpha(0f);
 
                 if ( !string.IsNullOrEmpty( ZoomInSound ) )
                     PlaySound( ZoomInSound );
@@ -57,7 +57,7 @@ namespace SWB_Base
             Primary.Spread *= 1000;
             lerpZoomAmount = 0;
 
-            var owner = GetClientOwner();
+            var owner = Client;
             if ( switchBackToThirdP )
             {
                 switchBackToThirdP = false;
@@ -66,7 +66,7 @@ namespace SWB_Base
 
             if ( IsLocalPawn && !(owner.Camera is ThirdPersonCamera) )
             {
-                ViewModelEntity.RenderAlpha = 1;
+                ViewModelEntity.RenderColor = ViewModelEntity.RenderColor.WithAlpha(1f);
 
                 if ( !string.IsNullOrEmpty( ZoomOutSound ) )
                     PlaySound( ZoomOutSound );

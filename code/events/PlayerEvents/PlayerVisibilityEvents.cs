@@ -10,7 +10,8 @@ public class PlayerInvisibleEvent : EventBase
     }
 
     public override void OnEvent(Entity ent){
-        (ent as PlatesPlayer).RenderAlpha = 0;
+        var ply = (ent as PlatesPlayer);
+        ply.RenderColor = ply.RenderColor.WithAlpha(0f);
     }
 }
 
@@ -24,7 +25,8 @@ public class PlayerSkeletonEvent : EventBase
     }
 
     public override void OnEvent(Entity ent){
-        (ent as PlatesPlayer).RenderAlpha = 0;
+        var ply = (ent as PlatesPlayer);
+        ply.RenderColor = ply.RenderColor.WithAlpha(0f);
         new SkeletonDrawingEnt(ent);
     }
 }

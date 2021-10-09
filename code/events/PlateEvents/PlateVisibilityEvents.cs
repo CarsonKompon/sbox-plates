@@ -26,6 +26,6 @@ public class PlateInvisibleEvent : EventBase
     }
 
     public override void OnEvent(Plate plate){
-        plate.RenderAlpha = 0f;
+        plate.RenderColor = plate.RenderColor.WithAlpha(0f);
     }
 }

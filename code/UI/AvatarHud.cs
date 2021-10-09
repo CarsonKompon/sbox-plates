@@ -95,8 +95,8 @@ public class AvatarHud : Panel
 		Angles angles = new( 15, 180, 0 );
 		Vector3 pos = Vector3.Up * 45 + angles.Direction * -80;
 
-		scene.Position = pos;
-		scene.Angles = angles;
+		scene.CameraPosition = pos;
+		scene.CameraRotation = angles.ToRotation();
 
 		LightWarm.Position = Vector3.Up * 100.0f + Vector3.Forward * 200.0f + Vector3.Right * -100;
 		LightWarm.LightColor = new Color( 1.0f, 0.95f, 0.8f ) * 60.0f;

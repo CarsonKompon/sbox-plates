@@ -49,9 +49,7 @@ namespace Sandbox
 			}
 			if(IsClient){
 				if(isDead){
-					RenderAlpha = 1.0f-((float)(DateTime.Now - deathTime).TotalMilliseconds/7000.0f);
-					//RenderAlpha -= 1.0f/(7*60.0f);
-					Log.Info(RenderAlpha);
+					RenderColor = RenderColor.WithAlpha(1.0f-((float)(DateTime.Now - deathTime).TotalMilliseconds/7000.0f));
 				}
 			}
 		}

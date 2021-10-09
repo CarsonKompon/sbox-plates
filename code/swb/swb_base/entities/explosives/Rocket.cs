@@ -81,7 +81,7 @@ namespace SWB_Base
 			BlastUtil.Explode( PhysicsBody.MassCenter, ExplosionRadius, ExplosionDamage, ExplosionForce, Owner, Weapon, this );
 
 			// Remove entity
-			RenderAlpha = 0;
+			RenderColor = RenderColor.WithAlpha(0);
 			DeleteAsync( 0.01f );
 		}
 	}

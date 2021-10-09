@@ -57,7 +57,7 @@ public partial class VirusCureEnt : Prop
         RenderColor = Color.Magenta;
         Position = e.Position + Vector3.Up*5;
         Scale = 0.1f;
-        var client = p.GetClientOwner();
+        var client = p.Client;
         owner = client.SteamId;
         ownerName = client.Name;
         //SetParent(e);
