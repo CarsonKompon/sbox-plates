@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class AvatarHud : Panel
 {
 	
-	public Scene scene { get; set; }
+	public ScenePanel scene { get; set; }
 	public SceneWorld world { get; set; }
 	public AnimSceneObject avatar;
 	private SpotLight LightWarm;
@@ -33,7 +33,7 @@ public class AvatarHud : Panel
 			// }
 
 			LightWarm = new SpotLight( Vector3.Up * 10.0f + Vector3.Forward * 100.0f + Vector3.Right * 100.0f, Color.White * 15000.0f );
-			LightWarm.Ang = Rotation.LookAt( -LightWarm.Pos ).Angles();
+			LightWarm.Rotation = Rotation.LookAt( -LightWarm.Position );
 			LightWarm.SpotCone = new SpotLightCone { Inner = 90, Outer = 90 };
 
 			//LightBlue = new SpotLight( Vector3.Up * 10.0f + Vector3.Forward * 100.0f + Vector3.Right * 100.0f, Color.White * 15000.0f );
@@ -43,7 +43,7 @@ public class AvatarHud : Panel
 			Angles angles = new( 25, 180, 0 );
 			Vector3 pos = Vector3.Up * 40 + angles.Direction * -100;
 
-			scene = Add.Scene(world, pos, angles, 28);
+			scene = Add.ScenePanel(world, pos, angles.ToRotation(), 28);
 			scene.AmbientColor = Color.Gray * 0.2f;
 			scene.Style.Width = 512;
 			scene.Style.Height = 512;
@@ -98,9 +98,9 @@ public class AvatarHud : Panel
 		scene.Position = pos;
 		scene.Angles = angles;
 
-		LightWarm.Pos = Vector3.Up * 100.0f + Vector3.Forward * 200.0f + Vector3.Right * -100;
+		LightWarm.Position = Vector3.Up * 100.0f + Vector3.Forward * 200.0f + Vector3.Right * -100;
 		LightWarm.LightColor = new Color( 1.0f, 0.95f, 0.8f ) * 60.0f;
-		LightWarm.Ang = Rotation.LookAt( -LightWarm.Pos ).Angles();
+		LightWarm.Rotation = Rotation.LookAt( -LightWarm.Position );
 		LightWarm.SpotCone = new SpotLightCone { Inner = 90, Outer = 90 };
 
 		//LightBlue.Pos = Vector3.Up * 100.0f + Vector3.Forward * -100.0f + Vector3.Right * 100;

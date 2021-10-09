@@ -1,11 +1,7 @@
-﻿using System.Text.RegularExpressions;
-using Sandbox;
-using System;
-using System.Linq;
+﻿using Sandbox;
 
 public partial class PlatesPlayer : Player
 {
-
 	private TimeSince timeSinceDropped;
 	private TimeSince timeSinceJumpReleased;
 
@@ -14,23 +10,36 @@ public partial class PlatesPlayer : Player
 	[Net] public Plate CurrentPlate {get;set;}
 
 	[Net] public PawnController VehicleController { get; set; }
-
-	[Net] public Camera VehicleCamera { get; set; }
-
 	[Net] public PawnAnimator VehicleAnimator { get; set; }
+	[Net, Predicted] public ICamera VehicleCamera { get; set; }
+	[Net, Predicted] public Entity Vehicle { get; set; }
+
+	[Net, Predicted] public ICamera MainCamera { get; set; }
+	public ICamera LastCamera { get; set; }
 
 	[Net] public bool BlurFX { get; set; } = false;
 
-	public ICamera LastCamera { get; set; }
+	/// <summary>
+	/// The clothing container is what dresses the citizen
+	/// </summary>
+	public Clothing.Container Clothing = new();
 
+	//Init
 	public PlatesPlayer()
 	{
 		Inventory = new Inventory( this );
 	}
 
+	// Client Init
+	public PlatesPlayer( Client cl ) : this()
+	{
+		Clothing.LoadFromClient( cl );
+	}
+
 	public override void Spawn()
 	{
-		LastCamera = new PlatesCamera();
+		MainCamera = new PlatesCamera();
+		LastCamera = MainCamera;
 		base.Spawn();
 	}
 
@@ -44,7 +53,7 @@ public partial class PlatesPlayer : Player
 		SetModel( "models/citizen/citizen.vmdl" );
 
 		Scale = 1.0f;
-		RenderAlpha = 1;
+		RenderColor = RenderColor.WithAlpha(1);
 		Velocity = Vector3.Zero;
 		ResetValues();
 
@@ -52,7 +61,9 @@ public partial class PlatesPlayer : Player
 		(Controller as PlatesWalkController).AutoJump = true;
 
 		Animator = new StandardPlayerAnimator();
-		Camera = LastCamera;
+		
+		MainCamera = LastCamera;
+		Camera = MainCamera;
 
 		Inventory.DeleteContents();
 
@@ -66,7 +77,7 @@ public partial class PlatesPlayer : Player
 		EnableHideInFirstPerson = true;
 		EnableShadowInFirstPerson = true;
 
-		Dress();
+		Clothing.DressEntity( this );
 
 
 		//Inventory = new Inventory( this );
@@ -85,9 +96,16 @@ public partial class PlatesPlayer : Player
 	{
 		base.OnKilled();
 
+		VehicleController = null;
+		VehicleAnimator = null;
+		VehicleCamera = null;
+		Vehicle = null;
+
 		BecomeRagdollOnClient( Velocity, lastDamage.Flags, lastDamage.Position, lastDamage.Force*2, GetHitboxBone( lastDamage.HitboxIndex ) );
-		LastCamera = Camera;
-		Camera = new SpectateRagdollCamera();
+		LastCamera = MainCamera;
+		MainCamera = new SpectateRagdollCamera();
+		Camera = MainCamera;
+		Controller = null;
 
 		EnableAllCollisions = false;
 		EnableDrawing = false;
@@ -119,8 +137,8 @@ public partial class PlatesPlayer : Player
 
 	public override PawnController GetActiveController()
 	{
-		if ( DevController != null ) return DevController;
 		if ( VehicleController != null ) return VehicleController;
+		if ( DevController != null ) return DevController;
 
 		return base.GetActiveController();
 	}
@@ -130,6 +148,13 @@ public partial class PlatesPlayer : Player
 		if ( VehicleAnimator != null ) return VehicleAnimator;
 
 		return base.GetActiveAnimator();
+	}
+
+	public ICamera GetActiveCamera()
+	{
+		if ( VehicleCamera != null ) return VehicleCamera;
+
+		return MainCamera;
 	}
 
 	public override void Simulate( Client cl )
@@ -144,6 +169,11 @@ public partial class PlatesPlayer : Player
 		if ( LifeState != LifeState.Alive )
 			return;
 
+		if ( VehicleController != null && DevController is NoclipController )
+		{
+			DevController = null;
+		}
+
 		var controller = GetActiveController();
 		if ( controller != null )
 			EnableSolidCollisions = !controller.HasTag( "noclip" );
@@ -153,15 +183,17 @@ public partial class PlatesPlayer : Player
 
 		if ( Input.Pressed( InputButton.View ) )
 		{
-			if ( Camera is not FirstPersonCamera )
+			if ( MainCamera is not FirstPersonCamera )
 			{
-				Camera = new FirstPersonCamera();
+				MainCamera = new FirstPersonCamera();
 			}
 			else
 			{
-				Camera = new PlatesCamera();
+				MainCamera = new PlatesCamera();
 			}
 		}
+		
+		Camera = GetActiveCamera();
 
 		if ( Input.Pressed( InputButton.Drop ) )
 		{

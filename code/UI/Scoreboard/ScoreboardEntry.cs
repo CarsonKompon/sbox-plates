@@ -8,7 +8,8 @@ using System.Collections.Generic;
 
 public partial class ScoreboardEntry : Panel
 {
-	public PlayerScore.Entry Entry;
+
+	public Client Client;
 
 	public Label PlayerName;
 	public Label Kills;
@@ -25,15 +26,18 @@ public partial class ScoreboardEntry : Panel
 		Ping = Add.Label( "", "ping" );
 	}
 
-	public virtual void UpdateFrom( PlayerScore.Entry entry )
+	public override void Tick()
 	{
-		Entry = entry;
-
-		PlayerName.Text = entry.GetString( "name" );
-		Kills.Text = entry.Get<int>( "kills", 0 ).ToString();
-		Deaths.Text = entry.Get<int>( "deaths", 0 ).ToString();
-		Ping.Text = entry.Get<int>( "ping", 0 ).ToString();
-
-		SetClass( "me", Local.Client != null && entry.Get<ulong>( "steamid", 0 ) == Local.Client.SteamId );
+		base.Tick();
 	}
+
+	public virtual void UpdateData()
+	{
+		PlayerName.Text = Client.Name;
+		Kills.Text = Client.GetInt( "kills" ).ToString();
+		Deaths.Text = Client.GetInt( "deaths" ).ToString();
+		Ping.Text = Client.Ping.ToString();
+		SetClass( "me", Client == Local.Client );
+	}
+	
 }

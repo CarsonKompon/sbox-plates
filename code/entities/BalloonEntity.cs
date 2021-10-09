@@ -15,7 +15,7 @@ public partial class BalloonEntity : Prop
 		SetModel( "models/citizen_props/balloonregular01.vmdl" );
 		SetupPhysicsFromModel( PhysicsMotionType.Dynamic, false );
 		PhysicsBody.GravityScale = GravityScale;
-		RenderColor = Color.Random.ToColor32();
+		RenderColor = Color.Random;
 	}
 
 	protected override void OnDestroy()
@@ -40,16 +40,16 @@ public partial class BalloonEntity : Prop
 		PlaySound( "balloon_pop_cute" );
 	}
 
-	[Event.Physics.PostStep]
-	public void OnPostPhysicsStep()
-	{
-		if ( !this.IsValid() )
-			return;
+	// [Event.Physics.PostStep]
+	// public void OnPostPhysicsStep()
+	// {
+	// 	if ( !this.IsValid() )
+	// 		return;
 
-		var body = PhysicsBody;
-		if ( !body.IsValid() )
-			return;
+	// 	var body = PhysicsBody;
+	// 	if ( !body.IsValid() )
+	// 		return;
 
-		body.GravityScale = GravityScale;
-	}
+	// 	body.GravityScale = GravityScale;
+	// }
 }
