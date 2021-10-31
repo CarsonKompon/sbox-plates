@@ -10,7 +10,7 @@ public class AvatarHud : Panel
 	public SceneWorld world { get; set; }
 	public AnimSceneObject avatar;
 	private SpotLight LightWarm;
-	private SpotLight LightBlue;
+	//private SpotLight LightBlue;
 
 	public AvatarHud()
 	{
@@ -71,7 +71,7 @@ public class AvatarHud : Panel
 		}else{
 			mousePosition.x = 0;
 			mousePosition.y = 0;
-			Log.Info(mousePosition.x + ", " + mousePosition.y);
+			//Log.Info(mousePosition.x + ", " + mousePosition.y);
 		}
 		mousePosition /= scene.ScaleToScreen;
 

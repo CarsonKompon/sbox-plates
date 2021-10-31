@@ -18,7 +18,8 @@ using System.Collections.Generic;
 public partial class PlatesGame : Sandbox.Game
 {
 
-	[Net] public static float GameTimer {get;set;} = 30;
+	[Net] public static RealTimeSince GameTimer {get;set;} = -30f;
+    [Net] public static float LastTimer {get;set;} = -30f;
 	[Net] public static int GameState {get;set;} = 0;
 	[Net] public static string EventText {get;set;} = "";
 	[Net] public static string EventSubtext {get;set;} = "";
@@ -88,48 +89,50 @@ public partial class PlatesGame : Sandbox.Game
 	{
 		if(IsServer){
 			if(GameState == -2){
-				GameTimer -= 1.0f/60.0f;
+				//GameTimer -= 1.0f/60.0f;
 				EventText = "Not Enough Players!";
 				EventSubtext = "Type plates_start in console to start anyway";
-				if(MathF.Ceiling(GameTimer) <= 0){
+				if(GameTimer >= 0){
 					GameState = 0;
-					GameTimer = 30;
+					GameTimer = -30f;
 				}
 			}else if(GameState == -1){
-				GameTimer -= 1.0f/60.0f;
+				//GameTimer -= 1.0f/60.0f;
 				EventText = "Game Over! Winner: " + Winners[Winners.Count-1].Name;
-				if(MathF.Ceiling(GameTimer) <= 0){
+				if(GameTimer >= 0){
 					for(var i=0;i<InGamePlayers.Count;i++){
 						(InGamePlayers[i].Pawn as PlatesPlayer)?.Respawn();
 					}
-					GameTimer = 15;
+					GameTimer = -15f;
 					GameState = 0;
 				}
 			}else if(GameState == 0){
 				//Game Starting in ...
-				GameTimer -= 1.0f/60.0f;
-				EventText = "Game Starting in " + MathF.Ceiling(GameTimer).ToString() + "s";
+				EventText = "Game Starting in " + MathF.Ceiling(-GameTimer).ToString() + "s";
 				EventSubtext = "";
-				if(MathF.Ceiling(GameTimer) <= 0){
+				if(GameTimer >= 0){
 					if(Client.All.Count > 1){
 						StartGame();
 					}else{
-						GameTimer = 8;
+						GameTimer = -8f;
 						GameState = -2;
 					}
 				}
 			}else if(GameState >= 1){
 				//In-Game
 				var prevTime = GameTimer;
-				GameTimer -= 1.0f/60.0f;
+				//GameTimer -= 1.0f/60.0f;
 				if(GameState == 1){
-					if(GameTimer > 0.0f && MathF.Floor(GameTimer)<MathF.Floor(prevTime)) Sound.FromScreen("plates_timer");
+					if(GameTimer <= 0f && Math.Floor(GameTimer) > LastTimer){
+                        Sound.FromScreen("plates_timer");
+                        LastTimer = (float)Math.Floor(GameTimer);
+                    }
 					var str = TotalAffectedPlayers + CurrentEvent.text;
 					if(CurrentEvent.type == EventType.Arena) str = CurrentEvent.text;
-					if(GameTimer <= 0) EventText = str + "0s";
-					else EventText = str + MathF.Ceiling(GameTimer).ToString() + "s";
+					if(GameTimer >= 0) EventText = str + "0s";
+					else EventText = str + MathF.Ceiling(-GameTimer).ToString() + "s";
 				}
-				if(MathF.Ceiling(GameTimer) <= 0){
+				if(GameTimer >= 0){
 					if(AffectedPlayers <= 0) GetNewEvent();
 					else PerformEvent();
 				}
@@ -171,6 +174,8 @@ public partial class PlatesGame : Sandbox.Game
 
 		GetNewEvent();
 		GameState = 1;
+
+        GameServices.StartGame();
 	}
 
 	public static void GetNewEvent(){
@@ -185,7 +190,8 @@ public partial class PlatesGame : Sandbox.Game
 
 		AffectedPlayers = Rand.Int(CurrentEvent.minAffected,CurrentEvent.maxAffected-1);
 		TotalAffectedPlayers = AffectedPlayers;
-		GameTimer = 4;
+		GameTimer = -4f;
+        LastTimer = -10f;
 		
 		//Check if game end
 		var finishCount = 1;
@@ -202,7 +208,7 @@ public partial class PlatesGame : Sandbox.Game
 		if(CurrentEvent.type == EventType.Player){
 			if(InGamePlayers.Count == 0){
 				AffectedPlayers--;
-				GameTimer = 1;
+				GameTimer = -1f;
 				return;
 			}
 			var ply = InGamePlayers[Rand.Int(0,InGamePlayers.Count-1)];
@@ -212,7 +218,7 @@ public partial class PlatesGame : Sandbox.Game
 		}else if(CurrentEvent.type == EventType.Plate){
 			if(Entity.All.OfType<Plate>().ToArray().Length == 0){
 				AffectedPlayers--;
-				GameTimer = 1;
+				GameTimer = -1f;
 				return;
 			}
 			var plat = Entity.All.OfType<Plate>().OrderBy(x => Rand.Double()).ToArray()[0];
@@ -233,8 +239,8 @@ public partial class PlatesGame : Sandbox.Game
 		}
 
 		AffectedPlayers--;
-		GameTimer = 1;
-		if(AffectedPlayers == 0) GameTimer = 2;
+		GameTimer = -1f;
+		if(AffectedPlayers == 0) GameTimer = -2f;
 		else EventSubtext = EventSubtext + ", ";
 	}
 
@@ -285,7 +291,7 @@ public partial class PlatesGame : Sandbox.Game
 	public static void EndGame(){
 		EventSubtext = "";
 		if(InGamePlayers.Count > 0) Winners.Add(InGamePlayers[0]);
-		
+        
 
 		//Set winners podiums
 		foreach(var podium in Entity.All.OfType<WinnersPodium>().ToList()){
@@ -294,6 +300,13 @@ public partial class PlatesGame : Sandbox.Game
 				podium.Dress(Winners[Winners.Count-podium.WinPosition].Pawn as PlatesPlayer);
 			}
 		}
+
+        //Set player win/lose condition
+        var _winnerId = Winners[Winners.Count-1].SteamId;
+        foreach(var _cl in Winners){
+            if(_cl.SteamId == _winnerId) _cl.SetGameResult(GameplayResult.Win);
+            else _cl.SetGameResult(GameplayResult.Lose);
+        }
 		
 		//Play Round End Music
 		var _r = Rand.Int(1,17);
@@ -308,8 +321,10 @@ public partial class PlatesGame : Sandbox.Game
 			if(ev.IsValid()) ev.Delete();
 		}
 		GameEnts = new();
-		GameTimer = 10;
+		GameTimer = -10f;
 		GameState = -1;
+
+        GameServices.EndGame();
 	}
 
 	public static void ResetPlayers(){

@@ -7,7 +7,7 @@
 	font-size: 18px;
 	font-weight: 500;
 	color: white;
-	right: -100%;
+	right: -50%;
 	top: 0px;
 	width: -20%;
 	//height: 100%;
@@ -28,7 +28,7 @@
 	&.open
 	{
 		opacity: 1;
-		right: 0px;
+		right: 0%;
 		transform: scale( 1 );
 		pointer-events: all;
 	}
