@@ -12,7 +12,7 @@ partial class PlatesPlayer
 		if ( IsUseDisabled() )
 			return null;
 
-		var tr = Trace.Ray( EyePos, EyePos + EyeRot.Forward * 85 )
+		var tr = Trace.Ray( EyePosition, EyePosition + EyeRotation.Forward * 85 )
 			.Radius( 2 )
 			.HitLayer( CollisionLayer.Debris )
 			.Ignore( this )

@@ -14,7 +14,7 @@
 						remaps = 
 						[
 							{
-								from = ""
+								from = "material.vmat"
 								to = "dev/helper/reflectivity_90b.vmat"
 							},
 						]
@@ -31,7 +31,10 @@
 						_class = "PhysicsShapeBox"
 						parent_bone = ""
 						surface_prop = "default"
-						collision_prop = "default"
+						collision_group = ""
+						collision_interact_as = ""
+						collision_interact_with = ""
+						collision_interact_exclude = ""
 						origin = [ 0.0, 0.0, 0.0 ]
 						angles = [ 0.0, 0.0, 0.0 ]
 						dimensions = [ 233.5, 5.0, 5.0 ]

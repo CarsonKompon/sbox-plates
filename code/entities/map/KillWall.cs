@@ -1,6 +1,6 @@
 using Sandbox;
 
-[Library("kill_wall")]
+[Library("plates_kill_trigger", Description = "A trigger that instantly kills players.")]
 [Hammer.Solid]
 public class KillWallEntity : ModelEntity
 {
@@ -14,14 +14,27 @@ public class KillWallEntity : ModelEntity
         EnableTouch = true;
 
         Transmit = TransmitType.Never;
+
+		Name = "The Void";
     }
 
-/*
-    public override void StartTouch( Entity other )
-    {
-        base.StartTouch( other );
+	public override void StartTouch( Entity other )
+	{
+		base.StartTouch( other );
 
-        if(other.IsValid()) other.Delete();
-    }
-*/
+		if ( other is Entity ent ) {
+			var dmg = DamageInfo.Generic( 1000 );
+			dmg.Attacker = this;
+			ent.TakeDamage( dmg );
+		}
+	}
+
+	/*
+		public override void StartTouch( Entity other )
+		{
+			base.StartTouch( other );
+
+			if(other.IsValid()) other.Delete();
+		}
+	*/
 }

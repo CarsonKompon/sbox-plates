@@ -25,7 +25,7 @@ public class PlayerBalloonEvent : EventBase
 
                 var ent = new BalloonEntity
                 {
-                    Position = tr.EndPos,
+                    Position = tr.EndPosition,
                 };
 
                 ent.SetModel( "models/citizen_props/balloonregular01.vmdl" );
@@ -35,8 +35,8 @@ public class PlayerBalloonEvent : EventBase
                 var rope = Particles.Create( "particles/rope.vpcf" );
                 rope.SetEntity( 0, ent );
 
-                var attachEnt = tr.Body.IsValid() ? tr.Body.Entity : tr.Entity;
-                var attachLocalPos = tr.Body.Transform.PointToLocal( tr.EndPos );
+                var attachEnt = tr.Body.IsValid() ? tr.Body.GetEntity() : tr.Entity;
+                var attachLocalPos = tr.Body.Transform.PointToLocal( tr.EndPosition );
 
                 if ( attachEnt.IsWorld )
                 {
@@ -49,18 +49,15 @@ public class PlayerBalloonEvent : EventBase
 
                 ent.AttachRope = rope;
 
-                ent.AttachJoint = PhysicsJoint.Spring
-                    .From( ent.PhysicsBody )
-                    .To( tr.Body )
-                    .WithPivot( tr.EndPos )
-                    .WithFrequency( 5.0f )
-                    .WithDampingRatio( 0.7f )
-                    .WithReferenceMass( 0 )
-                    .WithMinRestLength( 0 )
-                    .WithMaxRestLength( 100 )
-                    .WithCollisionsEnabled()
-                    .Create();
-
+				var spring = PhysicsJoint.CreateLength( ent.PhysicsBody, PhysicsPoint.World( tr.Body, tr.EndPosition ), 100 );
+				spring.SpringLinear = new( 5, 0.7f );
+				spring.Collisions = true;
+				spring.EnableAngularConstraint = false;
+				spring.OnBreak += () =>
+				{
+					rope?.Destroy( true );
+					spring.Remove();
+				};
             }
 
         }

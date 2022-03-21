@@ -17,9 +17,8 @@ public class GravityDownEvent : EventBase
         foreach(var ply in Entity.All.OfType<PlatesPlayer>()){
             var wc = (ply.Controller as PlatesWalkController);
             wc.Gravity -= 800*0.2f;
-            ply.GlowActive = true;
-            ply.GlowColor = Color.Blue;
-        }
+            ply.SetGlow( true, Color.Blue );
+		}
     }
 }
 
@@ -39,8 +38,7 @@ public class GravityUpEvent : EventBase
         foreach(var ply in Entity.All.OfType<PlatesPlayer>()){
             var wc = (ply.Controller as PlatesWalkController);
             wc.Gravity += 800*0.2f;
-            ply.GlowActive = true;
-            ply.GlowColor = Color.Blue;
-        }
+			ply.SetGlow( true, Color.Blue );
+		}
     }
 }

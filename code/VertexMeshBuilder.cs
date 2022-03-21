@@ -47,7 +47,7 @@ namespace Sandbox
 		public static MeshEntity SpawnEntity( int length, int width, int height, int texScale = 64 )
 		{
 			var vertexModel = GenerateRectangleServer( length, width, height, texScale );
-			MeshEntity entity = new() { Model = vertexModel };
+			MeshEntity entity = new() { model = vertexModel };
 			entity.Tick();
 			return entity;
 		}

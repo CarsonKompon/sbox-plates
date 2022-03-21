@@ -3,10 +3,10 @@ namespace Sandbox
 	public partial class MeshEntity : Prop
 	{
 		[Net]
-		public string Model { get; set; }
+		public string model { get; set; }
 		[Net]
 		public string MaterialOverride { get; set; } = "";
-		public Model VertexModel => VertexMeshBuilder.Models[Model];
+		public Model VertexModel => VertexMeshBuilder.Models[model];
 
 		private string _lastModel;
 		private string _lastMaterial;
@@ -14,14 +14,14 @@ namespace Sandbox
 		[Event.Tick]
 		public void Tick()
 		{
-			if ( !VertexMeshBuilder.Models.ContainsKey( Model ) ) {
+			if ( !VertexMeshBuilder.Models.ContainsKey( model ) ) {
 				return; // happens after a hot reload :()
 			}
-			if ( Model != "" && Model != _lastModel ) {
-				SetModel( VertexModel );
+			if ( model != "" && model != _lastModel ) {
+				SetModel( VertexModel.Name );
 				SetupPhysicsFromModel( PhysicsMotionType.Static );
 
-				_lastModel = Model;
+				_lastModel = model;
 				_lastMaterial = "";
 			}
 			if ( IsClient && MaterialOverride != null && MaterialOverride != "" && _lastMaterial != MaterialOverride ) {

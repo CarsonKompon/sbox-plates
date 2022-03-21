@@ -105,11 +105,11 @@ public partial class PlatesWalkController : WalkController
 
 		public override void Simulate()
 		{
-			EyePosLocal = Vector3.Up * (EyeHeight * Pawn.Scale);
+			EyeLocalPosition = Vector3.Up * (EyeHeight * Pawn.Scale);
 			UpdateBBox();
 
-			EyePosLocal += TraceOffset;
-			EyeRot = Input.Rotation;
+			EyeLocalPosition += TraceOffset;
+			EyeRotation = Input.Rotation;
 
 			//Velocity += BaseVelocity * ( 1 + Time.Delta * 0.5f );
 			//BaseVelocity = Vector3.Zero;
@@ -134,7 +134,7 @@ public partial class PlatesWalkController : WalkController
 			// RunLadderMode
 
 			CheckLadder();
-			Swimming = Pawn.WaterLevel.Fraction > 0.6f;
+			Swimming = Pawn.WaterLevel > 0.6f;
 
 			//
 			// Start Gravity

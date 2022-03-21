@@ -8,8 +8,6 @@ partial class Pistol : Weapon
 	public override float PrimaryRate => 15.0f;
 	public override float SecondaryRate => 1.0f;
 
-	[Net] public float ammo {get;set;} = 20; 
-
 	public TimeSince TimeSinceDischarge { get; set; }
 
 	public override void Spawn()
@@ -26,27 +24,19 @@ partial class Pistol : Weapon
 
 	public override void AttackPrimary()
 	{
-		if(ammo <= 0)
-			return;
-
 		TimeSincePrimaryAttack = 0;
 		TimeSinceSecondaryAttack = 0;
-		
-		(Owner as AnimEntity)?.SetAnimBool( "b_attack", true );
+
+		(Owner as AnimEntity)?.SetAnimParameter( "b_attack", true );
 
 		ShootEffects();
 		PlaySound( "rust_pistol.shoot" );
 		ShootBullet( 0.05f, 1.5f, 9.0f, 3.0f );
-
-		ammo--;
 	}
 
 	private void Discharge()
 	{
 		if ( TimeSinceDischarge < 0.5f )
-			return;
-
-		if(ammo <= 0)
 			return;
 
 		TimeSinceDischarge = 0;
@@ -68,5 +58,12 @@ partial class Pistol : Weapon
 		{
 			Discharge();
 		}
+	}
+
+	public override void SimulateAnimator( PawnAnimator anim )
+	{
+		anim.SetAnimParameter( "holdtype", 1 );
+		anim.SetAnimParameter( "aim_body_weight", 1.0f );
+		anim.SetAnimParameter( "holdtype_handedness", 0 );
 	}
 }

@@ -1,5 +1,13 @@
 {
-	"sharedassets": "*.*",
-	"type": "game",
-	"ident": "carsonk.plates"
+  "Title": "Plates of Fate",
+  "Type": "game",
+  "Org": "carsonk",
+  "Ident": "plates",
+  "Schema": 1,
+  "HasAssets": true,
+  "AssetsPath": "",
+  "ResourcePaths": null,
+  "HasCode": true,
+  "CodePath": "code",
+  "RootNamespace": "Sandbox"
 }

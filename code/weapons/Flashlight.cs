@@ -113,12 +113,12 @@ partial class Flashlight : Weapon
 
 	private bool MeleeAttack()
 	{
-		var forward = Owner.EyeRot.Forward;
+		var forward = Owner.EyeRotation.Forward;
 		forward = forward.Normal;
 
 		bool hit = false;
 
-		foreach ( var tr in TraceBullet( Owner.EyePos, Owner.EyePos + forward * 80, 20.0f ) )
+		foreach ( var tr in TraceBullet( Owner.EyePosition, Owner.EyePosition + forward * 80, 20.0f ) )
 		{
 			if ( !tr.Entity.IsValid() ) continue;
 
@@ -130,7 +130,7 @@ partial class Flashlight : Weapon
 
 			using ( Prediction.Off() )
 			{
-				var damageInfo = DamageInfo.FromBullet( tr.EndPos, forward * 100, 25 )
+				var damageInfo = DamageInfo.FromBullet( tr.EndPosition, forward * 100, 25 )
 					.UsingTraceResult( tr )
 					.WithAttacker( Owner )
 					.WithWeapon( this );
@@ -152,7 +152,7 @@ partial class Flashlight : Weapon
 			_ = new Sandbox.ScreenShake.Perlin();
 		}
 
-		ViewModelEntity?.SetAnimBool( "attack", true );
+		ViewModelEntity?.SetAnimParameter( "attack", true );
 	}
 
 	[ClientRpc]
@@ -165,7 +165,7 @@ partial class Flashlight : Weapon
 			_ = new Sandbox.ScreenShake.Perlin( 1.0f, 1.0f, 3.0f );
 		}
 
-		ViewModelEntity?.SetAnimBool( "attack_hit", true );
+		ViewModelEntity?.SetAnimParameter( "attack_hit", true );
 	}
 
 	private void Activate()

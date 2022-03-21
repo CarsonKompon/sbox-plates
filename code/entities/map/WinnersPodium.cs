@@ -1,7 +1,7 @@
 using Sandbox;
 
-[Library("winners_podium")]
-[Hammer.EditorModel( "models/citizen/citizen.vmdl" )]
+[Library("plates_winners_podium", Description = "A character to be placed on a podium. This represents the winner in the specified position on round end." )]
+[Hammer.EditorModel( "models/citizen/citizen.vmdl")]
 public class WinnersPodium : ModelEntity
 {
     [Property]
@@ -24,7 +24,7 @@ public class WinnersPodium : ModelEntity
 
         foreach(var c in ply.Children){
             var clothes = new ModelEntity();
-            clothes.SetModel( (c as ModelEntity).GetModel() );
+            clothes.SetModel( (c as ModelEntity).GetModelName() );
             clothes.SetParent( this, true );
         }
 	}

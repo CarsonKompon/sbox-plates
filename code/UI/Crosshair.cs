@@ -1,4 +1,5 @@
 ﻿
+/*
 using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
@@ -36,3 +37,4 @@ public class Crosshair : Panel
 		fireCounter += 2;
 	}
 }
+*/

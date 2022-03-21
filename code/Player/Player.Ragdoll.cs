@@ -24,14 +24,9 @@ partial class PlatesPlayer
 		ent.RenderColor = RenderColor;
 		ent.PhysicsGroup.Velocity = velocity;
 
-		if ( Local.Pawn == this )
-		{
-			//ent.EnableDrawing = false; wtf
-		}
-
 		ent.SetInteractsAs( CollisionLayer.Debris );
-		ent.SetInteractsWith( CollisionLayer.All );
-		//ent.SetInteractsExclude( CollisionLayer.Player | CollisionLayer.Debris );
+		ent.SetInteractsWith( CollisionLayer.WORLD_GEOMETRY );
+		ent.SetInteractsExclude( CollisionLayer.Player | CollisionLayer.Debris );
 
 		foreach ( var child in Children )
 		{

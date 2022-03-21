@@ -3,7 +3,7 @@
 [Library( "weapon_fists", Title = "Fists", Spawnable = false )]
 partial class Fists : Weapon
 {
-	public override string ViewModelPath => "models/firstperson/temp_punch/temp_punch.vmdl";
+	public override string ViewModelPath => "models/first_person/first_person_arms.vmdl";
 	public override float PrimaryRate => 2.0f;
 	public override float SecondaryRate => 2.0f;
 
@@ -23,7 +23,7 @@ partial class Fists : Weapon
 			OnMeleeMiss( leftHand );
 		}
 
-		(Owner as AnimEntity)?.SetAnimBool( "b_attack", true );
+		(Owner as AnimEntity)?.SetAnimParameter( "b_attack", true );
 	}
 
 	public override void AttackPrimary()
@@ -42,18 +42,43 @@ partial class Fists : Weapon
 
 	public override void SimulateAnimator( PawnAnimator anim )
 	{
-		anim.SetParam( "holdtype", 5 );
-		anim.SetParam( "aimat_weight", 1.0f );
+		anim.SetAnimParameter( "holdtype", 5 );
+		anim.SetAnimParameter( "aim_body_weight", 1.0f );
+
+		if ( Owner.IsValid() )
+		{
+			ViewModelEntity?.SetAnimParameter( "b_grounded", Owner.GroundEntity.IsValid() );
+			ViewModelEntity?.SetAnimParameter( "aim_pitch", Owner.EyeRotation.Pitch() );
+		}
+	}
+
+	public override void CreateViewModel()
+	{
+		Host.AssertClient();
+
+		if ( string.IsNullOrEmpty( ViewModelPath ) )
+			return;
+
+		ViewModelEntity = new ViewModel
+		{
+			Position = Position,
+			Owner = Owner,
+			EnableViewmodelRendering = true,
+			//EnableSwingAndBob = false, // TODO: Check this?
+		};
+
+		ViewModelEntity.SetModel( ViewModelPath );
+		ViewModelEntity.SetAnimGraph( "models/first_person/first_person_arms_punching.vanmgrph" );
 	}
 
 	private bool MeleeAttack()
 	{
-		var forward = Owner.EyeRot.Forward;
+		var forward = Owner.EyeRotation.Forward;
 		forward = forward.Normal;
 
 		bool hit = false;
 
-		foreach ( var tr in TraceBullet( Owner.EyePos, Owner.EyePos + forward * 80, 20.0f ) )
+		foreach ( var tr in TraceBullet( Owner.EyePosition, Owner.EyePosition + forward * 80, 20.0f ) )
 		{
 			if ( !tr.Entity.IsValid() ) continue;
 
@@ -65,7 +90,7 @@ partial class Fists : Weapon
 
 			using ( Prediction.Off() )
 			{
-				var damageInfo = DamageInfo.FromBullet( tr.EndPos, forward * 100, 25 )
+				var damageInfo = DamageInfo.FromBullet( tr.EndPosition, forward * 100, 25 )
 					.UsingTraceResult( tr )
 					.WithAttacker( Owner )
 					.WithWeapon( this );
@@ -82,13 +107,9 @@ partial class Fists : Weapon
 	{
 		Host.AssertClient();
 
-		if ( IsLocalPawn )
-		{
-			_ = new Sandbox.ScreenShake.Perlin();
-		}
-
-		ViewModelEntity?.SetAnimBool( "attack", true );
-		ViewModelEntity?.SetAnimFloat( "holdtype_attack", leftHand ? 2 : 1 );
+		ViewModelEntity?.SetAnimParameter( "attack_has_hit", false );
+		ViewModelEntity?.SetAnimParameter( "attack", true );
+		ViewModelEntity?.SetAnimParameter( "holdtype_attack", leftHand ? 2 : 1 );
 	}
 
 	[ClientRpc]
@@ -96,12 +117,8 @@ partial class Fists : Weapon
 	{
 		Host.AssertClient();
 
-		if ( IsLocalPawn )
-		{
-			_ = new Sandbox.ScreenShake.Perlin( 1.0f, 1.0f, 3.0f );
-		}
-
-		ViewModelEntity?.SetAnimBool( "attack", true );
-		ViewModelEntity?.SetAnimFloat( "holdtype_attack", leftHand ? 2 : 1 );
+		ViewModelEntity?.SetAnimParameter( "attack_has_hit", true );
+		ViewModelEntity?.SetAnimParameter( "attack", true );
+		ViewModelEntity?.SetAnimParameter( "holdtype_attack", leftHand ? 2 : 1 );
 	}
 }

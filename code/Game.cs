@@ -77,7 +77,7 @@ public partial class PlatesGame : Sandbox.Game
 	{
 		base.ClientJoined( client );
 
-		var player = new PlatesPlayer();
+		var player = new PlatesPlayer( client );
 		client.Pawn = player;
 
 		player.Respawn();
@@ -235,7 +235,9 @@ public partial class PlatesGame : Sandbox.Game
 			Sound.FromWorld("plates_buzzer", Vector3.Zero);
 		}else{
 			Sound.FromEntity("plates_buzzer", ent);
-			if(ent is ModelEntity _ent) _ent.GlowActive = true;
+			// TODO: Make a GlowableEntity or something
+			if(ent is Plate _plate) _plate.SetGlow( true, Color.Blue );
+			if(ent is PlatesPlayer _player) _player.SetGlow( true, Color.Blue );
 		}
 
 		AffectedPlayers--;
@@ -246,26 +248,22 @@ public partial class PlatesGame : Sandbox.Game
 
 	public static void SetGlows(bool active){
 		foreach(var plate in Entity.All.OfType<Plate>()){
-			plate.GlowActive = active;
-			plate.GlowColor = Color.Blue;
+			plate.SetGlow( active, Color.Blue );
 		}
 		for(var i=0;i<InGamePlayers.Count;i++){
-			if(InGamePlayers[i].Pawn is ModelEntity ply){
-				ply.GlowActive = active;
-				ply.GlowColor = Color.Blue;
+			if(InGamePlayers[i].Pawn is PlatesPlayer ply){
+				ply.SetGlow( active, Color.Blue );
 			}
 		}
 	}
 
 	public static void ResetGlows(){
 		foreach(var plate in Entity.All.OfType<Plate>()){
-			plate.GlowActive = false;
-			plate.GlowColor = Color.Blue;
+			plate.SetGlow( false );
 		}
 		for(var i=0;i<InGamePlayers.Count;i++){
-			if(InGamePlayers[i].Pawn is ModelEntity ply){
-				ply.GlowActive = false;
-				ply.GlowColor = Color.Blue;
+			if(InGamePlayers[i].Pawn is PlatesPlayer ply){
+				ply.SetGlow( false );
 			}
 		}
 	}
@@ -276,7 +274,7 @@ public partial class PlatesGame : Sandbox.Game
 
 		foreach(var plate in Entity.All.OfType<Plate>())
 		{
-			if(plate.owner == client.SteamId){
+			if(plate.owner == client.PlayerId){
 				plate.Kill();
 				break;
 			}
@@ -302,9 +300,9 @@ public partial class PlatesGame : Sandbox.Game
 		}
 
         //Set player win/lose condition
-        var _winnerId = Winners[Winners.Count-1].SteamId;
+        var _winnerId = Winners[Winners.Count-1].PlayerId;
         foreach(var _cl in Winners){
-            if(_cl.SteamId == _winnerId) _cl.SetGameResult(GameplayResult.Win);
+            if(_cl.PlayerId == _winnerId) _cl.SetGameResult(GameplayResult.Win);
             else _cl.SetGameResult(GameplayResult.Lose);
         }
 		
@@ -354,7 +352,7 @@ public partial class PlatesGame : Sandbox.Game
 			 if(_curPlayer >= _playerCount){
 				 plate.Delete();
 			 }else{
-				 plate.owner = Client.All[_curPlayer].SteamId;
+				 plate.owner = Client.All[_curPlayer].PlayerId;
 				 plate.ownerName = Client.All[_curPlayer].Name;
 				 (Client.All[_curPlayer].Pawn as PlatesPlayer).CurrentPlate = plate;
 				 Client.All[_curPlayer].Pawn.Position = plate.Position + Vector3.Up * 100;

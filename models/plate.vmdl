@@ -15,7 +15,7 @@
 						[
 							{
 								from = "material.vmat"
-								to = "materials/plate.vmat"
+								to = "materials/dev/reflectivity_30.vmat"
 							},
 						]
 						use_global_default = false
@@ -31,7 +31,10 @@
 						_class = "PhysicsShapeBox"
 						parent_bone = ""
 						surface_prop = "default"
-						collision_prop = "default"
+						collision_group = ""
+						collision_interact_as = ""
+						collision_interact_with = ""
+						collision_interact_exclude = ""
 						origin = [ 0.0, 0.0, 0.0 ]
 						angles = [ 0.0, 0.0, 0.0 ]
 						dimensions = [ 233.649994, 233.649994, 5.0 ]

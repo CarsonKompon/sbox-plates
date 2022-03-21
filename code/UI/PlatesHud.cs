@@ -4,7 +4,7 @@ using Sandbox.UI;
 [Library]
 public partial class PlatesHudEntity : HudEntity<RootPanel>
 {
-	public static AvatarHud avHud;
+	//public static AvatarHud avHud;
 
 	public PlatesHudEntity()
 	{
@@ -13,10 +13,10 @@ public partial class PlatesHudEntity : HudEntity<RootPanel>
 			//RootPanel.SetTemplate( "/plateshud.html" );
 			RootPanel.StyleSheet.Load("/ui/plateshud.scss");
 
-			avHud = RootPanel.AddChild<AvatarHud>();
+			//avHud = RootPanel.AddChild<AvatarHud>();
 			RootPanel.AddChild<NameTags>();
 			RootPanel.AddChild<PlateNameTags>();
-			RootPanel.AddChild<Crosshair>();
+			RootPanel.AddChild<CrosshairCanvas>();
 			RootPanel.AddChild<ChatBox>();
 			RootPanel.AddChild<VoiceList>();
 			RootPanel.AddChild<KillFeed>();

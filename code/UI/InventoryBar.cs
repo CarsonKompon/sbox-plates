@@ -19,7 +19,7 @@ public class InventoryBar : Panel
 	{
 		base.Tick();
 
-		var player = Local.Pawn;
+		var player = Local.Pawn as Player;
 		if ( player == null ) return;
 		if ( player.Inventory == null ) return;
 
@@ -31,6 +31,8 @@ public class InventoryBar : Panel
 
 	private static void UpdateIcon( Entity ent, InventoryIcon inventoryIcon, int i )
 	{
+		var player = Local.Pawn as Player;
+
 		if ( ent == null )
 		{
 			inventoryIcon.Clear();
@@ -39,7 +41,7 @@ public class InventoryBar : Panel
 
 		inventoryIcon.TargetEnt = ent;
 		inventoryIcon.Label.Text = ent.ClassInfo.Title;
-		inventoryIcon.SetClass( "active", ent.IsActiveChild() );
+		inventoryIcon.SetClass( "active", player.ActiveChild == ent );
 	}
 
 	[Event( "buildinput" )]
@@ -53,11 +55,6 @@ public class InventoryBar : Panel
 		if ( inventory == null )
 			return;
 
-		//if ( player.ActiveChild is PhysGun physgun && physgun.BeamActive )
-		//{
-		//	return;
-		//}
-
 		if ( input.Pressed( InputButton.Slot1 ) ) SetActiveSlot( input, inventory, 0 );
 		if ( input.Pressed( InputButton.Slot2 ) ) SetActiveSlot( input, inventory, 1 );
 		if ( input.Pressed( InputButton.Slot3 ) ) SetActiveSlot( input, inventory, 2 );
@@ -68,12 +65,13 @@ public class InventoryBar : Panel
 		if ( input.Pressed( InputButton.Slot8 ) ) SetActiveSlot( input, inventory, 7 );
 		if ( input.Pressed( InputButton.Slot9 ) ) SetActiveSlot( input, inventory, 8 );
 
-		//if ( input.MouseWheel != 0 ) SwitchActiveSlot( input, inventory, -input.MouseWheel );
+		if ( input.MouseWheel != 0 ) SwitchActiveSlot( input, inventory, -input.MouseWheel );
 	}
 
 	private static void SetActiveSlot( InputBuilder input, IBaseInventory inventory, int i )
 	{
-		var player = Local.Pawn;
+		var player = Local.Pawn as Player;
+
 		if ( player == null )
 			return;
 

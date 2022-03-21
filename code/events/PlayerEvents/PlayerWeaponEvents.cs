@@ -1,5 +1,7 @@
+/*
 using Sandbox;
 
+// TODO: Add these back
 
 [EventBase]
 public class PlayerPistolEvent : EventBase
@@ -47,3 +49,4 @@ public class PlayerKnifeEvent : EventBase
         ply.Inventory.Add(new SWB_CSS.Knife());
     }
 }
+*/

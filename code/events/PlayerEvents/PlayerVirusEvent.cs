@@ -47,7 +47,7 @@ public class PlyVirusEnt : Entity
 public partial class VirusCureEnt : Prop
 {   
 
-    [Net] public ulong owner {get;set;}
+    [Net] public long owner {get;set;}
 	[Net] public string ownerName {get;set;}
 
     public VirusCureEnt(){}
@@ -58,7 +58,7 @@ public partial class VirusCureEnt : Prop
         Position = e.Position + Vector3.Up*5;
         Scale = 0.1f;
         var client = p.Client;
-        owner = client.SteamId;
+        owner = client.PlayerId;
         ownerName = client.Name;
         //SetParent(e);
         PlatesGame.GameEnts.Add(this);

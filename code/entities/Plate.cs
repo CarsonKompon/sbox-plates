@@ -1,3 +1,4 @@
+using Sandbox.Component;
 using System;
 using System.Collections.Generic;  
 
@@ -7,7 +8,7 @@ namespace Sandbox
     public partial class Plate : ModelEntity
 	{
 
-		[Net] public ulong owner {get;set;}
+		[Net] public long owner {get;set;}
 		[Net] public string ownerName {get;set;}
 		[Net] public bool isDead {get;set;} = false;
 		[Net] public DateTime deathTime {get;set;} 
@@ -15,15 +16,23 @@ namespace Sandbox
 		[Net] public float toScale {get;set;} = 1;
 		[Net] public List<Entity> PlateEnts {get;set;} = new();
 
+		private Glow glow;
+
 		public Plate(){}
 
-		public Plate(Vector3 pos, float size, ulong own, string name){
+		public Plate(Vector3 pos, float size, long own, string name){
 			Tags.Add("plate");
 			Position = pos;
 			owner = own;
 			ownerName = name;
 			Scale = size;
 			toScale = size;
+
+			glow = Components.GetOrCreate<Glow>();
+			glow.Active = false;
+			glow.RangeMin = 0;
+			glow.RangeMax = 2000;
+			glow.Color = Color.Blue;
 		}
 
 		public override void Spawn(){
@@ -33,6 +42,8 @@ namespace Sandbox
 			SetupPhysicsFromModel(PhysicsMotionType.Static);
 			EnableAllCollisions = true;
 			SetInteractsAs( CollisionLayer.Solid );
+
+			RenderColor = Color.White;
 
 			// toPos = Position;
 			// toScale = Scale;
@@ -63,6 +74,14 @@ namespace Sandbox
 				MoveTo(Position+Vector3.Up,8);
 				DeleteAsync(7);
 			}
+		}
+
+		public void SetGlow(bool visible, Color color = default)
+		{
+			if ( color == default )
+				color = glow.Color;
+
+			glow.Active = visible;
 		}
 
 	}
