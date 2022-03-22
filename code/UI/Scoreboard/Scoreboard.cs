@@ -29,7 +29,7 @@ public partial class Scoreboard<T> : Panel where T : ScoreboardEntry, new()
 	{
 		base.Tick();
 
-		//SetClass( "open", Input.Down(InputButton.Score) );
+		SetClass( "open", Input.Down(InputButton.Score) );
 	}
 
 
