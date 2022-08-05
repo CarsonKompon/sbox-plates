@@ -1,8 +1,8 @@
 using Sandbox;
 using System;
 
-[EventBase]
-public class PlateColourEvent : EventBase
+[PlatesEvent]
+public class PlateColourEvent : PlatesEventAttribute
 {
 
     public PlateColourEvent(){
@@ -12,12 +12,12 @@ public class PlateColourEvent : EventBase
     }
 
     public override void OnEvent(Plate plate){
-        plate.RenderColor = Color.FromBytes(Rand.Int(0,255),Rand.Int(0,255),Rand.Int(0,255));
+        plate.SetColor(Color.FromBytes(Rand.Int(0,255),Rand.Int(0,255),Rand.Int(0,255)));
     }
 }
 
-[EventBase]
-public class PlateInvisibleEvent : EventBase
+[PlatesEvent]
+public class PlateInvisibleEvent : PlatesEventAttribute
 {
     public PlateInvisibleEvent(){
         name = "plate_invisible";
@@ -26,6 +26,6 @@ public class PlateInvisibleEvent : EventBase
     }
 
     public override void OnEvent(Plate plate){
-        plate.RenderColor = plate.RenderColor.WithAlpha(0f);
+        plate.SetAlpha(0f);
     }
 }

@@ -1,8 +1,8 @@
 using Sandbox;
 using System;
 
-[EventBase]
-public class PlateBarrelTrapEvent : EventBase
+[PlatesEvent]
+public class PlateBarrelTrapEvent : PlatesEventAttribute
 {
 
     public PlateBarrelTrapEvent(){
@@ -18,7 +18,7 @@ public class PlateBarrelTrapEvent : EventBase
         barrel.Position += Vector3.Left * Rand.Int(-50,50) * plate.Scale;
         barrel.Position += Vector3.Forward * Rand.Int(-50,50) * plate.Scale;
         barrel.SetupPhysicsFromModel(PhysicsMotionType.Dynamic);
-        PlatesGame.GameEnts.Add(barrel);
+        PlatesGame.AddEntity(barrel);
         plate.PlateEnts.Add(barrel);
     }
 }

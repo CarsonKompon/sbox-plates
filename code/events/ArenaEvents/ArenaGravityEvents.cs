@@ -1,8 +1,8 @@
 using Sandbox;
 using System.Linq;
 
-[EventBase]
-public class GravityDownEvent : EventBase
+[PlatesEvent]
+public class GravityDownEvent : PlatesEventAttribute
 {
     public GravityDownEvent(){
         name = "arena_gravity_down";
@@ -22,8 +22,8 @@ public class GravityDownEvent : EventBase
     }
 }
 
-[EventBase]
-public class GravityUpEvent : EventBase
+[PlatesEvent]
+public class GravityUpEvent : PlatesEventAttribute
 {
     public GravityUpEvent(){
         name = "arena_gravity_up";

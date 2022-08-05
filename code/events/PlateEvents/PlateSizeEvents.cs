@@ -1,7 +1,7 @@
 using Sandbox;
 
-[EventBase]
-public class PlateGrow10Event : EventBase
+[PlatesEvent]
+public class PlateGrow10Event : PlatesEventAttribute
 {
     public PlateGrow10Event(){
         name = "plate_grow_10";
@@ -10,12 +10,12 @@ public class PlateGrow10Event : EventBase
     }
 
     public override void OnEvent(Plate plate){
-        plate.toScale += 0.10f;
+        plate.Grow(0.1f);
     }
 }
 
-[EventBase]
-public class PlateGrow25Event : EventBase
+[PlatesEvent]
+public class PlateGrow25Event : PlatesEventAttribute
 {
     public PlateGrow25Event(){
         name = "plate_grow_25";
@@ -24,12 +24,12 @@ public class PlateGrow25Event : EventBase
     }
 
     public override void OnEvent(Plate plate){
-        plate.toScale += 0.25f;
+        plate.Grow(0.25f);
     }
 }
 
-[EventBase]
-public class PlateShrink10Event : EventBase
+[PlatesEvent]
+public class PlateShrink10Event : PlatesEventAttribute
 {
     public PlateShrink10Event(){
         name = "plate_shrink_10";
@@ -38,13 +38,12 @@ public class PlateShrink10Event : EventBase
     }
     
     public override void OnEvent(Plate plate){
-        plate.toScale -= 0.10f;
-        if(plate.toScale < 0) plate.toScale = 0;
+        plate.Shrink(0.1f);
     }
 }
 
-[EventBase]
-public class PlateShrink25Event : EventBase
+[PlatesEvent]
+public class PlateShrink25Event : PlatesEventAttribute
 {
     public PlateShrink25Event(){
         name = "plate_shrink_25";
@@ -53,13 +52,12 @@ public class PlateShrink25Event : EventBase
     }
     
     public override void OnEvent(Plate plate){
-        plate.toScale -= 0.25f;
-        if(plate.toScale < 0) plate.toScale = 0;
+        plate.Shrink(0.25f);
     }
 }
 
-[EventBase]
-public class PlateShrinkInfinitely : EventBase
+[PlatesEvent]
+public class PlateShrinkInfinitely : PlatesEventAttribute
 {
     public PlateShrinkInfinitely(){
         name = "plate_shrink_infinitely";
@@ -77,20 +75,20 @@ public class PlateShrinkInfinitelyEnt : Entity
     public Plate plate;
 
     public PlateShrinkInfinitelyEnt(Plate plat){
-        PlatesGame.GameEnts.Add(this);
+        PlatesGame.AddEntity(this);
         plate = plat;
     }
 
     [Event.Tick]
     public void Tick(){
         if(plate.IsValid()){
-            plate.toScale -= 0.0001f;
+            plate.Shrink(0.0001f);
         }else Delete();
     }
 }
 
-[EventBase]
-public class PlateGrowInfinitely : EventBase
+[PlatesEvent]
+public class PlateGrowInfinitely : PlatesEventAttribute
 {
     public PlateGrowInfinitely(){
         name = "plate_grow_infinitely";
@@ -108,14 +106,14 @@ public class PlateGrowInfinitelyEnt : Entity
     public Plate plate;
 
     public PlateGrowInfinitelyEnt(Plate plat){
-        PlatesGame.GameEnts.Add(this);
+        PlatesGame.AddEntity(this);
         plate = plat;
     }
 
     [Event.Tick]
     public void Tick(){
         if(plate.IsValid()){
-            plate.toScale += 0.000005f;
+            plate.Grow(0.000005f);
         }else Delete();
     }
 }

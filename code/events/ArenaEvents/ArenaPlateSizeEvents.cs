@@ -1,8 +1,8 @@
 using Sandbox;
 using System.Linq;
 
-[EventBase]
-public class ArenaPlateGrow10Event : EventBase
+[PlatesEvent]
+public class ArenaPlateGrow10Event : PlatesEventAttribute
 {
     public ArenaPlateGrow10Event(){
         name = "arena_grow_10";
@@ -15,14 +15,14 @@ public class ArenaPlateGrow10Event : EventBase
 
     public override void OnEvent(){
         foreach(var plate in Entity.All.OfType<Plate>()){
-            plate.toScale += 0.10f;
+            plate.Grow(0.1f);
 			plate.SetGlow( true, Color.Blue );
         }
     }
 }
 
-[EventBase]
-public class ArenaPlateShrink10Event : EventBase
+[PlatesEvent]
+public class ArenaPlateShrink10Event : PlatesEventAttribute
 {
     public ArenaPlateShrink10Event(){
         name = "arena_shrink_10";
@@ -35,14 +35,14 @@ public class ArenaPlateShrink10Event : EventBase
 
     public override void OnEvent(){
         foreach(var plate in Entity.All.OfType<Plate>()){
-            plate.toScale -= 0.10f;
+            plate.Shrink(0.1f);
 			plate.SetGlow( true, Color.Blue );
 		}
     }
 }
 
-[EventBase]
-public class ArenaPlateShrinkHalfEvent : EventBase
+[PlatesEvent]
+public class ArenaPlateShrinkHalfEvent : PlatesEventAttribute
 {
     public ArenaPlateShrinkHalfEvent(){
         name = "arena_shrink_half";
@@ -55,15 +55,15 @@ public class ArenaPlateShrinkHalfEvent : EventBase
 
     public override void OnEvent(){
         foreach(var plate in Entity.All.OfType<Plate>()){
-            plate.toScale *= 0.5f;
+            plate.SetSize(plate.GetSize()/2);
 			plate.SetGlow( true, Color.Blue );
 		}
     }
 }
 
 
-[EventBase]
-public class ArenaPlateGrowDoubleEvent : EventBase
+[PlatesEvent]
+public class ArenaPlateGrowDoubleEvent : PlatesEventAttribute
 {
     public ArenaPlateGrowDoubleEvent(){
         name = "arena_grow_double";
@@ -76,7 +76,7 @@ public class ArenaPlateGrowDoubleEvent : EventBase
 
     public override void OnEvent(){
         foreach(var plate in Entity.All.OfType<Plate>()){
-            plate.toScale *= 2f;
+            plate.SetSize(plate.GetSize()*2);
 			plate.SetGlow( true, Color.Blue );
 		}
     }

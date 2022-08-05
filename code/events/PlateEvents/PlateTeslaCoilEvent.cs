@@ -2,8 +2,8 @@ using System.Linq;
 using Sandbox;
 using System;
 
-[EventBase]
-public class PlateTeslaCoilEvent : EventBase
+[PlatesEvent]
+public class PlateTeslaCoilEvent : PlatesEventAttribute
 {
 
     public PlateTeslaCoilEvent(){
@@ -14,10 +14,10 @@ public class PlateTeslaCoilEvent : EventBase
 
     public override void OnEvent(Plate plate){
         var coil = new TeslaCoilEnt();
-        coil.SetModel("models/teslacoil.vmdl");
         coil.Position = plate.Position + Vector3.Up * 10;
-        coil.Position += Vector3.Left * Rand.Int(-50,50) * plate.Scale;
-        coil.Position += Vector3.Forward * Rand.Int(-50,50) * plate.Scale;
+        var size = plate.GetSize();
+        coil.Position += Vector3.Left * Rand.Int(-50,50) * size;
+        coil.Position += Vector3.Forward * Rand.Int(-50,50) * size;
         plate.PlateEnts.Add(coil);
     }
 }
@@ -29,7 +29,8 @@ public class TeslaCoilEnt : ModelEntity
 
     public TeslaCoilEnt()
     {
-        PlatesGame.GameEnts.Add(this);
+        PlatesGame.AddEntity(this);
+        SetModel("models/teslacoil.vmdl");
 
 		SetupPhysicsFromModel(PhysicsMotionType.Dynamic, false);
     }

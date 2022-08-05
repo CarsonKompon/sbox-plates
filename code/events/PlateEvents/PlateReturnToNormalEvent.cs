@@ -1,8 +1,8 @@
 using Sandbox;
 
 
-[EventBase]
-public class PlateReturnToNormalEvent : EventBase
+[PlatesEvent]
+public class PlateReturnToNormalEvent : PlatesEventAttribute
 {
     public PlateReturnToNormalEvent(){
         name = "plate_return_normal";
@@ -11,8 +11,9 @@ public class PlateReturnToNormalEvent : EventBase
     }
 
     public override void OnEvent(Plate plate){
-        Plate newPlate = new Plate(plate.Position, 1, plate.owner, plate.ownerName);
+        Plate newPlate = new Plate(plate.Position, 1, plate.owner);
         newPlate.SetGlow( true, Color.Blue );
+        if(plate.owner is PlatesPlayer ply) ply.CurrentPlate = newPlate; 
 		foreach (var ent in plate.PlateEnts){
             ent.Delete();
         }

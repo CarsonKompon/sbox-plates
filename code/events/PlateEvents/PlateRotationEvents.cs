@@ -1,8 +1,8 @@
 using Sandbox;
 using System;
 
-[EventBase]
-public class PlateFlipEvent : EventBase
+[PlatesEvent]
+public class PlateFlipEvent : PlatesEventAttribute
 {
     public PlateFlipEvent(){
         name = "plate_flip";

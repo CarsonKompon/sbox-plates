@@ -2,8 +2,8 @@ using Sandbox;
 using System.Linq;
 using System.Collections.Generic;
 
-[EventBase]
-public class PlayerStinkyEvent : EventBase
+[PlatesEvent]
+public class PlayerStinkyEvent : PlatesEventAttribute
 {
     public PlayerStinkyEvent(){
         name = "player_smell_bad";
@@ -21,14 +21,15 @@ public class SmellBadEnt : Entity
 {
     public Entity ent;
 
+    public SmellBadEnt(){}
     public SmellBadEnt(Entity e){
         ent = e;
-        PlatesGame.GameEnts.Add(this);
+        PlatesGame.AddEntity(this);
     }
 
     [Event.Tick]
     public void Tick(){
-        if(ent.IsValid()){
+        if(ent.IsValid() && (ent as PlatesPlayer).InGame){
             var part = Particles.Create("particles/stinky.vpcf");
             part.SetPosition(0,ent.Position + Vector3.Up*40);
             if(IsServer && Client.All.Count > 1){

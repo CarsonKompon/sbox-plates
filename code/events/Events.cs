@@ -2,7 +2,9 @@ using Sandbox;
 using System;
 using System.Collections.Generic;  
 
-public class EventBase : LibraryAttribute{
+[AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
+public class PlatesEventAttribute : LibraryAttribute
+{
     public virtual string name {get;set;} = "Blank Event";
     public virtual string text {get;set;} = " plates will do nothing in ";
     public virtual string subtext {get;set;} = "";
@@ -17,14 +19,17 @@ public class EventBase : LibraryAttribute{
 
 }
 
-public class RoundTypeBase : LibraryAttribute{
-    public virtual string name {get;set;} = "Normal";
+[AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
+public class PlatesRoundAttribute : LibraryAttribute
+{
+    public virtual string name {get;set;} = "Normal Round";
     public virtual string command {get;set;} = "round_normal";
+    public virtual string description {get;set;} = "Nothing out of the ordinary here";
 
     public virtual void OnEvent() {}
 
 }
 
-public enum EventType{ Player,Plate,Arena }
+public enum EventType { Player,Plate,Arena }
 
-public class LoadUI : LibraryAttribute{}
+public class LoadUI : LibraryAttribute {}

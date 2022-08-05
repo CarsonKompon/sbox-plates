@@ -2,15 +2,18 @@
 {
 	data = 
 	{
-		sounds = 
-		[
-			"sounds/music/plates_round_end_5.vsnd",
-		]
 		UI = true
-		Volume = 1.0
-		VolumeRandom = 0.0
-		Pitch = 1.0
-		PitchRandom = 0.0
-		DistanceMax = 1000.0
+		Volume = 0.2
+		VolumeRandom = 0
+		Pitch = 1
+		PitchRandom = 0
+		Decibels = 70
+		Sounds = 
+		[
+			resource:"sounds/music/plates_round_end_5.vsnd",
+		]
+		SelectionMode = "Random"
+		MaximumDistance = 1143.9335
+		MinimumDistance = 57.196674
 	}
 }

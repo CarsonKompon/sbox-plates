@@ -2,50 +2,51 @@ using System.Linq;
 using Sandbox;
 
 
-[RoundTypeBase]
-public class BigPlatesRoundType : RoundTypeBase
+[PlatesRound]
+public class BigPlatesRoundType : PlatesRoundAttribute
 {
     public BigPlatesRoundType(){
         name = "Big Plates";
         command = "round_big_plates";
+        description = "All plates start at 1.5x scale";
     }
 
     public override void OnEvent(){
         foreach(var plate in Entity.All.OfType<Plate>()){
-            plate.toScale = 1.5f;
-            plate.Scale = 1.5f;
+            plate.SetSize(1.5f);
         }
     }
 }
 
-[RoundTypeBase]
-public class RandomSizePlatesRoundType : RoundTypeBase
+[PlatesRound]
+public class RandomSizePlatesRoundType : PlatesRoundAttribute
 {
     public RandomSizePlatesRoundType(){
         name = "Random Sizes";
         command = "round_random_sizes";
+        description = "Every plate has a random size";
     }
 
     public override void OnEvent(){
         foreach(var plate in Entity.All.OfType<Plate>()){
-            plate.toScale = Rand.Float(0.2f, 2f);
-            plate.Scale = plate.toScale;
+            var _scl = Rand.Float(0.2f, 2f);
+            plate.SetSize(_scl);
         }
     }
 }
 
-[RoundTypeBase]
-public class MicroPlatesRoundType : RoundTypeBase
+[PlatesRound]
+public class MicroPlatesRoundType : PlatesRoundAttribute
 {
     public MicroPlatesRoundType(){
         name = "Micro Plates";
         command = "round_micro_plates";
+        description = "All plates start at 0.2x scale";
     }
 
     public override void OnEvent(){
         foreach(var plate in Entity.All.OfType<Plate>()){
-            plate.toScale = 0.2f;
-            plate.Scale = 0.2f;
+            plate.SetSize(0.2f);
         }
     }
 }

@@ -1,17 +1,11 @@
-Vitals
+VitalInfo
 {
 	font-family: Poppins;
 	text-shadow: 1px 1px 5px black;
 	position: absolute;
 	width: 100%;
 	height: 100%;
-	backdrop-filter: blur( 0px );
-	transition: all 10s ease-out;
-
-	&.blur
-	{
-		backdrop-filter: blur( 8px );
-	}
+	text-align: left;
 
 	.vitals
 	{
@@ -19,19 +13,100 @@ Vitals
 		font-weight: 900;
 		color: white;
 		position: absolute;
-		left: 32px;
-		bottom: 25px;
+		left: 0px;
+		bottom: 0px;
+		text-align: left;
+
+		.hp
+		{
+			left: 250px;
+			bottom: 100px;
+		}
+
+		.money
+		{
+			left: 68px;
+			bottom: -8px;
+			color: rgb(15, 170, 15);
+			font-size: 24px;
+		}
+	}
+
+	.healthbar
+	{
+		position: absolute;
+		border: 2px solid white;
+		left: 250px;
+		bottom: 80px;
+		width: 200px;
+		height: 20px;
+		box-shadow: 2px 2px 12px black;
+
+		.bar
+		{
+			height: 100%;
+			background-color: red;
+		}
 	}
 
 	.info
 	{
+		z-index: -2;
 		text-align: right;
+		//padding: 13px 30px 10px 30px;
 		font-size: 20px;
 		font-weight: 575;
+		width: 225px;
+		height: 130px;
 		color: white;
 		position: absolute;
-		right: 25px;
-		bottom: 25px;
+		right: 20px;
+		bottom: 20px;
+		//border: 6px solid rgb(104, 161, 226);
+		//border-radius: 25% 25% 25% 25%;
+		//background-color: rgba( #000, 0.2 );
+		//box-shadow: 3px 3px 12px rgb(#000, 0.4);
+		//overflow: hidden;
+		transform: scaleX(0);
+		transition: transform 0.5s ease-in;
+
+		&.open
+		{
+			transform: scaleX(1);
+		}
+
+		label
+		{
+			position: absolute;
+			right: 0px;
+			bottom: 0px;
+		}
+	}
+
+	.avatar
+	{
+		z-index: -1;
+		position: absolute;
+		left: 10px;
+		bottom: 10px;
+		width: 225px;
+		height: 225px;
+		border: 8px solid rgb(104, 161, 226);
+		border-radius: 100%;//1% 100% 1% 0px;
+		box-shadow: 3px 3px 12px rgb(#000, 0.4);
+	}
+
+	.disclaimer
+	{
+		position: absolute;
+		color: rgb(white, 0.5);
+		text-shadow: 1px 1px 2px rgb(black, 0.4);
+		font-weight: 200;
+		font-size: 14px;
+		text-align: center;
+		bottom: 0px;
+		left: 50%;
+		transform: translate(-50%, 0%);
 	}
 }
 
@@ -45,30 +120,30 @@ AvatarHud
 	//justify-content: bottom;
 }
 
-EventSub
+HeaderText
 {
-	width: 100%;
-	top: 80px;
-	font-family: Poppins;
-	font-size: 20px;
-	font-weight: 500;
-	justify-content: center;
-	color: white;
-	position: absolute;
-	text-shadow: 1px 1px 5px black;
-}
+    width: 100%;
+    font-family: Poppins;
+    text-align: center;
+    justify-content: center;
+    color: white;
+    text-shadow: 1px 1px 5px black;
 
-EventHud
-{
-	width: 100%;
-	top: 25px;
-	font-family: Poppins;
-	font-size: 32px;
-	font-weight: 600;
-	justify-content: center;
-	color: white;
-	position: absolute;
-	text-shadow: 1px 1px 5px black;
+    .header
+    {
+        top: 25px;
+        font-size: 32px;
+        font-weight: 600;
+        position: absolute;
+    }
+
+    .subheader
+    {
+        top: 80px;
+        font-size: 20px;
+        font-weight: 500;
+        position: absolute;
+    }
 }
 
 Logo

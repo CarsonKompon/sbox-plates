@@ -1,9 +1,9 @@
 {
   "profiles": {
-    "plates": {
+    "plates_new": {
       "commandName": "Executable",
       "executablePath": "E:\\SteamLibrary\\steamapps\\common\\sbox\\sbox.exe",
-      "commandLineArgs": "\u002Bdeveloper -w 1920 -h 1080 -noassert -tools"
+      "commandLineArgs": "\u002Bdeveloper 1 -w 1920 -h 1080 -noassert -tools"
     }
   }
 }

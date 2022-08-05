@@ -1,7 +1,7 @@
 using Sandbox;
 
 [Library("plates_kill_trigger", Description = "A trigger that instantly kills players.")]
-[Hammer.Solid]
+[SandboxEditor.Solid]
 public class KillWallEntity : ModelEntity
 {
     public override void Spawn()
@@ -9,7 +9,7 @@ public class KillWallEntity : ModelEntity
         base.Spawn();
 
         SetupPhysicsFromModel( PhysicsMotionType.Static );
-        CollisionGroup = CollisionGroup.Trigger;
+        Tags.Add("trigger");
         EnableSolidCollisions = false;
         EnableTouch = true;
 

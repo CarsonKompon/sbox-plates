@@ -3,8 +3,8 @@ using System;
 using System.Collections.Generic;
 using Sandbox;
 
-[EventBase]
-public class PlateLavaSpinnerEvent : EventBase
+[PlatesEvent]
+public class PlateLavaSpinnerEvent : PlatesEventAttribute
 {
     public PlateLavaSpinnerEvent(){
         name = "plate_lava_spinner";
@@ -25,7 +25,7 @@ public class PlateLavaSpinnerEnt : Prop
 
     public PlateLavaSpinnerEnt() {}
     public PlateLavaSpinnerEnt(Vector3 pos, float scale){
-        PlatesGame.GameEnts.Add(this);
+        PlatesGame.AddEntity(this);
         Position = pos;
 
         SetModel("models/lava_spinner.vmdl");
@@ -48,7 +48,7 @@ public class PlateLavaSpinnerEnt : Prop
 
     protected override void OnPhysicsCollision( CollisionEventData eventData )
     {
-        eventData.Entity.TakeDamage( DamageInfo.Generic( 10f ) );
+        eventData.This.Entity.TakeDamage( DamageInfo.Generic( 10f ) );
         base.OnPhysicsCollision( eventData );
     }
 }

@@ -1,8 +1,8 @@
 using Sandbox;
 
 
-[EventBase]
-public class PlayerReturnToNormalEvent : EventBase
+[PlatesEvent]
+public class PlayerReturnToNormalEvent : PlatesEventAttribute
 {
     public PlayerReturnToNormalEvent(){
         name = "player_return_normal";
@@ -15,5 +15,6 @@ public class PlayerReturnToNormalEvent : EventBase
         var pos = ply.Position;
         ply.Respawn();
 		ply.Position = pos;
+        ply.InGame = true;
     }
 }

@@ -2,8 +2,8 @@ using Sandbox;
 using System;
 using System.Linq;
 
-[EventBase]
-public class PlayerSwapEvent : EventBase
+[PlatesEvent]
+public class PlayerSwapEvent : PlatesEventAttribute
 {
 
     public PlayerSwapEvent(){
@@ -15,7 +15,7 @@ public class PlayerSwapEvent : EventBase
     }
 
     public override void OnEvent(){
-        var ar = PlatesGame.InGamePlayers.OrderBy(x => Rand.Double()).ToArray();
+        var ar = PlatesGame.GameClients.OrderBy(x => Rand.Double()).ToArray();
         if(ar.Length < 2) return;
         var ply1 = ar[0];
         var ply2 = ar[1];
@@ -28,8 +28,8 @@ public class PlayerSwapEvent : EventBase
 	}
 }
 
-[EventBase]
-public class PlateSwapEvent : EventBase
+[PlatesEvent]
+public class PlateSwapEvent : PlatesEventAttribute
 {
     public PlateSwapEvent(){
         name = "arena_plate_swap";

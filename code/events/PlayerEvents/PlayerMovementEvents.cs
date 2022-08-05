@@ -1,8 +1,8 @@
 using Sandbox;
 using System;
 
-[EventBase]
-public class PlayerSpeedUpEvent : EventBase
+[PlatesEvent]
+public class PlayerSpeedUpEvent : PlatesEventAttribute
 {
     public PlayerSpeedUpEvent(){
         name = "player_speed_up";
@@ -16,8 +16,8 @@ public class PlayerSpeedUpEvent : EventBase
     }
 }
 
-[EventBase]
-public class PlayerSpeedDownEvent : EventBase
+[PlatesEvent]
+public class PlayerSpeedDownEvent : PlatesEventAttribute
 {
     public PlayerSpeedDownEvent(){
         name = "player_speed_down";
@@ -32,8 +32,8 @@ public class PlayerSpeedDownEvent : EventBase
     }
 }
 
-[EventBase]
-public class PlayerJumpUpEvent : EventBase
+[PlatesEvent]
+public class PlayerJumpUpEvent : PlatesEventAttribute
 {
     public PlayerJumpUpEvent(){
         name = "player_jump_up";
@@ -47,8 +47,8 @@ public class PlayerJumpUpEvent : EventBase
     }
 }
 
-[EventBase]
-public class PlayerJumpDownEvent : EventBase
+[PlatesEvent]
+public class PlayerJumpDownEvent : PlatesEventAttribute
 {
     public PlayerJumpDownEvent(){
         name = "player_jump_down";
@@ -64,8 +64,8 @@ public class PlayerJumpDownEvent : EventBase
     }
 }
 
-[EventBase]
-public class PlayerWalkBackwardsEvent : EventBase
+[PlatesEvent]
+public class PlayerWalkBackwardsEvent : PlatesEventAttribute
 {
     public PlayerWalkBackwardsEvent(){
         name = "player_walk_backwards";
@@ -80,8 +80,8 @@ public class PlayerWalkBackwardsEvent : EventBase
     }
 }
 
-[EventBase]
-public class PlayerWalkRandomlyEvent : EventBase
+[PlatesEvent]
+public class PlayerWalkRandomlyEvent : PlatesEventAttribute
 {
     public PlayerWalkRandomlyEvent(){
         name = "player_walk_randomly";
@@ -102,7 +102,7 @@ public class WalkRandomlyEnt : Entity
 
     public WalkRandomlyEnt(PlatesWalkController wc){
         walkController = wc;
-        PlatesGame.GameEnts.Add(this);
+        PlatesGame.AddEntity(this);
     }
 
     [Event.Tick]

@@ -9,5 +9,27 @@
   "ResourcePaths": null,
   "HasCode": true,
   "CodePath": "code",
-  "RootNamespace": "Sandbox"
+  "RootNamespace": "Sandbox",
+  "Metadata": {
+    "MapList": [
+      "carsonk.plates_test"
+    ],
+    "MaxPlayers": 64,
+    "MinPlayers": 1,
+    "GameNetworkType": "Multiplayer",
+    "MapSelect": "Official",
+    "RankType": "Increment",
+    "PerMapRanking": false,
+    "LeaderboardType": "Descending",
+    "GameCategory": "Survival",
+    "ControlModes": {
+      "Keyboard": true,
+      "Gamepad": true
+    },
+    "Compiler": {
+      "RootNamespace": "Sandbox",
+      "DefineConstants": "SANDBOX;ADDON;DEBUG",
+      "NoWarn": "1701;1702;1591;"
+    }
+  }
 }

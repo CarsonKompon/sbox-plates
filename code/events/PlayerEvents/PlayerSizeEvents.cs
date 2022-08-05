@@ -1,7 +1,7 @@
 using Sandbox;
 
-[EventBase]
-public class PlayerGrowEvent : EventBase
+[PlatesEvent]
+public class PlayerGrowEvent : PlatesEventAttribute
 {
     public PlayerGrowEvent(){
         name = "player_grow";
@@ -14,8 +14,8 @@ public class PlayerGrowEvent : EventBase
     }
 }
 
-[EventBase]
-public class PlayerShrinkEvent : EventBase
+[PlatesEvent]
+public class PlayerShrinkEvent : PlatesEventAttribute
 {
     public PlayerShrinkEvent(){
         name = "player_shrink";

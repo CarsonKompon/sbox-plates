@@ -1,0 +1,92 @@
+.roundreport
+{
+	position: absolute;
+	z-index: 200;
+	flex-direction: column;
+	font-family: Poppins;
+	font-weight: 300;
+	width: 50%;
+	height: 60%;
+	left: 25%;
+	align-self: center;
+	text-align: center;
+	opacity: 0;
+	transition: opacity 0.5s ease-in;
+	transition: transform 0.5s ease-in;
+	transform: scaleY(0);
+	//transform-origin: 50% 50%;
+
+	background-color: rgba( white, 0.6 );
+	border-radius: 3%;
+	
+	&.open
+	{
+		opacity: 1;
+		transform: scale(1);
+	}
+
+	.name
+	{
+		width: 40%;
+	}
+
+	.place, .time, .events
+	{
+		width: 20%;
+	}
+
+	.header
+	{
+		padding: 10px;
+		font-size: 48px;
+		font-weight: 800;
+		//min-width: 30%;
+		text-align: center;
+		display: flex;
+		flex-direction: column;
+
+		.canvas
+		{
+			font-size: 24px;
+			flex-direction: column;
+			flex-wrap: wrap;
+			width: 100%;
+			margin-top: 30px;
+			overflow: hidden;
+
+			.subheader
+			{
+				height: 5vh;
+			}
+
+			.entry
+			{
+				height: 0%;
+				transform: scaleY(0);
+				transition: all 0.1s ease-in;
+
+				&.show
+				{
+					height: 6vh;
+					transform: scale(1);
+				}
+
+				.name
+				{
+					flex-direction: row-reverse;
+					justify-content: center;
+					right: 15px;
+				}
+
+				image
+				{
+					height: 50%;
+					aspect-ratio: 1;
+					border-radius: 100%;
+					left: 20px;
+				}
+			}
+
+		}
+	}
+}

@@ -1,8 +1,8 @@
 using Sandbox;
 using System;
 
-[EventBase]
-public class BarrelDropPlayerEvent : EventBase
+[PlatesEvent]
+public class BarrelDropPlayerEvent : PlatesEventAttribute
 {
 
     public BarrelDropPlayerEvent(){
