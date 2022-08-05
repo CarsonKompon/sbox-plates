@@ -26,7 +26,7 @@ public partial class LeaderboardScreen : Prop
         if(IsClient && screen == null)
         {
             screen = new LeaderboardScreenUI(Scale);
-            screen.Position = Position + (Rotation.Left * (5.25f * Scale));
+            screen.Position = Position + (Rotation.Up * (64 * Scale)) + (Rotation.Left * (5.25f * Scale));
             screen.Rotation = Rotation.LookAt(Rotation.Left);
         }
     }
