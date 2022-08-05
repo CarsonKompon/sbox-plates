@@ -7,8 +7,8 @@
 
 Here's an example of an empty event class that does nothing
 ```c#
-[EventBase]
-public class ExampleEvent : EventBase
+[PlatesEvent]
+public class ExampleEvent : PlatesEventAttribute
 {
     public ExampleEvent(){
         name = "example_event";
@@ -17,7 +17,7 @@ public class ExampleEvent : EventBase
     }
 }
 ```
-**NOTE: DO NOT REMOVE `[EventBase]`!!! THIS IS HOW WE LOAD THE CLASS AUTOMAGICALLY ON GAME START/HOTLOAD**
+**NOTE: DO NOT REMOVE `[PlatesEvent]`!!! THIS IS HOW WE LOAD THE CLASS AUTOMAGICALLY ON GAME START/HOTLOAD**
 
 
 `name` - The name of the event for use with the `plates_event` console command
@@ -31,8 +31,8 @@ public class ExampleEvent : EventBase
 When `type = EventType.Plate`, the affected Plate is highlighted and the `OnEvent(Plate plate)` function is called.
 
 ```c#
-[EventBase]
-public class PlateGrow10Event : EventBase
+[PlatesEvent]
+public class PlateGrow10Event : PlatesEventAttribute
 {
     public PlateGrow10Event(){
         name = "plate_grow_10";
@@ -41,7 +41,7 @@ public class PlateGrow10Event : EventBase
     }
 
     public override void OnEvent(Plate plate){
-        plate.toScale += 0.10f;
+        plate.Grow(0.10f);
     }
 }
 ```
@@ -51,8 +51,8 @@ public class PlateGrow10Event : EventBase
 When `type = EventType.Player`, the affected Player is highlighted and the `OnEvent(Entity entity)` function is called.
 
 ```c#
-[EventBase]
-public class PlayerGrowEvent : EventBase
+[PlatesEvent]
+public class PlayerGrowEvent : PlatesEventAttribute
 {
     public PlayerGrowEvent(){
         name = "player_grow";
@@ -73,8 +73,8 @@ When `type = EventType.Arena`, nothing is highlighted and the `OnEvent()` functi
 Because nothing is highlighted, you'll have to apply glow to the entities you affect yourself (if any)
 
 ```c#
-[EventBase]
-public class ArenaPlateGrow10Event : EventBase
+[PlatesEvent]
+public class ArenaPlateGrow10Event : PlatesEventAttribute
 {
     public ArenaPlateGrow10Event(){
         name = "arena_grow_10";
@@ -86,7 +86,7 @@ public class ArenaPlateGrow10Event : EventBase
 
     public override void OnEvent(){
         foreach(var plate in Entity.All.OfType<Plate>()){
-            plate.toScale += 0.10f;
+            plate.Grow(0.10f);
             plate.GlowActive = true;
             plate.GlowColor = Color.Blue;
         }
@@ -105,8 +105,8 @@ public class ArenaPlateGrow10Event : EventBase
 Here's an example of a round type that does nothing
 
 ```c#
-[RoundTypeBase]
-public class BigPlatesRoundType : RoundTypeBase
+[PlatesRound]
+public class BigPlatesRoundType : PlatesRoundAttribute
 {
     public BigPlatesRoundType(){
         name = "Nothing";
@@ -118,7 +118,7 @@ public class BigPlatesRoundType : RoundTypeBase
     }
 }
 ```
-**NOTE: DO NOT REMOVE `[RoundTypeBase]`!!! THIS IS HOW WE LOAD THE CLASS AUTOMAGICALLY ON GAME START/HOTLOAD**
+**NOTE: DO NOT REMOVE `[PlatesRound]`!!! THIS IS HOW WE LOAD THE CLASS AUTOMAGICALLY ON GAME START/HOTLOAD**
 
 `name` - The name of the round shown in-game
 
@@ -140,7 +140,7 @@ These are useful debug tools for testing newly added events and round types.
 
 If you're creating a custom Entity that you want to be properly cleaned up on Game End, add this to your entity's constructor:
 ```c#
-PlatesGame.GameEnts.Add(this);
+PlatesGame.AddEntity(this);
 ```
 
 If you're making custom UI for one of your events, create a class that looks something like this:
