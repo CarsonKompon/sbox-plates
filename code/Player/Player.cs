@@ -1,4 +1,5 @@
 ﻿using Sandbox;
+using Sandbox.UI;
 using Sandbox.Component;
 
 public partial class PlatesPlayer : Player
@@ -9,13 +10,13 @@ public partial class PlatesPlayer : Player
 	private DamageInfo lastDamage;
 	private Entity lastWeapon;
 
-	[Net] private Glow glow {get; set;}
+	[Net] private Glow glow { get; set; }
 
 	public ClothingContainer Clothing = new();
 
-	[Net] public Plate CurrentPlate {get; set;}
-	[Net] public int EventCount {get;set;} = 0;
-	[Net] public bool InGame {get;set;} = false;
+	[Net] public Plate CurrentPlate { get; set; }
+	[Net] public int EventCount { get; set; } = 0;
+	[Net] public bool InGame { get; set; } = false;
 	private NameTag nameTag = null;
 
 	public PlatesPlayer()
@@ -35,10 +36,10 @@ public partial class PlatesPlayer : Player
 		Clothing.LoadFromClient( cl );
 	}
 
-	public void ResetValues(bool changeProperties = true)
+	public void ResetValues( bool changeProperties = true )
 	{
-		SetGlow(false);
-		if(changeProperties)
+		SetGlow( false );
+		if ( changeProperties )
 		{
 			Scale = 1.0f;
 			RenderColor = Color.White;
@@ -48,8 +49,8 @@ public partial class PlatesPlayer : Player
 
 	public override void Respawn()
 	{
-		SetModel("models/citizen/citizen.vmdl");
-		
+		SetModel( "models/citizen/citizen.vmdl" );
+
 		Controller = new PlatesWalkController();
 		(Controller as PlatesWalkController).AutoJump = true;
 
@@ -63,7 +64,7 @@ public partial class PlatesPlayer : Player
 		EnableHideInFirstPerson = true;
 		EnableShadowInFirstPerson = true;
 
-		Clothing.DressEntity(this);
+		Clothing.DressEntity( this );
 
 		CameraMode = new FirstPersonCamera();
 
@@ -74,7 +75,7 @@ public partial class PlatesPlayer : Player
 	{
 		base.OnKilled();
 
-		BecomeRagdollOnClient(Velocity, lastDamage.Flags, lastDamage.Position, lastDamage.Force, GetHitboxBone(lastDamage.HitboxIndex));
+		BecomeRagdollOnClient( Velocity, lastDamage.Flags, lastDamage.Position, lastDamage.Force, GetHitboxBone( lastDamage.HitboxIndex ) );
 
 		Controller = null;
 
@@ -83,13 +84,14 @@ public partial class PlatesPlayer : Player
 
 		CameraMode = new SpectateRagdollCamera();
 
-		ResetValues(false);
+		ResetValues( false );
 
-		foreach(var child in Children){
+		foreach ( var child in Children )
+		{
 			child.EnableDrawing = false;
 		}
 
-		if(nameTag != null) nameTag.Delete();
+		if ( nameTag != null ) nameTag.Delete();
 
 		Inventory.DropActive();
 		Inventory.DeleteContents();
@@ -98,12 +100,13 @@ public partial class PlatesPlayer : Player
 	protected override void OnDestroy()
 	{
 		base.OnDestroy();
-		if(nameTag != null) nameTag.Delete();
+		if ( nameTag != null ) nameTag.Delete();
 	}
 
 	public override void TakeDamage( DamageInfo info )
 	{
-		if(GetHitboxGroup(info.HitboxIndex) == 1){
+		if ( GetHitboxGroup( info.HitboxIndex ) == 1 )
+		{
 			info.Damage *= 10.0f;
 		}
 
@@ -122,47 +125,52 @@ public partial class PlatesPlayer : Player
 	[Event.Tick]
 	public void Tick()
 	{
-		if(IsClient && nameTag == null && Client != Local.Client)
-        {
-            nameTag = new NameTag(this);
-        }
+		if ( IsClient && nameTag == null && Client != Local.Client )
+		{
+			nameTag = new NameTag( this );
+		}
 	}
 
 	public override void Simulate( Client cl )
 	{
 		base.Simulate( cl );
 
-		if(Input.ActiveChild != null)
+		if ( Input.ActiveChild != null )
 		{
 			ActiveChild = Input.ActiveChild;
 		}
 
-		if(LifeState != LifeState.Alive) return;
+		if ( LifeState != LifeState.Alive ) return;
 
 		var controller = GetActiveController();
-		if(controller != null)
+		if ( controller != null )
 		{
-			EnableSolidCollisions = !controller.HasTag("noclip");
-			SimulateAnimation(controller);
+			EnableSolidCollisions = !controller.HasTag( "noclip" );
+			SimulateAnimation( controller );
 		}
 
 		TickPlayerUse();
-		SimulateActiveChild(cl, ActiveChild);
+		SimulateActiveChild( cl, ActiveChild );
 
-		if(Input.Pressed(InputButton.View))
+		if ( Input.Pressed( InputButton.View ) )
 		{
-			if(CameraMode is ThirdPersonCamera){
+			if ( CameraMode is ThirdPersonCamera )
+			{
 				CameraMode = new FirstPersonCamera();
-			}else{
+			}
+			else
+			{
 				CameraMode = new ThirdPersonCamera();
 			}
 		}
 
-		if(Input.Pressed(InputButton.Drop)){
+		if ( Input.Pressed( InputButton.Drop ) )
+		{
 			var dropped = Inventory.DropActive();
-			if(dropped != null){
-				dropped.PhysicsGroup.ApplyImpulse(Velocity + EyeRotation.Forward * 500.0f + Vector3.Up * 100.0f, true);
-				dropped.PhysicsGroup.ApplyAngularImpulse(Vector3.Random * 100.0f, true);
+			if ( dropped != null )
+			{
+				dropped.PhysicsGroup.ApplyImpulse( Velocity + EyeRotation.Forward * 500.0f + Vector3.Up * 100.0f, true );
+				dropped.PhysicsGroup.ApplyAngularImpulse( Vector3.Random * 100.0f, true );
 
 				timeSinceDropped = 0;
 			}
@@ -172,62 +180,72 @@ public partial class PlatesPlayer : Player
 		{
 			timeSinceJumpReleased = 1;
 		}
-		
+
 	}
 
-	void SimulateAnimation(PawnController controller)
+	void SimulateAnimation( PawnController controller )
 	{
-		if(controller == null) return;
+		if ( controller == null ) return;
 
 		var turnSpeed = 0.02f;
-		var idealRotation = Rotation.LookAt(Input.Rotation.Forward.WithZ(0), Vector3.Up);
-		Rotation = Rotation.Slerp(Rotation, idealRotation, controller.WishVelocity.Length * Time.Delta * turnSpeed);
-		Rotation = Rotation.Clamp(idealRotation, 45.0f, out var shuffle);
+		var idealRotation = Rotation.LookAt( Input.Rotation.Forward.WithZ( 0 ), Vector3.Up );
+		Rotation = Rotation.Slerp( Rotation, idealRotation, controller.WishVelocity.Length * Time.Delta * turnSpeed );
+		Rotation = Rotation.Clamp( idealRotation, 45.0f, out var shuffle );
 
-		CitizenAnimationHelper animHelper = new CitizenAnimationHelper(this);
+		CitizenAnimationHelper animHelper = new CitizenAnimationHelper( this );
 
-		animHelper.WithWishVelocity(controller.WishVelocity);
-		animHelper.WithVelocity(controller.Velocity);
-		animHelper.WithLookAt(EyePosition + EyeRotation.Forward * 100.0f, 1.0f, 1.0f, 0.5f);
+		animHelper.WithWishVelocity( controller.WishVelocity );
+		animHelper.WithVelocity( controller.Velocity );
+		animHelper.WithLookAt( EyePosition + EyeRotation.Forward * 100.0f, 1.0f, 1.0f, 0.5f );
 		animHelper.AimAngle = Input.Rotation;
 		animHelper.FootShuffle = shuffle;
-		animHelper.DuckLevel = MathX.Lerp(animHelper.DuckLevel, controller.HasTag("ducked") ? 1 : 0, Time.Delta * 10.0f);
-		animHelper.VoiceLevel = ( Host.IsClient && Client.IsValid() ) ? Client.TimeSinceLastVoice < 0.5f ? Client.VoiceLevel : 0.0f : 0.0f;
+		animHelper.DuckLevel = MathX.Lerp( animHelper.DuckLevel, controller.HasTag( "ducked" ) ? 1 : 0, Time.Delta * 10.0f );
+		animHelper.VoiceLevel = (Host.IsClient && Client.IsValid()) ? Client.TimeSinceLastVoice < 0.5f ? Client.VoiceLevel : 0.0f : 0.0f;
 		animHelper.IsGrounded = GroundEntity != null;
-		animHelper.IsSitting = controller.HasTag("sitting");
-		animHelper.IsNoclipping = controller.HasTag("noclip");
-		animHelper.IsClimbing = controller.HasTag("climbing");
+		animHelper.IsSitting = controller.HasTag( "sitting" );
+		animHelper.IsNoclipping = controller.HasTag( "noclip" );
+		animHelper.IsClimbing = controller.HasTag( "climbing" );
 		animHelper.IsSwimming = WaterLevel >= 0.5f;
 		animHelper.IsWeaponLowered = false;
 
-		if(controller.HasEvent("jump")) animHelper.TriggerJump();
-		if(ActiveChild != lastWeapon) animHelper.TriggerDeploy();
+		if ( controller.HasEvent( "jump" ) ) animHelper.TriggerJump();
+		if ( ActiveChild != lastWeapon ) animHelper.TriggerDeploy();
 
-		if(ActiveChild is BaseCarriable carry){
-			carry.SimulateAnimator(animHelper);
-		}else{
+		if ( ActiveChild is BaseCarriable carry )
+		{
+			carry.SimulateAnimator( animHelper );
+		}
+		else
+		{
 			animHelper.HoldType = CitizenAnimationHelper.HoldTypes.None;
 			animHelper.AimBodyWeight = 0.5f;
 		}
 
 		lastWeapon = ActiveChild;
 	}
+	WorldInput WorldInput = new();
+
+	public override void BuildInput( InputBuilder input )
+	{
+		WorldInput.Ray = new Ray( EyePosition, EyeRotation.Forward );
+		WorldInput.MouseLeftPressed = input.Down( InputButton.PrimaryAttack );
+	}
 
 	public override void StartTouch( Entity other )
 	{
-		if(timeSinceDropped < 1) return;
+		if ( timeSinceDropped < 1 ) return;
 
 		base.StartTouch( other );
 	}
 
 	public override float FootstepVolume()
 	{
-		return Velocity.WithZ(0).Length.LerpInverse(0.0f, 200.0f) * 5.0f;
+		return Velocity.WithZ( 0 ).Length.LerpInverse( 0.0f, 200.0f ) * 5.0f;
 	}
 
-	public void SetGlow(bool visible, Color color = default)
+	public void SetGlow( bool visible, Color color = default )
 	{
-		if(color != default)
+		if ( color != default )
 		{
 			glow.Color = color;
 		}
@@ -235,13 +253,13 @@ public partial class PlatesPlayer : Player
 	}
 
 	[ClientRpc]
-	public static void GiveMoney(int amount, bool force = false)
+	public static void GiveMoney( int amount, bool force = false )
 	{
-		if(Local.Pawn is PlatesPlayer ply)
+		if ( Local.Pawn is PlatesPlayer ply )
 		{
-			if(force || ply.InGame)
+			if ( force || ply.InGame )
 			{
-				PlatesPlayerData.GiveMoney(amount);
+				PlatesPlayerData.GiveMoney( amount );
 			}
 		}
 	}

@@ -1,5 +1,16 @@
+.sweep-tile-wrapper {
+	height: 20%;
+	width: 20%;
+	background-color: white;
+	&:hover{
+		border-radius: 10%;
+		background-color: aqua;
+	}
+}
 .sweep-tile {
-	flex-basis: 1;
-	height: 25vh;
-	width: 15%;
+	border-radius: 10%;
+	height: 90%;
+	width: 90%;
+	margin: 15px;
+	background-color: black;
 }
