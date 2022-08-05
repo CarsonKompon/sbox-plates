@@ -25,8 +25,8 @@ public partial class LeaderboardScreen : Prop
     {
         if(IsClient && screen == null)
         {
-            screen = new LeaderboardScreenUI();
-            screen.Position = Position + (Rotation.Left * 5.25f);
+            screen = new LeaderboardScreenUI(Scale);
+            screen.Position = Position + (Rotation.Left * (5.25f * Scale));
             screen.Rotation = Rotation.LookAt(Rotation.Left);
         }
     }
@@ -38,7 +38,9 @@ public class LeaderboardScreenUI : WorldPanel
     public Label Header;
     public Panel Subheader;
     public Panel Content;
-    public LeaderboardScreenUI()
+
+    public LeaderboardScreenUI(){}
+    public LeaderboardScreenUI(float scale)
     {
         StyleSheet.Load("/entities/map/leaderboardscreen.scss");
 
@@ -50,8 +52,8 @@ public class LeaderboardScreenUI : WorldPanel
         Subheader.Add.Label("Wins", "wins-header");
         Content = Add.Panel("content");
 
-        var width = 96 * 20 * Scale;
-        var height = 128 * 20 * Scale;
+        var width = 96 * 20 * scale;
+        var height = 128 * 20 * scale;
         PanelBounds = new Rect(-width * .5f, -height * .5f, width, height);
 
         FetchTopTen();
