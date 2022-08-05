@@ -373,9 +373,12 @@ public partial class PlatesGame : Sandbox.Game
 
 	public static async void GetClientRank(Client client)
 	{
-		var gameRank = await client.FetchGameRankAsync();
-		client.SetInt("wins", gameRank.Level);
-		client.SetInt("rank", gameRank.Wins);
+		//var gameRank = await client.FetchGameRankAsync();
+		var http = new Sandbox.Internal.Http(new Uri("https://sap.facepunch.com/asset/carsonk.plates/rank/" + client.PlayerId));
+        var response = await http.GetStringAsync();
+		var gameRank = Json.Deserialize<PlayerGameRank>(response);
+		client.SetInt("wins", gameRank.Wins);
+		client.SetInt("rank", gameRank.Global.Position);
 	}
 
 	/// <summary>

@@ -7,8 +7,6 @@ public partial class WinnersPodium : AnimatedEntity
 {
     [Property]
     public int WinPosition {get;set;} = 1;
-
-    private PawnAnimator Animator;
     private ClothingContainer Clothing = new();
 
     public override void Spawn()

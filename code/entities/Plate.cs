@@ -38,6 +38,8 @@ public partial class Plate : MeshEntity
         glow.RangeMin = 0;
         glow.RangeMax = 2000;
         glow.Color = Color.Blue;
+
+        motionType = PhysicsMotionType.Keyframed;
     }
 
     public Plate(Vector3 pos, float size, Client own) : this(pos, size, own.Name)
@@ -119,10 +121,10 @@ public partial class Plate : MeshEntity
 
     public async void Raise(float _amount, float _time = 1f)
     {
-        // TargetPostion = TargetPostion.WithZ(TargetPostion.z + _amount);
-        // if(MovementTime > 0) MovementTime = 0f;
-        // MovementTime -= _time;
-        // await LocalKeyframeTo(TargetPostion-Position, MovementTime);
+        TargetPostion = Position.WithZ(TargetPostion.z + _amount);
+        if(MovementTime > 0) MovementTime = 0f;
+        MovementTime -= _time;
+        await LocalKeyframeTo(TargetPostion-Position, MovementTime);
     }
 
     public void Lower(float _amount, float _time = 1f)

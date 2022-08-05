@@ -12,7 +12,7 @@ public partial class RoundInfo : Panel
 
     public static float Vis = 0f;
 	private static Label roundLabel;
-	private static Label infoLabel;
+	//private static Label infoLabel;
 
 	public RoundInfo(){
         StyleSheet.Load( "/ui/roundinfo.scss" );
