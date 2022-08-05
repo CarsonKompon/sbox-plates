@@ -13,7 +13,7 @@ Layer0
 	//---- Color ----
 	g_flModelTintAmount "1.000"
 	g_vColorTint "[1.000000 1.000000 1.000000 0.000000]"
-	TextureColor "materials/Material.002_Base_Color.png"
+	TextureColor "materials/teslacoil/TeslaCoil_Base_Color.png"
 
 	//---- Fade ----
 	g_flFadeExponent "1.000"
@@ -26,13 +26,13 @@ Layer0
 	g_flDirectionalLightmapStrength "1.000"
 
 	//---- Metalness ----
-	TextureMetalness "materials/Material.002_Metallic.png"
+	TextureMetalness "materials/teslacoil/TeslaCoil_Metal.png"
 
 	//---- Normal ----
-	TextureNormal "materials/Material.002_Normal.png"
+	TextureNormal "materials/teslacoil/TeslaCoil_Normal.png"
 
 	//---- Roughness ----
-	TextureRoughness "materials/Material.002_Roughness.png"
+	TextureRoughness "materials/teslacoil/TeslaCoil_Rough.png"
 
 	//---- Texture Coordinates ----
 	g_nScaleTexCoordUByModelScaleAxis "0"
