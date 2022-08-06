@@ -17,6 +17,10 @@
 								from = ""
 								to = "materials/teslacoil.vmat"
 							},
+							{
+								from = "material.002.vmat"
+								to = "materials/teslacoil/teslacoil.vmat"
+							},
 						]
 						use_global_default = false
 						global_default_material = ""
@@ -75,7 +79,7 @@
 						_class = "PhysicsShapeCapsule"
 						parent_bone = ""
 						surface_prop = "default"
-						collision_prop = "default"
+						collision_tags = "solid"
 						radius = 21.0
 						point0 = [ 0.0, 0.0, 23.521572 ]
 						point1 = [ 0.0, 0.0, 62.673359 ]
@@ -84,7 +88,7 @@
 						_class = "PhysicsShapeCylinder"
 						parent_bone = ""
 						surface_prop = "default"
-						collision_prop = "default"
+						collision_tags = "solid"
 						radius = 21.0
 						point0 = [ 0.0, 0.0, 0.0 ]
 						point1 = [ 0.0, 0.0, 24.745052 ]
@@ -95,5 +99,6 @@
 		model_archetype = ""
 		primary_associated_entity = ""
 		anim_graph_name = ""
+		base_model_name = ""
 	}
 }

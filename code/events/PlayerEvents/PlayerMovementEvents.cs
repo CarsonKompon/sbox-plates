@@ -1,7 +1,7 @@
 using Sandbox;
 using System;
 
-[PlatesEvent]
+ 
 public class PlayerSpeedUpEvent : PlatesEventAttribute
 {
     public PlayerSpeedUpEvent(){
@@ -11,12 +11,14 @@ public class PlayerSpeedUpEvent : PlatesEventAttribute
     }
 
     public override void OnEvent(Entity ent){
-        PlatesPlayer ply = ent as PlatesPlayer;
-        (ply.Controller as PlatesWalkController).Speed += 0.25f;
+        if(ent is PlatesPlayer ply && ply.Controller is PlatesWalkController wc)
+        {
+            wc.Speed += 0.25f;
+        }
     }
 }
 
-[PlatesEvent]
+ 
 public class PlayerSpeedDownEvent : PlatesEventAttribute
 {
     public PlayerSpeedDownEvent(){
@@ -32,7 +34,7 @@ public class PlayerSpeedDownEvent : PlatesEventAttribute
     }
 }
 
-[PlatesEvent]
+ 
 public class PlayerJumpUpEvent : PlatesEventAttribute
 {
     public PlayerJumpUpEvent(){
@@ -47,7 +49,7 @@ public class PlayerJumpUpEvent : PlatesEventAttribute
     }
 }
 
-[PlatesEvent]
+ 
 public class PlayerJumpDownEvent : PlatesEventAttribute
 {
     public PlayerJumpDownEvent(){
@@ -64,12 +66,12 @@ public class PlayerJumpDownEvent : PlatesEventAttribute
     }
 }
 
-[PlatesEvent]
+ 
 public class PlayerWalkBackwardsEvent : PlatesEventAttribute
 {
     public PlayerWalkBackwardsEvent(){
         name = "player_walk_backwards";
-        text = " player(s) will walk backwards in ";
+        text = " player(s) will have their controls reversed in ";
         type = EventType.Player;
     }
 
@@ -80,7 +82,7 @@ public class PlayerWalkBackwardsEvent : PlatesEventAttribute
     }
 }
 
-[PlatesEvent]
+ 
 public class PlayerWalkRandomlyEvent : PlatesEventAttribute
 {
     public PlayerWalkRandomlyEvent(){
@@ -100,18 +102,17 @@ public class WalkRandomlyEnt : Entity
 {
     public PlatesWalkController walkController;
 
+    public WalkRandomlyEnt(){}
     public WalkRandomlyEnt(PlatesWalkController wc){
         walkController = wc;
         PlatesGame.AddEntity(this);
     }
 
-    [Event.Tick]
+    [Event.Tick.Server]
     public void Tick(){
-        if(IsServer){
-            if(Rand.Int(1,100) == 1){
-                walkController.ForwardInput = (Rand.Float() * 2.0f) - 1.0f;
-                walkController.SidewaysInput = (Rand.Float() * 2.0f) - 1.0f;
-            }
+        if(Rand.Int(1,100) == 1){
+            walkController.ForwardInput = (Rand.Float() * 2.0f) - 1.0f;
+            walkController.SidewaysInput = (Rand.Float() * 2.0f) - 1.0f;
         }
     }
 

@@ -7,7 +7,6 @@
 
 Here's an example of an empty event class that does nothing
 ```c#
-[PlatesEvent]
 public class ExampleEvent : PlatesEventAttribute
 {
     public ExampleEvent(){
@@ -17,7 +16,6 @@ public class ExampleEvent : PlatesEventAttribute
     }
 }
 ```
-**NOTE: DO NOT REMOVE `[PlatesEvent]`!!! THIS IS HOW WE LOAD THE CLASS AUTOMAGICALLY ON GAME START/HOTLOAD**
 
 
 `name` - The name of the event for use with the `plates_event` console command
@@ -31,7 +29,7 @@ public class ExampleEvent : PlatesEventAttribute
 When `type = EventType.Plate`, the affected Plate is highlighted and the `OnEvent(Plate plate)` function is called.
 
 ```c#
-[PlatesEvent]
+ 
 public class PlateGrow10Event : PlatesEventAttribute
 {
     public PlateGrow10Event(){
@@ -51,7 +49,7 @@ public class PlateGrow10Event : PlatesEventAttribute
 When `type = EventType.Player`, the affected Player is highlighted and the `OnEvent(Entity entity)` function is called.
 
 ```c#
-[PlatesEvent]
+ 
 public class PlayerGrowEvent : PlatesEventAttribute
 {
     public PlayerGrowEvent(){
@@ -73,7 +71,7 @@ When `type = EventType.Arena`, nothing is highlighted and the `OnEvent()` functi
 Because nothing is highlighted, you'll have to apply glow to the entities you affect yourself (if any)
 
 ```c#
-[PlatesEvent]
+ 
 public class ArenaPlateGrow10Event : PlatesEventAttribute
 {
     public ArenaPlateGrow10Event(){
@@ -105,7 +103,6 @@ public class ArenaPlateGrow10Event : PlatesEventAttribute
 Here's an example of a round type that does nothing
 
 ```c#
-[PlatesRound]
 public class BigPlatesRoundType : PlatesRoundAttribute
 {
     public BigPlatesRoundType(){
@@ -118,7 +115,6 @@ public class BigPlatesRoundType : PlatesRoundAttribute
     }
 }
 ```
-**NOTE: DO NOT REMOVE `[PlatesRound]`!!! THIS IS HOW WE LOAD THE CLASS AUTOMAGICALLY ON GAME START/HOTLOAD**
 
 `name` - The name of the round shown in-game
 
@@ -141,6 +137,13 @@ These are useful debug tools for testing newly added events and round types.
 If you're creating a custom Entity that you want to be properly cleaned up on Game End, add this to your entity's constructor:
 ```c#
 PlatesGame.AddEntity(this);
+```
+or when instantiating your entity, you can add it to a plate's entity list so it's cleaned up when the plate is destroyed:
+```c#
+public override void OnEvent(Plate plate){
+    var ent = new PlateGrowInfinitelyEnt(plate);
+    plate.AddEntity(ent);
+}
 ```
 
 If you're making custom UI for one of your events, create a class that looks something like this:

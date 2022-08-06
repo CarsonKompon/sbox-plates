@@ -5,10 +5,12 @@ using System.Collections.Generic;
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
 public class PlatesEventAttribute : LibraryAttribute
 {
-    public virtual string name {get;set;} = "Blank Event";
+    public virtual string name {get;set;} = "nothing";
     public virtual string text {get;set;} = " plates will do nothing in ";
     public virtual string subtext {get;set;} = "";
     public virtual EventType type {get;set;} = EventType.Plate;
+
+    public virtual bool hidden {get;set;} = false;
 
     public virtual int minAffected {get;set;} = 2;
     public virtual int maxAffected {get;set;} = 4;

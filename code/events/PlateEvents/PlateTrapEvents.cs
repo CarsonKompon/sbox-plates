@@ -1,7 +1,7 @@
 using Sandbox;
 using System;
 
-[PlatesEvent]
+ 
 public class PlateBarrelTrapEvent : PlatesEventAttribute
 {
 

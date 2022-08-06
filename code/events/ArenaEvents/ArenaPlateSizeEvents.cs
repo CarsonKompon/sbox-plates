@@ -1,7 +1,7 @@
 using Sandbox;
 using System.Linq;
 
-[PlatesEvent]
+ 
 public class ArenaPlateGrow10Event : PlatesEventAttribute
 {
     public ArenaPlateGrow10Event(){
@@ -21,7 +21,7 @@ public class ArenaPlateGrow10Event : PlatesEventAttribute
     }
 }
 
-[PlatesEvent]
+ 
 public class ArenaPlateShrink10Event : PlatesEventAttribute
 {
     public ArenaPlateShrink10Event(){
@@ -41,7 +41,7 @@ public class ArenaPlateShrink10Event : PlatesEventAttribute
     }
 }
 
-[PlatesEvent]
+ 
 public class ArenaPlateShrinkHalfEvent : PlatesEventAttribute
 {
     public ArenaPlateShrinkHalfEvent(){
@@ -62,7 +62,7 @@ public class ArenaPlateShrinkHalfEvent : PlatesEventAttribute
 }
 
 
-[PlatesEvent]
+ 
 public class ArenaPlateGrowDoubleEvent : PlatesEventAttribute
 {
     public ArenaPlateGrowDoubleEvent(){

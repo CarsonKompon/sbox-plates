@@ -2,7 +2,7 @@ using System.Linq;
 using Sandbox;
 using System;
 
-[PlatesEvent]
+ 
 public class PlateTeslaCoilEvent : PlatesEventAttribute
 {
 
@@ -18,7 +18,7 @@ public class PlateTeslaCoilEvent : PlatesEventAttribute
         var size = plate.GetSize();
         coil.Position += Vector3.Left * Rand.Int(-50,50) * size;
         coil.Position += Vector3.Forward * Rand.Int(-50,50) * size;
-        plate.PlateEnts.Add(coil);
+        plate.AddEntity(coil, true);
     }
 }
 
@@ -27,12 +27,12 @@ public class TeslaCoilEnt : ModelEntity
 
     public Player nearest;
 
-    public TeslaCoilEnt()
-    {
-        PlatesGame.AddEntity(this);
-        SetModel("models/teslacoil.vmdl");
+    public TeslaCoilEnt() {}
 
-		SetupPhysicsFromModel(PhysicsMotionType.Dynamic, false);
+    public override void Spawn()
+    {
+        SetModel("models/teslacoil.vmdl");
+		SetupPhysicsFromModel(PhysicsMotionType.Dynamic);
     }
 
     [Event.Tick]

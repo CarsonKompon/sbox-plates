@@ -1,6 +1,6 @@
 using Sandbox;
 
-[PlatesEvent]
+ 
 public class PlayerInvisibleEvent : PlatesEventAttribute
 {
     public PlayerInvisibleEvent(){
@@ -10,46 +10,26 @@ public class PlayerInvisibleEvent : PlatesEventAttribute
     }
 
     public override void OnEvent(Entity ent){
-        var ply = (ent as PlatesPlayer);
-        ply.RenderColor = ply.RenderColor.WithAlpha(0f);
+        if(ent is PlatesPlayer ply)
+        {
+            ply.RenderColor = ply.RenderColor.WithAlpha(0f);
+        }
     }
 }
 
-[PlatesEvent]
-public class PlayerSkeletonEvent : PlatesEventAttribute
+public class PlayerGhostEvent : PlatesEventAttribute
 {
-    public PlayerSkeletonEvent(){
-        name = "player_skeleton";
-        text = " player(s) will become a skeleton in ";
+    public PlayerGhostEvent(){
+        name = "player_ghost";
+        text = " player(s) will become ghost-like in ";
         type = EventType.Player;
     }
 
-    public override void OnEvent(Entity ent){
-        var ply = (ent as PlatesPlayer);
-        ply.RenderColor = ply.RenderColor.WithAlpha(0f);
-        new SkeletonDrawingEnt(ent);
-    }
-}
-
-public class SkeletonDrawingEnt : Entity
-{
-    public Entity ent;
-
-    public SkeletonDrawingEnt(){}
-    public SkeletonDrawingEnt(Entity e){
-        ent = e;
-        PlatesGame.AddEntity(this);
-    }
-
-    [Event.Tick]
-    public void Tick(){
-        if(IsServer){
-            if(!ent.IsValid() || !(ent as PlatesPlayer).InGame) Delete();
-            else DebugOverlay.Skeleton(ent, Color.White);
+	public override void OnEvent(Entity ent)
+	{
+		if(ent is PlatesPlayer ply)
+        {
+            ply.RenderColor = ply.RenderColor.WithAlpha(0.5f);
         }
-        if(IsClient && ent.IsValid()){
-            DebugOverlay.Skeleton(ent, Color.White);
-        }
-    }
-
+	}
 }

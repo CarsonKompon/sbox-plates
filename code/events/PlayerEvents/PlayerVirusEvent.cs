@@ -7,113 +7,130 @@ using Sandbox.UI.Construct;
 
 // TODO: Implement
 
-// [PlatesEvent]
-// public class PlayerVirusEvent : PlatesEventAttribute
-// {
-//     public PlayerVirusEvent(){
-//         name = "player_virus";
-//         text = " player(s) will get the virus in ";
-//         type = EventType.Player;
-//     }
+ 
+public class PlayerVirusEvent : PlatesEventAttribute
+{
+    public PlayerVirusEvent(){
+        name = "player_virus";
+        text = " player(s) will get the virus in ";
+        type = EventType.Player;
+    }
 
-//     public override void OnEvent(Entity ent){
-//         //(ent as PlatesPlayer).RenderColor = Color.Green;
-//         new PlyVirusEnt(ent);
-//         var plate = Entity.All.OfType<Plate>().OrderBy(x => Rand.Double()).ToArray()[0];
-//         new VirusCureEnt(plate as Entity, ent as PlatesPlayer);
-//     }
-// }
+    public override void OnEvent(Entity ent){
+        //(ent as PlatesPlayer).RenderColor = Color.Green;
+        var plate = Rand.FromList(Entity.All.OfType<Plate>().ToList());
+        var cure = new VirusCureEnt(plate as Entity, ent as PlatesPlayer);
+        var virus = new PlyVirusEnt(ent, cure);
+        PlatesGame.AddEntity(virus);
+    }
+}
 
-// public class PlyVirusEnt : Entity
-// {
-//     public Entity ent;
+public partial class PlyVirusEnt : Entity
+{
+    [Net] public Entity ent {get;set;}
+    [Net] public VirusCureEnt cure {get;set;}
 
-//     public PlyVirusEnt() {}
-//     public PlyVirusEnt(Entity e){
-//         ent = e;
-//         PlatesGame.AddEntity(this);
-//     }
+    public PlyVirusEnt() {}
+    public PlyVirusEnt(Entity e, VirusCureEnt c){
+        ent = e;
+        cure = c;
+    }
 
-//     [Event.Tick]
-//     public void Tick(){
-//         if(ent.IsValid()){
-//             var part = Particles.Create("particles/virus.vpcf");
-//             part.SetPosition(0,ent.Position + Vector3.Up*40);
-//             if(IsServer){
-//                 ent.TakeDamage(DamageInfo.Generic( 0.001f ));
-//             }
-//         }else Delete();
-//     }
+    [Event.Tick]
+    public void Tick(){
+        if(ent is PlatesPlayer ply){
+            if(Rand.Int(4)==0)
+            {
+                var part = Particles.Create("particles/virus.vpcf");
+                part.SetPosition(0,ent.Position + Vector3.Up*40);
+            }
+            if(IsServer){
+                if(!ply.InGame) Delete();
+                else ent.TakeDamage(DamageInfo.Generic( 0.002f ));
+            }
+        }
+    }
 
-// }
+    protected override void OnDestroy()
+    {
+        if(IsServer) cure.Delete();
+        base.OnDestroy();
+    }
 
-// public partial class VirusCureEnt : Prop
-// {   
+}
 
-//     [Net] public long owner {get;set;}
-// 	[Net] public string ownerName {get;set;}
+public partial class VirusCureEnt : Prop
+{   
 
-//     VirusNameTag nameTag = null;
+    [Net] public long owner {get;set;}
+	[Net] public string ownerName {get;set;}
 
-//     public VirusCureEnt(){}
-//     public VirusCureEnt(Entity e, PlatesPlayer p){
-//         SetModel("models/teslacoil.vmdl");
-// 		SetupPhysicsFromModel(PhysicsMotionType.Dynamic);
-//         RenderColor = Color.Magenta;
-//         Position = e.Position + Vector3.Up*5;
-//         Scale = 0.1f;
-//         var client = p.Client;
-//         owner = client.PlayerId;
-//         ownerName = client.Name;
-//         //SetParent(e);
-//         PlatesGame.AddEntity(this);
-//     }
+    VirusNameTag nameTag = null;
 
-//     [Event.Tick]
-//     private void Tick()
-//     {
-//         if(nameTag != null)
-//         {
-//             nameTag = new VirusNameTag(this);
-//         }
-//     }
+    public VirusCureEnt(){}
+    public VirusCureEnt(Entity e, PlatesPlayer p){
+        SetModel("models/teslacoil.vmdl");
+		SetupPhysicsFromModel(PhysicsMotionType.Dynamic);
+        RenderColor = Color.Magenta;
+        Position = e.Position + Vector3.Up*5;
+        Scale = 0.1f;
+        var client = p.Client;
+        owner = client.PlayerId;
+        ownerName = client.Name;
+        //SetParent(e);
+        PlatesGame.AddEntity(this);
+    }
 
-//     protected override void OnPhysicsCollision( CollisionEventData eventData )
-//     {
-//         foreach(var virus in Entity.All.OfType<PlyVirusEnt>()){
-//             if(virus.ent == eventData.This.Entity){
-//                 virus.Delete();
-//                 Delete();
-//             }
-//         }
-//         base.OnPhysicsCollision( eventData );
-//     }
+    [Event.Tick]
+    private void Tick()
+    {
+        if(IsClient && nameTag != null)
+        {
+            nameTag = new VirusNameTag(this);
+        }
+    }
 
-// }
+    public override void StartTouch( Entity other )
+    {
+        if(IsServer)
+        {
+            foreach(var virus in Entity.All.OfType<PlyVirusEnt>())
+            {
+                if(virus.ent == other)
+                {
+                    virus.Delete();
+                    Delete();
+                }
+            }
+        }
+        base.StartTouch(other);
+    }
+
+}
 
 
-// //UI STUFF
-// public class VirusNameTag : WorldPanel
-// {
-//     public Label NameLabel;
-//     //public Image Avatar;
+//UI STUFF
+public class VirusNameTag : WorldPanel
+{
+    public Label NameLabel;
+    //public Image Avatar;
 
-//     VirusCureEnt virus;
+    VirusCureEnt virus;
 
-//     public VirusNameTag( VirusCureEnt virus )
-//     {
-//         StyleSheet.Load("/events/playerevents/ui/virustags.scss");
-//         this.virus = virus;
+    public VirusNameTag( VirusCureEnt virus )
+    {
+        StyleSheet.Load("/events/playerevents/ui/virustags.scss");
+        this.virus = virus;
 
-//         NameLabel = Add.Label( $"{virus.ownerName}'s Cure" );
-//         //Avatar = Add.Image( $"avatar:{plate.owner}" );
-//     }
+        NameLabel = Add.Label( $"{virus.ownerName}'s Cure" );
+        //Avatar = Add.Image( $"avatar:{plate.owner}" );
+    }
 
-//     [Event.Tick]
-//     public override void Tick()
-//     {
-//         base.Tick();
+    [Event.Tick]
+    public override void Tick()
+    {
+        base.Tick();
 
-//         Position = virus.Position + Vector3.Up * 50f;
-//     }
-// }
+        Position = virus.Position + Vector3.Up * 50f;
+    }
+}

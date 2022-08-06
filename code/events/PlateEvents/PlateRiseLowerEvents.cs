@@ -3,7 +3,7 @@ using System;
 
 // TODO: Fix these events
 
-//[PlatesEvent]
+// 
 public class PlateRiseEvent : PlatesEventAttribute
 {
     public PlateRiseEvent(){
@@ -17,7 +17,7 @@ public class PlateRiseEvent : PlatesEventAttribute
     }
 }
 
-//[PlatesEvent]
+// 
 public class PlateLowerEvent : PlatesEventAttribute
 {
     public PlateLowerEvent(){
@@ -31,7 +31,7 @@ public class PlateLowerEvent : PlatesEventAttribute
     }
 }
 
-//[PlatesEvent]
+// 
 public class PlateRiseRandomEvent : PlatesEventAttribute
 {
     public PlateRiseRandomEvent(){
