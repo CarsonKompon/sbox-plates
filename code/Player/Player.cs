@@ -28,6 +28,8 @@ public partial class PlatesPlayer : Player
 		glow.RangeMin = 0;
 		glow.RangeMax = 2000;
 		glow.Color = Color.Blue;
+
+		Inventory = new Inventory(this);
 	}
 
 	public PlatesPlayer( Client cl ) : this()
@@ -64,6 +66,8 @@ public partial class PlatesPlayer : Player
 		EnableShadowInFirstPerson = true;
 
 		Clothing.DressEntity(this);
+
+		//Inventory.Add(new Pistol());
 
 		CameraMode = new FirstPersonCamera();
 
