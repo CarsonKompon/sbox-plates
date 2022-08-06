@@ -58,6 +58,8 @@ public partial class PlatesGame : Sandbox.Game
 	public override void OnKilled( Client client, Entity pawn )
 	{
 		base.OnKilled(client, pawn);
+
+		if(!IsServer) return;
 		
 		foreach(var plate in Entity.All.OfType<Plate>())
 		{
@@ -167,6 +169,7 @@ public partial class PlatesGame : Sandbox.Game
 			var client = Client.All[i];
 			GameClients.Add(client);
 			GetClientRank(client);
+			CurrentGameScreenUI.AddClient(client);
 		}
 
 		// Keep track of how many players we started with
@@ -176,27 +179,18 @@ public partial class PlatesGame : Sandbox.Game
 		InitPlates();
 		AssignPlates();
 
-		// Set the round type if there's one in the queue
-		if(RoundQueue.Count > 0)
+		// Add rounds to the queue if there aren't enough
+		while(RoundQueue.Count < 5)
 		{
-			GameRound = RoundQueue[0];
-			GameRound.OnEvent();
-			RoundQueue.RemoveAt(0);
-		}
-		else
-		{
-			// If not one in the queue, there's a 50% chance to choose a random one
-			if(Rand.Int(0,1) == 0)
-			{
-				GameRound = Rand.FromList(RoundTypes);
-				GameRound.OnEvent();
-			}
-			else
-			{
-				GameRound = new PlatesRoundAttribute();
-			}
+			var round = Rand.FromList(RoundTypes);
+			QueueRound(round);
 		}
 
+		// Get the oldest round in the queue
+		GameRound = RoundQueue[0];
+		GameRound.OnEvent();
+		
+		RoundQueueScreenUI.RemoveLatest();
 		RoundInfo.SetRoundText(GameRound.name, GameRound.description);
 
 		GetNextEvent();
@@ -247,6 +241,8 @@ public partial class PlatesGame : Sandbox.Game
 		GameEntities = new();
 		GameTimer = -10;
 		GameState = PlatesGameState.GAME_OVER;
+
+		CurrentGameScreenUI.ClearList();
 
 		GameServices.EndGame();
 	}
@@ -341,10 +337,7 @@ public partial class PlatesGame : Sandbox.Game
 
 	public override void DoPlayerDevCam( Client client )
 	{
-		if(client.Pawn is PlatesPlayer ply)
-		{
-			if(!ply.InGame) base.DoPlayerDevCam( client );
-		}
+		if(client.IsListenServerHost) base.DoPlayerDevCam( client );
 	}
 
 	/// <summary>

@@ -14,7 +14,7 @@ public class PlateTeslaCoilEvent : PlatesEventAttribute
 
     public override void OnEvent(Plate plate){
         var coil = new TeslaCoilEnt();
-        coil.Position = plate.Position + Vector3.Up * 10;
+        coil.Position = plate.Position + (Vector3.Up * (plate.toScale.z/2f));
         var size = plate.GetSize();
         coil.Position += Vector3.Left * Rand.Int(-50,50) * size;
         coil.Position += Vector3.Forward * Rand.Int(-50,50) * size;
