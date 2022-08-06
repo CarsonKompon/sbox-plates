@@ -6,6 +6,9 @@
 		border-radius: 10%;
 		background-color: aqua;
 	}
+	&.revealed {
+		background-color: chartreuse;
+	}
 }
 .sweep-tile {
 	border-radius: 10%;

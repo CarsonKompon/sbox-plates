@@ -2,12 +2,19 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
+public enum MinesweeperTileType
+{
+	Money,
+	Mine,
+};
 public partial class MinesweeperTile : Panel
 {
 	public int Xval;
 	public int Yval;
 	private Button button;
 	public MinesweeperPodium podium;
+	public bool revealed = false;
+	public MinesweeperTileType? type = null;
 	public MinesweeperTile()
 	{
 		StyleSheet.Load( "/entities/map/minesweeper/MinesweeperTile.scss" );
@@ -15,12 +22,14 @@ public partial class MinesweeperTile : Panel
 		button = Add.Button( "crung-oo-lean", () =>
 		{
 			Log.Info( $"{Xval} {Yval} WAS PRESSED" );
-			Sound.FromEntity( "captain morgan spiced h", podium );
+			this.AddClass( "revealed" );
+			this.revealed = true;
+			// Sound.FromEntity( "captain morgan spiced h", podium );
 
 		} );
 		button.AddClass( "sweep-tile" );
 	}
-	public MinesweeperTile( int x, int y, MinesweeperPodium podi ) : this()
+	public MinesweeperTile( MinesweeperTileType type, int x, int y, MinesweeperPodium podi ) : this()
 	{
 		podium = podi;
 		Xval = x;
@@ -33,6 +42,12 @@ public partial class MinesweeperTile : Panel
 		{
 			// SetActive( false );
 		}
+	}
+
+	public void Reset()
+	{
+		this.revealed = false;
+		this.type = null;
 	}
 
 	// [ClientRpc]

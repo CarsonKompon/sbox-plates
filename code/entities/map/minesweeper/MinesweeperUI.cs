@@ -28,7 +28,7 @@ public partial class MinesweeperUI : WorldPanel
 			for ( int forY = 0; forY < 5; forY++ )
 			{
 				Log.Info( $"{forX} {forY}" );
-				GameContainer.AddChild( new MinesweeperTile( forX, forY, podium ) );
+				GameContainer.AddChild( new MinesweeperTile( Rand.Int( 0, 2 ) == 2 ? MinesweeperTileType.Mine : MinesweeperTileType.Money, forX, forY, podium ) );
 				// Tiles[forX][forY] = new MinesweeperTile();
 			}
 		}
