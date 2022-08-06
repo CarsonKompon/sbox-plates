@@ -11,8 +11,10 @@ public class PlayerSpeedUpEvent : PlatesEventAttribute
     }
 
     public override void OnEvent(Entity ent){
-        PlatesPlayer ply = ent as PlatesPlayer;
-        (ply.Controller as PlatesWalkController).Speed += 0.25f;
+        if(ent is PlatesPlayer ply && ply.Controller is PlatesWalkController wc)
+        {
+            wc.Speed += 0.25f;
+        }
     }
 }
 
@@ -106,13 +108,11 @@ public class WalkRandomlyEnt : Entity
         PlatesGame.AddEntity(this);
     }
 
-    [Event.Tick]
+    [Event.Tick.Server]
     public void Tick(){
-        if(IsServer){
-            if(Rand.Int(1,100) == 1){
-                walkController.ForwardInput = (Rand.Float() * 2.0f) - 1.0f;
-                walkController.SidewaysInput = (Rand.Float() * 2.0f) - 1.0f;
-            }
+        if(Rand.Int(1,100) == 1){
+            walkController.ForwardInput = (Rand.Float() * 2.0f) - 1.0f;
+            walkController.SidewaysInput = (Rand.Float() * 2.0f) - 1.0f;
         }
     }
 
