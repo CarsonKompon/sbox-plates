@@ -14,14 +14,15 @@ public partial class MinesweeperTile : Panel
 	private Button button;
 	public MinesweeperPodium podium;
 	public bool revealed = false;
-	public MinesweeperTileType? type = null;
+	public MinesweeperTileType type;
+
 	public MinesweeperTile()
 	{
 		StyleSheet.Load( "/entities/map/minesweeper/MinesweeperTile.scss" );
 		AddClass( "sweep-tile-wrapper" );
 		button = Add.Button( "crung-oo-lean", () =>
 		{
-			Log.Info( $"{Xval} {Yval} WAS PRESSED" );
+			Log.Info( $"{Xval} {Yval} WAS PRESSED, IT WAS A {type}" );
 			this.AddClass( "revealed" );
 			this.revealed = true;
 			// Sound.FromEntity( "captain morgan spiced h", podium );
@@ -35,6 +36,11 @@ public partial class MinesweeperTile : Panel
 		Xval = x;
 		Yval = y;
 		button.Text = $"";
+		this.type = type;
+		if ( this.type == MinesweeperTileType.Mine )
+		{
+			button.Add.Label( "🍩 CLICK" );
+		}
 	}
 	public override void Tick()
 	{
@@ -47,7 +53,8 @@ public partial class MinesweeperTile : Panel
 	public void Reset()
 	{
 		this.revealed = false;
-		this.type = null;
+		//TODO: Make this not random
+		this.type = Rand.Int( 0, 2 ) == 2 ? MinesweeperTileType.Mine : MinesweeperTileType.Money;
 	}
 
 	// [ClientRpc]
