@@ -34,6 +34,12 @@ public partial class PlatesGame : Sandbox.Game
 
 			// Load the game events
 			LoadEvents();
+			
+			// Initialize the Round Queue with 4 rounds
+			for(var i=0; i<4; i++)
+			{
+				QueueRound();
+			}
 		}
 	}
 
@@ -182,8 +188,7 @@ public partial class PlatesGame : Sandbox.Game
 		// Add rounds to the queue if there aren't enough
 		while(RoundQueue.Count < 5)
 		{
-			var round = Rand.FromList(RoundTypes);
-			QueueRound(round);
+			QueueRound();
 		}
 
 		// Get the oldest round in the queue

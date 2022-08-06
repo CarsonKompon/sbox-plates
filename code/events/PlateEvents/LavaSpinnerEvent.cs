@@ -3,17 +3,18 @@ using System;
 using System.Collections.Generic;
 using Sandbox;
 
- 
 public class PlateLavaSpinnerEvent : PlatesEventAttribute
 {
     public PlateLavaSpinnerEvent(){
         name = "plate_lava_spinner";
         text = " plate(s) will get a lava spinner in ";
         type = EventType.Plate;
+        
+        hidden = true; // TODO: Fix this event
     }
     
     public override void OnEvent(Plate plate){
-        var spinner = new PlateLavaSpinnerEnt(plate.Position + Vector3.Up * 5, plate.Scale);
+        var spinner = new PlateLavaSpinnerEnt(plate.Position + Vector3.Up * 5, plate.GetSize());
         plate.AddEntity(spinner, true);
     }
 }
@@ -49,6 +50,6 @@ public class PlateLavaSpinnerEnt : ModelEntity
     public override void Touch( Entity other )
     {
         base.Touch(other);
-        other.TakeDamage( DamageInfo.Generic( 0.05f ) );
+        other.TakeDamage( DamageInfo.Generic( 0.1f ) );
     }
 }

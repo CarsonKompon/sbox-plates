@@ -68,6 +68,7 @@ public partial class CurrentGameScreenUI : WorldPanel
             entry.Delete();
         }
         Entries.Clear();
+        Instance.Subheader.Text = "No active game";
     }
 
     [ClientRpc]
@@ -78,6 +79,7 @@ public partial class CurrentGameScreenUI : WorldPanel
         {
             AddClient(cl);
         }
+        SetText();
     }
 
     [ClientRpc]
@@ -88,21 +90,28 @@ public partial class CurrentGameScreenUI : WorldPanel
         e.Name.Text = cl.Name;
         e.PlayerId = cl.PlayerId;
         Entries.Add(e);
-        Log.Info(cl.Name);
+        SetText();
     }
 
     [ClientRpc]
     public static void RemoveClient(Client cl)
     {
+        Log.Info("WHOA: " + cl.Name);
         foreach(var entry in Entries)
         {
             if(entry.PlayerId == cl.PlayerId)
             {
                 Entries.Remove(entry);
                 entry.Delete();
+                SetText();
                 break;
             }
         }
+    }
+
+    public static void SetText()
+    {
+        Instance.Subheader.Text = Entries.Count.ToString() + " players remaining";
     }
 }
 

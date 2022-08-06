@@ -45,6 +45,7 @@ public partial class RoundQueueScreenUI : WorldPanel
         StyleSheet.Load("/entities/map/roundqueuescreen.scss");
 
         Header = Add.Label("Round Queue", "header");
+        Add.Label("This screen is WIP and is not working properly yet", "subheader"); // TODO: Remove this when fixed
         Content = Add.Panel("content");
 
         var width = 96 * 20 * scale;
@@ -53,6 +54,18 @@ public partial class RoundQueueScreenUI : WorldPanel
 
         Instance = this;
         Populate();
+    }
+
+    public override void Tick()
+    {
+        if(TimeSinceUpdate > 5f)
+        {
+            if(Content.ChildrenCount == 0)
+            {
+                Populate();
+            }
+            TimeSinceUpdate = 0f;
+        }
     }
 
     [ClientRpc]

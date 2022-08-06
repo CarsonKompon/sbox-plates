@@ -191,8 +191,16 @@ public partial class PlatesGame
 		}
     }
 
-    public static void QueueRound(PlatesRoundAttribute round)
+    public static void QueueRound(PlatesRoundAttribute round = null)
     {
+		if(round == null)
+		{
+			do
+			{
+				round = Rand.FromList(RoundTypes);
+			}
+			while(RoundQueue.Count > 0 && round == RoundQueue[RoundQueue.Count-1]);
+		}
         RoundQueue.Add(round);
         RoundQueueScreenUI.AddRound(round.name);
     }

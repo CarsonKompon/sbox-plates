@@ -16,7 +16,7 @@ public partial class VitalInfo : Panel
 	public Label Disclaimer;
 	
 	public VitalInfo(){
-		Disclaimer = Add.Label("Pl&tes is currently in a WIP state. Please report bugs on the github issues page.", "disclaimer");
+		Disclaimer = Add.Label("Plates of Fate is currently in a WIP state. Please report bugs on the github issues page.", "disclaimer");
 
 		VitalsPanel = Add.Panel("vitals");
 		InfoPanel = Add.Panel("info");
