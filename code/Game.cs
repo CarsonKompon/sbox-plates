@@ -194,6 +194,7 @@ public partial class PlatesGame : Sandbox.Game
 		// Get the oldest round in the queue
 		GameRound = RoundQueue[0];
 		GameRound.OnEvent();
+		RoundQueue.RemoveAt(0);
 		
 		RoundQueueScreenUI.RemoveLatest();
 		RoundInfo.SetRoundText(GameRound.name, GameRound.description);
