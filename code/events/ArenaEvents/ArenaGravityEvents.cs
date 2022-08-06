@@ -1,7 +1,7 @@
 using Sandbox;
 using System.Linq;
 
-[PlatesEvent]
+ 
 public class GravityDownEvent : PlatesEventAttribute
 {
     public GravityDownEvent(){
@@ -22,7 +22,7 @@ public class GravityDownEvent : PlatesEventAttribute
     }
 }
 
-[PlatesEvent]
+ 
 public class GravityUpEvent : PlatesEventAttribute
 {
     public GravityUpEvent(){

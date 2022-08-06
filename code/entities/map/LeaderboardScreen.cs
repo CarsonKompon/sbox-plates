@@ -99,8 +99,6 @@ public class LeaderboardScreenUI : WorldPanel
             count++;
             if(count >= 10) break;
         }
-
-        Log.Info(response);
     }
 }
 

@@ -2,7 +2,6 @@ using System.Xml.Schema;
 using Sandbox;
 using System;
 
-[PlatesEvent]
 public partial class BarrelRainEvent : PlatesEventAttribute
 {
     public BarrelRainEvent(){
@@ -19,28 +18,26 @@ public partial class BarrelRainEvent : PlatesEventAttribute
     }
 }
 
-public class BarrelRainEnt : Entity
+public partial class BarrelRainEnt : Entity
 {
-    public float timer = 2*60;
+    [Net] public RealTimeSince timer {get;set;} = -2*60f;
 
+    public BarrelRainEnt() {}
     public BarrelRainEnt(float time = 2*60){
         PlatesGame.AddEntity(this);
-        timer = time;
+        timer = -time;
     }
 
-    [Event.Tick]
+    [Event.Tick.Server]
     public void Tick(){
-        if(timer > 0){
-            timer -= 1.0f/60.0f;
-            if(Rand.Int(1,500) == 1){
-                var ent = new Prop();
-                ent.Scale = 2;
-                ent.Position = new Vector3(Rand.Int(-1500,1500), Rand.Int(-1500,1500), 10000);
-                ent.Rotation = Rotation.From(new Angles(Rand.Float()*360,Rand.Float()*360,Rand.Float()*360));
-                ent.SetModel("models/rust_props/barrels/fuel_barrel.vmdl");
-                PlatesGame.AddEntity(ent);
-            }
-            if(timer <= 0) this.Delete();
+        if(Rand.Int(1,500) == 1){
+            var ent = new Prop();
+            ent.Scale = 2;
+            ent.Position = new Vector3(Rand.Int(-1500,1500), Rand.Int(-1500,1500), 10000);
+            ent.Rotation = Rotation.From(new Angles(Rand.Float()*360,Rand.Float()*360,Rand.Float()*360));
+            ent.SetModel("models/rust_props/barrels/fuel_barrel.vmdl");
+            PlatesGame.AddEntity(ent);
         }
+        if(timer >= 0) this.Delete();
     }
 }

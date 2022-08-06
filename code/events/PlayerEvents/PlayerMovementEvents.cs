@@ -1,7 +1,7 @@
 using Sandbox;
 using System;
 
-[PlatesEvent]
+ 
 public class PlayerSpeedUpEvent : PlatesEventAttribute
 {
     public PlayerSpeedUpEvent(){
@@ -16,7 +16,7 @@ public class PlayerSpeedUpEvent : PlatesEventAttribute
     }
 }
 
-[PlatesEvent]
+ 
 public class PlayerSpeedDownEvent : PlatesEventAttribute
 {
     public PlayerSpeedDownEvent(){
@@ -32,7 +32,7 @@ public class PlayerSpeedDownEvent : PlatesEventAttribute
     }
 }
 
-[PlatesEvent]
+ 
 public class PlayerJumpUpEvent : PlatesEventAttribute
 {
     public PlayerJumpUpEvent(){
@@ -47,7 +47,7 @@ public class PlayerJumpUpEvent : PlatesEventAttribute
     }
 }
 
-[PlatesEvent]
+ 
 public class PlayerJumpDownEvent : PlatesEventAttribute
 {
     public PlayerJumpDownEvent(){
@@ -64,12 +64,12 @@ public class PlayerJumpDownEvent : PlatesEventAttribute
     }
 }
 
-[PlatesEvent]
+ 
 public class PlayerWalkBackwardsEvent : PlatesEventAttribute
 {
     public PlayerWalkBackwardsEvent(){
         name = "player_walk_backwards";
-        text = " player(s) will walk backwards in ";
+        text = " player(s) will have their controls reversed in ";
         type = EventType.Player;
     }
 
@@ -80,7 +80,7 @@ public class PlayerWalkBackwardsEvent : PlatesEventAttribute
     }
 }
 
-[PlatesEvent]
+ 
 public class PlayerWalkRandomlyEvent : PlatesEventAttribute
 {
     public PlayerWalkRandomlyEvent(){
@@ -100,6 +100,7 @@ public class WalkRandomlyEnt : Entity
 {
     public PlatesWalkController walkController;
 
+    public WalkRandomlyEnt(){}
     public WalkRandomlyEnt(PlatesWalkController wc){
         walkController = wc;
         PlatesGame.AddEntity(this);

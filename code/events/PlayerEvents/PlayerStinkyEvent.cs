@@ -2,7 +2,7 @@ using Sandbox;
 using System.Linq;
 using System.Collections.Generic;
 
-[PlatesEvent]
+ 
 public class PlayerStinkyEvent : PlatesEventAttribute
 {
     public PlayerStinkyEvent(){
@@ -17,9 +17,9 @@ public class PlayerStinkyEvent : PlatesEventAttribute
     }
 }
 
-public class SmellBadEnt : Entity
+public partial class SmellBadEnt : Entity
 {
-    public Entity ent;
+    [Net] public Entity ent {get;set;}
 
     public SmellBadEnt(){}
     public SmellBadEnt(Entity e){
@@ -27,9 +27,9 @@ public class SmellBadEnt : Entity
         PlatesGame.AddEntity(this);
     }
 
-    [Event.Tick]
+    [Event.Tick.Server]
     public void Tick(){
-        if(ent.IsValid() && (ent as PlatesPlayer).InGame){
+        if(ent is PlatesPlayer ply){
             var part = Particles.Create("particles/stinky.vpcf");
             part.SetPosition(0,ent.Position + Vector3.Up*40);
             if(IsServer && Client.All.Count > 1){
@@ -39,7 +39,8 @@ public class SmellBadEnt : Entity
                     nearest.TakeDamage(DamageInfo.Generic( 0.05f ));
                 }
             }
-        }else Delete();
+            if(!ply.InGame) Delete();
+        }
     }
 
 }

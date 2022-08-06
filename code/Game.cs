@@ -17,17 +17,9 @@ public partial class PlatesGame : Sandbox.Game
 	[Net] public static List<LossInformation> Eliminated {get;set;} = new();
 	[Net] public static List<Entity> GameEntities {get;set;} = new();
 	[Net] public static int StartingPlayerCount {get;set;} = 1;
-	[Net] public static PlatesEventAttribute CurrentEvent {get;set;} = new();
-	[Net] public static List<PlatesEventAttribute> EventQueue {get;set;} = new();
 	[Net] public static PlatesRoundAttribute GameRound {get;set;}
 	[Net] public static int AffectedPlayers {get;set;} = 0;
 	[Net] public static int TotalAffectedPlayers {get;set;} = 0;
-
-
-	// Event and Queue-related variables:
-	public static List<PlatesEventAttribute> Events = new List<PlatesEventAttribute>();
-	public static List<PlatesRoundAttribute> RoundTypes = new List<PlatesRoundAttribute>();
-	[Net] public static List<PlatesRoundAttribute> RoundQueue {get;set;} = new();
 
 	// Networked text
 	[Net] public static string EventText {get;set;} = "";
@@ -42,21 +34,6 @@ public partial class PlatesGame : Sandbox.Game
 
 			// Load the game events
 			LoadEvents();
-		}
-	}
-
-	[Event.Hotload] // Reload Events on Hotload (Makes life easier when developing)
-	public static void LoadEvents()
-	{
-		// Re-initialize list
-		Events = new();
-		RoundTypes = new();
-		// Populate it with classes that match the attribute
-		foreach(TypeDescription _td in TypeLibrary.GetDescriptions<PlatesEventAttribute>()){
-			Events.Add(TypeLibrary.Create<PlatesEventAttribute>(_td.TargetType));
-		}
-		foreach(TypeDescription _td in TypeLibrary.GetDescriptions<PlatesRoundAttribute>()){
-			RoundTypes.Add(TypeLibrary.Create<PlatesRoundAttribute>(_td.TargetType));
 		}
 	}
 
@@ -96,11 +73,9 @@ public partial class PlatesGame : Sandbox.Game
 		GameClients.Remove(client);
 	}
 
-	[Event.Tick]
-	public void Tick()
+	[Event.Tick.Server]
+	public void ServerTick()
 	{
-		if(!IsServer) return;
-
 		switch(GameState)
 		{
 			case PlatesGameState.NOT_ENOUGH_PLAYERS:
@@ -275,102 +250,6 @@ public partial class PlatesGame : Sandbox.Game
 		GameServices.EndGame();
 	}
 
-	/// <summary>
-	/// Gets the next event in the queue or adds a new one if none exist
-	/// </summary>
-	public static void GetNextEvent()
-	{
-		GameState = PlatesGameState.SELECTING_EVENT;
-		EventSubtext = "";
-		LastTimer = -10f;
-
-		PlatesPlayer.GiveMoney(10);
-
-		ResetGlows();
-
-		if(EventQueue.Count > 0)
-		{
-			CurrentEvent = EventQueue[0];
-			EventQueue.RemoveAt(0);
-		}
-		else
-		{
-			CurrentEvent = Rand.FromList(Events);
-		}
-
-		AffectedPlayers = Rand.Int(CurrentEvent.minAffected, CurrentEvent.maxAffected);
-		TotalAffectedPlayers = AffectedPlayers;
-		
-		GameTimer = -4f;
-
-		// Check if game end
-		var finishCount = 1;
-		if(StartingPlayerCount == 1) finishCount = 0;
-		if(GameClients.Count <= finishCount) EndGame();
-	}
-
-	public static void PerformEvent()
-	{
-		GameState = PlatesGameState.PERFORMING_EVENT;
-		Entity ent;
-		ResetGlows();
-
-		AffectedPlayers--;
-		GameTimer = -1f;
-
-		switch(CurrentEvent.type)
-		{
-			case EventType.Player:
-				if(GameClients.Count == 0) return;
-				var ply = Rand.FromList(GameClients);
-				ent = ply.Pawn;
-				EventSubtext = EventSubtext + ply.Name;
-				CurrentEvent.OnEvent(ent);
-				GameServices.RecordEvent(ply, "Player Event: " + CurrentEvent.Name);
-				(ply.Pawn as PlatesPlayer).EventCount++;
-				break;
-			case EventType.Plate:
-				if(Entity.All.OfType<Plate>().ToArray().Length == 0) return;
-				var attempts = 0;
-				Plate plat = null;
-				while(plat == null)
-				{
-					plat = Rand.FromList(Entity.All.OfType<Plate>().ToList());
-					if(plat.isDead)
-					{
-						plat = null;
-						attempts++;
-						if(attempts > 50) return;
-					}
-				}
-				ent = plat;
-				EventSubtext = EventSubtext + plat.ownerName;
-				CurrentEvent.OnEvent(ent as Plate);
-				GameServices.RecordEvent(plat.owner, "Plate Event: " + CurrentEvent.Name);
-				(plat.owner.Pawn as PlatesPlayer).EventCount++;
-				break;
-			default:
-				ent = null;
-				CurrentEvent.OnEvent();
-				EventSubtext = CurrentEvent.subtext;
-				break;
-		}
-
-		if(CurrentEvent.type == EventType.Arena)
-		{
-			Sound.FromWorld("plates_buzzer", Vector3.Zero);
-		}
-		else
-		{
-			Sound.FromEntity("plates_buzzer", ent);
-			if(ent is Plate _plate) _plate.SetGlow(true, Color.Blue);
-			if(ent is PlatesPlayer _player) _player.SetGlow(true, Color.Blue);
-		}
-
-		if(AffectedPlayers == 0) GameTimer = -2f;
-		else EventSubtext = EventSubtext + ", ";
-	}
-
 	public static async void GetClientRank(Client client)
 	{
 		//var gameRank = await client.FetchGameRankAsync();
@@ -457,18 +336,6 @@ public partial class PlatesGame : Sandbox.Game
 		}
 	}
 
-	public static PlatesEventAttribute GetEventFromName(string eventName)
-	{
-		foreach(var _ev in Events)
-		{
-			if(_ev.name == eventName)
-			{
-				return _ev;
-			}
-		}
-		return null;
-	}
-
 	public override void DoPlayerNoclip( Client player ) {}
 
 	public override void DoPlayerDevCam( Client client )
@@ -490,6 +357,22 @@ public partial class PlatesGame : Sandbox.Game
 		}
 	}
 
+	/// <summary>
+	/// Should we send voice data to this player
+	/// </summary>
+	public override bool CanHearPlayerVoice( Client source, Client dest )
+	{
+		Host.AssertServer();
+
+		var sp = source.Pawn;
+		var dp = dest.Pawn;
+
+		if ( sp == null || dp == null ) return false;
+		if ( sp.Position.Distance( dp.Position ) > 2200 ) return false;
+
+		return true;
+	}
+
 	/// </summary>
 	/// Sends a log to the kill feed
 	/// </summary>
@@ -506,24 +389,6 @@ public partial class PlatesGame : Sandbox.Game
 			}
 		}
 		if(_showKill) KillFeed.Current?.AddEntry(leftid, left, rightid, right, method);
-	}
-
-	/// <summary>
-	/// Add an Event to the queue for the current game
-	/// </summary>
-	[ConCmd.Admin("plates_event", Help = "Adds an event to the queue for the current game")]
-	public static void QueueEvent(string eventName)
-	{
-		var _event = GetEventFromName(eventName);
-		if(_event == null)
-		{
-			Log.Error("PLATES: There is no event with name " + eventName);
-		}
-		else
-		{
-			EventQueue.Add(_event);
-			Log.Info("PLATES: " + eventName + " added to event queue");
-		}
 	}
 
 }

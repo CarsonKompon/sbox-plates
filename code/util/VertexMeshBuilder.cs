@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 // https://github.com/Nebual/sandbox-plus/blob/main/code/VertexMeshBuilder.cs
-public partial class MeshEntity : Prop
+public partial class MeshEntity : ModelEntity
 {
 	[Net] public string ModelString { get; set; }
 	[Net] public string MaterialOverride { get; set; } = "";
@@ -67,7 +67,7 @@ public partial class VertexMeshBuilder
 		var vertexBuilder = new VertexMeshBuilder();
 		vertexBuilder.AddRectangle(Vector3.Zero, size, texSize, Color.White);
 
-		var mesh = new Mesh(Material.Load("materials/default/vertex_color.vmat"));
+		var mesh = new Mesh(Material.Load("materials/dev/reflectivity_90b.vmat"));
 
 		mesh.CreateVertexBuffer<MeshVertex>(vertexBuilder.vertices.Count, MeshVertex.Layout, vertexBuilder.vertices.ToArray());
 		mesh.SetBounds(mins, maxs);

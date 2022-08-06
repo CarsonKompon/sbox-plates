@@ -1,6 +1,6 @@
 using Sandbox;
 
-[PlatesEvent]
+ 
 public class PlateGrow10Event : PlatesEventAttribute
 {
     public PlateGrow10Event(){
@@ -14,7 +14,7 @@ public class PlateGrow10Event : PlatesEventAttribute
     }
 }
 
-[PlatesEvent]
+ 
 public class PlateGrow25Event : PlatesEventAttribute
 {
     public PlateGrow25Event(){
@@ -28,7 +28,7 @@ public class PlateGrow25Event : PlatesEventAttribute
     }
 }
 
-[PlatesEvent]
+ 
 public class PlateShrink10Event : PlatesEventAttribute
 {
     public PlateShrink10Event(){
@@ -42,7 +42,7 @@ public class PlateShrink10Event : PlatesEventAttribute
     }
 }
 
-[PlatesEvent]
+ 
 public class PlateShrink25Event : PlatesEventAttribute
 {
     public PlateShrink25Event(){
@@ -56,7 +56,7 @@ public class PlateShrink25Event : PlatesEventAttribute
     }
 }
 
-[PlatesEvent]
+ 
 public class PlateShrinkInfinitely : PlatesEventAttribute
 {
     public PlateShrinkInfinitely(){
@@ -66,28 +66,28 @@ public class PlateShrinkInfinitely : PlatesEventAttribute
     }
     
     public override void OnEvent(Plate plate){
-        new PlateShrinkInfinitelyEnt(plate);
+        plate.AddEntity(new PlateShrinkInfinitelyEnt(plate));
     }
 }
 
-public class PlateShrinkInfinitelyEnt : Entity
+public partial class PlateShrinkInfinitelyEnt : Entity
 {
-    public Plate plate;
+    [Net] public Plate plate {get;set;}
 
+    public PlateShrinkInfinitelyEnt(){}
     public PlateShrinkInfinitelyEnt(Plate plat){
-        PlatesGame.AddEntity(this);
         plate = plat;
     }
 
-    [Event.Tick]
+    [Event.Tick.Server]
     public void Tick(){
         if(plate.IsValid()){
             plate.Shrink(0.0001f);
-        }else Delete();
+        }
     }
 }
 
-[PlatesEvent]
+ 
 public class PlateGrowInfinitely : PlatesEventAttribute
 {
     public PlateGrowInfinitely(){
@@ -97,23 +97,23 @@ public class PlateGrowInfinitely : PlatesEventAttribute
     }
     
     public override void OnEvent(Plate plate){
-        new PlateGrowInfinitelyEnt(plate);
+        plate.AddEntity(new PlateGrowInfinitelyEnt(plate));
     }
 }
 
-public class PlateGrowInfinitelyEnt : Entity
+public partial class PlateGrowInfinitelyEnt : Entity
 {
-    public Plate plate;
+    [Net] public Plate plate {get;set;}
 
+    public PlateGrowInfinitelyEnt(){}
     public PlateGrowInfinitelyEnt(Plate plat){
-        PlatesGame.AddEntity(this);
         plate = plat;
     }
 
-    [Event.Tick]
+    [Event.Tick.Server]
     public void Tick(){
         if(plate.IsValid()){
             plate.Grow(0.000005f);
-        }else Delete();
+        }
     }
 }

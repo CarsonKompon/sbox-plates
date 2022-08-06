@@ -2,7 +2,7 @@ using Sandbox;
 using System;
 using System.Linq;
 
-[PlatesEvent]
+ 
 public class PlayerSwapEvent : PlatesEventAttribute
 {
 
@@ -28,7 +28,7 @@ public class PlayerSwapEvent : PlatesEventAttribute
 	}
 }
 
-[PlatesEvent]
+ 
 public class PlateSwapEvent : PlatesEventAttribute
 {
     public PlateSwapEvent(){

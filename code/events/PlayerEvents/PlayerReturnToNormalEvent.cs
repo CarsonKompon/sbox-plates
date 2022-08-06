@@ -1,7 +1,7 @@
 using Sandbox;
 
 
-[PlatesEvent]
+ 
 public class PlayerReturnToNormalEvent : PlatesEventAttribute
 {
     public PlayerReturnToNormalEvent(){

@@ -1,6 +1,6 @@
 using Sandbox;
 
-[PlatesEvent]
+ 
 public class PlayerGrowEvent : PlatesEventAttribute
 {
     public PlayerGrowEvent(){
@@ -14,7 +14,7 @@ public class PlayerGrowEvent : PlatesEventAttribute
     }
 }
 
-[PlatesEvent]
+ 
 public class PlayerShrinkEvent : PlatesEventAttribute
 {
     public PlayerShrinkEvent(){

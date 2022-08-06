@@ -1,7 +1,7 @@
 using Sandbox;
 using System;
 
-[PlatesEvent]
+ 
 public class PlateColourEvent : PlatesEventAttribute
 {
 
@@ -16,7 +16,7 @@ public class PlateColourEvent : PlatesEventAttribute
     }
 }
 
-[PlatesEvent]
+ 
 public class PlateInvisibleEvent : PlatesEventAttribute
 {
     public PlateInvisibleEvent(){
@@ -27,5 +27,49 @@ public class PlateInvisibleEvent : PlatesEventAttribute
 
     public override void OnEvent(Plate plate){
         plate.SetAlpha(0f);
+    }
+}
+
+public class PlateFadeInOutEvent : PlatesEventAttribute
+{
+    public PlateFadeInOutEvent(){
+        name = "plate_fade_in_out";
+        text = " plate(s) will fade in and out in ";
+        type = EventType.Plate;
+    }
+
+    public override void OnEvent(Plate plate){
+        plate.AddEntity(new PlateFadeInOutEnt(plate));
+    }
+}
+
+public partial class PlateFadeInOutEnt : Entity
+{
+    [Net] public Plate plate {get;set;}
+    [Net] public RealTimeSince timer {get;set;}
+    [Net] public bool fadeIn {get;set;} = false;
+
+    public PlateFadeInOutEnt(){}
+    public PlateFadeInOutEnt(Plate pl)
+    {
+        plate = pl;
+    }
+
+    [Event.Tick.Server]
+    public void Tick()
+    {
+        if(fadeIn)
+        {
+            if(plate.RenderColor.a < 1f) plate.SetAlpha(plate.RenderColor.a + 0.004f);
+        }
+        else
+        {
+            if(plate.RenderColor.a > 0f) plate.SetAlpha(plate.RenderColor.a - 0.004f);
+        }
+        if(timer >= 5f)
+        {
+            fadeIn = !fadeIn;
+            timer = 0;
+        }
     }
 }

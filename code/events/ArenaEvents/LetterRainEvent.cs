@@ -2,7 +2,7 @@ using System.Xml.Schema;
 using Sandbox;
 using System;
 
-[PlatesEvent]
+ 
 public partial class LetterRainEvent : PlatesEventAttribute
 {
     public LetterRainEvent(){
@@ -19,9 +19,9 @@ public partial class LetterRainEvent : PlatesEventAttribute
     }
 }
 
-public class LetterRainEnt : Entity
+public partial class LetterRainEnt : Entity
 {
-    public float timer = 2*60;
+    [Net] public RealTimeSince timer {get;set;} = -2*60f;
     //Names of all letter models
     private string[] letters = {
         "ampersand",
@@ -38,27 +38,25 @@ public class LetterRainEnt : Entity
         "y_up"
     };
 
+    public LetterRainEnt(){}
     public LetterRainEnt(float time = 2*60){
         PlatesGame.AddEntity(this);
-        timer = time;
+        timer = -time;
     }
 
-    [Event.Tick]
+    [Event.Tick.Server]
     public void Tick(){
-        if(timer > 0){
-            timer -= 1.0f/60.0f;
-            if(Rand.Int(0,200) == 1){
-                var ent = new Prop();
-                ent.Name = "Raining Letter";
-                ent.Scale = 2;
-                ent.Position = new Vector3(Rand.Int(-1500,1500), Rand.Int(-1500,1500), 10000);
-                ent.Rotation = Rotation.From(new Angles(Rand.Float()*360,Rand.Float()*360,Rand.Float()*360));
-                //ent.Velocity = new Vector3(0,0,-1000000);
-                ent.SetModel("models/letters/" + Rand.FromArray(letters) + ".vmdl");
-                ent.RenderColor = Color.FromBytes(Rand.Int(0,255),Rand.Int(0,255),Rand.Int(0,255));
-                PlatesGame.AddEntity(ent);
-            }
-            if(timer <= 0) this.Delete();
+        if(Rand.Int(0,200) == 1){
+            var ent = new Prop();
+            ent.Name = "Raining Letter";
+            ent.Scale = 2;
+            ent.Position = new Vector3(Rand.Int(-1500,1500), Rand.Int(-1500,1500), 10000);
+            ent.Rotation = Rotation.From(new Angles(Rand.Float()*360,Rand.Float()*360,Rand.Float()*360));
+            //ent.Velocity = new Vector3(0,0,-1000000);
+            ent.SetModel("models/letters/" + Rand.FromArray(letters) + ".vmdl");
+            ent.RenderColor = Color.FromBytes(Rand.Int(0,255),Rand.Int(0,255),Rand.Int(0,255));
+            PlatesGame.AddEntity(ent);
         }
+        if(timer >= 0) this.Delete();
     }
 }

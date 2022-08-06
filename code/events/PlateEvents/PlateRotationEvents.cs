@@ -1,7 +1,42 @@
 using Sandbox;
 using System;
 
-[PlatesEvent]
+
+public class PlateRotateEvent : PlatesEventAttribute
+{
+    public PlateRotateEvent(){
+        name = "plate_rotate";
+        text = " plate(s) will start rotating in ";
+        type = EventType.Plate;
+    }
+
+    public override void OnEvent(Plate plate){
+        plate.AddEntity(new PlateRotateEnt(plate));
+    }
+}
+
+public partial class PlateRotateEnt : Entity
+{
+
+    [Net] public Plate plate {get;set;}
+
+    public PlateRotateEnt(){}
+    public PlateRotateEnt(Plate plat){
+        plate = plat;
+    }
+
+    [Event.Tick]
+    public void Tick(){
+        if(IsServer){
+            if(plate.IsValid()){
+                plate.Rotation *= Rotation.FromYaw(1f);
+                return;
+            }else Delete();
+        }
+    }
+    
+}
+
 public class PlateFlipEvent : PlatesEventAttribute
 {
     public PlateFlipEvent(){
@@ -11,7 +46,7 @@ public class PlateFlipEvent : PlatesEventAttribute
     }
 
     public override void OnEvent(Plate plate){
-        new PlateFlipEnt(plate);
+        plate.AddEntity(new PlateFlipEnt(plate));
     }
 }
 

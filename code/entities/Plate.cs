@@ -17,6 +17,7 @@ public partial class Plate : MeshEntity
     [Net] public List<Entity> PlateEnts {get;set;} = new();
     [Net] public Vector3 TargetPostion {get;set;}
     [Net] private RealTimeSince MovementTime {get;set;}
+    [Net] private Vector3 MovementSpeed {get;set;}
     private Glow glow;
     private PlateNameTag plateTag = null;
 
@@ -66,23 +67,57 @@ public partial class Plate : MeshEntity
             plateTag = new PlateNameTag(this);
         }
 
-        if(IsServer){
-            var lastScale = scale;
-            scale = MathC.Lerp(scale,toScale,0.125f);
-            if(scale != lastScale)
-            {
-                ConstructModel();
-            }
+        var lastScale = scale;
+        scale = MathC.Lerp(scale,toScale,0.125f);
+        if(scale != lastScale)
+        {
+            ConstructModel();
+        }
 
+        if(IsServer)
+        {
             if(scale.x <= 0 || scale.y <= 0 || scale.z <= 0)
             {
                 Delete();
             }
+
+            if(MovementTime < 0f)
+            {
+                //if(motionType == PhysicsMotionType.Static) SetMotionType(PhysicsMotionType.Dynamic);
+                Position += MovementSpeed;
+                Velocity = MovementSpeed;
+            }
         }
-        if(isDead){
-            if(RenderColor.a > 0) SetAlpha(RenderColor.a - 1.0f/(7*60.0f));
+
+        if(isDead)
+        {
+            if(RenderColor.a > 0)
+            {
+                SetAlpha(RenderColor.a - 1.0f/(7*60.0f));
+                if(IsServer && RenderColor.a <= 0)
+                {
+                    Delete();
+                }
+            }
         }
     }
+
+    // public override void Simulate(Client cl)
+    // {
+    //     base.Simulate(cl);
+
+    //     var lastScale = scale;
+    //     scale = MathC.Lerp(scale,toScale,0.125f);
+    //     if(scale != lastScale)
+    //     {
+    //         ConstructModel();
+    //     }
+
+    //     if(scale.x <= 0 || scale.y <= 0 || scale.z <= 0)
+    //     {
+    //         Delete();
+    //     }
+    // }
 
     public void Kill(){
         if(!isDead){
@@ -97,8 +132,27 @@ public partial class Plate : MeshEntity
 
     protected override void OnDestroy()
     {
-        base.OnDestroy();
         if(plateTag != null) plateTag.Delete();
+        if(IsServer)
+        {
+            foreach(Entity ent in PlateEnts)
+            {
+                ent.Delete();
+            }
+        }
+        base.OnDestroy();
+    }
+
+    public void AddEntity(Entity ent, bool setTransform = false)
+    {
+        if(setTransform) ent.Parent = this;
+        PlateEnts.Add(ent);
+    }
+
+    public void SetMotionType(PhysicsMotionType type)
+    {
+        motionType = type;
+        SetupPhysicsFromModel(motionType);
     }
 
     public void SetColor(Color color)
@@ -121,15 +175,15 @@ public partial class Plate : MeshEntity
 
     public async void Raise(float _amount, float _time = 1f)
     {
-        TargetPostion = Position.WithZ(TargetPostion.z + _amount);
+        TargetPostion = TargetPostion.WithZ(TargetPostion.z + _amount);
         if(MovementTime > 0) MovementTime = 0f;
         MovementTime -= _time;
-        await LocalKeyframeTo(TargetPostion-Position, MovementTime);
+        MovementSpeed = (TargetPostion - Position) / (Math.Abs(MovementTime) * 60f);
     }
 
     public void Lower(float _amount, float _time = 1f)
     {
-        // Raise(-_amount, _time);
+        Raise(-_amount, _time);
     }
 
     public void SetSize(float _size)
@@ -160,113 +214,6 @@ public partial class Plate : MeshEntity
     public void AddHeight(float _amount)
     {
         toScale = toScale.WithZ(toScale.z + _amount);
-    }
-
-    int movement = 0;
-    int movementTick = 0;
-    /// <summary>
-    /// Move to given transform in given amount of time
-    /// </summary>
-    /// <param name="target">The target transform</param>
-    /// <param name="seconds">How many seconds to take to move to target transform</param>
-    /// <param name="easing">If set, the easing funtion</param>
-    /// <returns>Whether we successded moving to given target or not</returns>
-    public async Task<bool> KeyframeTo( Transform target, float seconds, Easing.Function easing = null )
-    {
-        var moveId = ++movement;
-        var start = Transform;
-
-        var lastTime = Time.Now;
-        bool skipFirstWait = movementTick != Time.Tick;
-        if ( skipFirstWait ) lastTime -= Time.Delta;
-        for ( float f = 0; f < 1; )
-        {
-            // Do not wait on the first movement this tick
-            if ( !skipFirstWait )
-            {
-                await Task.NextPhysicsFrame();
-                if ( moveId != movement || !this.IsValid() ) return false;
-            }
-            skipFirstWait = false;
-
-            var timeDelta = Math.Max( Time.Now - lastTime, 0 );
-            lastTime = Time.Now;
-            movementTick = Time.Tick;
-
-            var eased = easing != null ? easing( f ) : f;
-
-            var newtx = Transform.Lerp( start, target, eased, false );
-
-            TryKeyframeTo( newtx );
-
-            f += timeDelta / seconds;
-        }
-
-        Transform = target;
-        return true;
-    }
-
-    /// <summary>
-    /// Used by KeyframeTo methods to try to move to a given transform
-    /// </summary>
-    public virtual bool TryKeyframeTo( Transform pos )
-    {
-        Transform = pos;
-        return true;
-    }
-
-    int local_movement = 0;
-
-    /// <summary>
-    /// Move to a given local position in given amount of time
-    /// </summary>
-    /// <param name="deltaTarget">The target local position</param>
-    /// <param name="seconds">How many seconds to take to move to target transform</param>
-    /// <param name="easing">If set, the easing funtion</param>
-    /// <returns>Whether we successded moving to given local target or not</returns>
-    public async Task<bool> LocalKeyframeTo( Vector3 deltaTarget, float seconds, Easing.Function easing = null )
-    {
-        var moveId = ++local_movement;
-        var startPos = LocalPosition;
-
-        var lastTime = Time.Now;
-        bool skipFirstWait = movementTick != Time.Tick;
-        if ( skipFirstWait ) lastTime -= Time.Delta;
-        for ( float f = 0; f < 1; )
-        {
-            // Do not wait on the first movement this tick
-            if ( !skipFirstWait )
-            {
-                await Task.NextPhysicsFrame();
-                if ( moveId != local_movement || !this.IsValid() ) return false;
-            }
-            skipFirstWait = false;
-
-            var timeDelta = Math.Max( Time.Now - lastTime, 0 );
-            lastTime = Time.Now;
-            movementTick = Time.Tick;
-
-            var eased = easing != null ? easing( f ) : f;
-
-            TryLocalKeyframeTo( Vector3.Lerp( startPos, deltaTarget, eased, false ), timeDelta );
-
-            f += timeDelta / seconds;
-        }
-
-        LocalPosition = deltaTarget;
-        LocalVelocity = 0;
-
-        return true;
-    }
-
-    /// <summary>
-    /// Used by KeyframeTo methods to try to move to a given local position
-    /// </summary>
-    public virtual bool TryLocalKeyframeTo( Vector3 pos, float delta )
-    {
-        LocalVelocity = (pos - LocalPosition) / Math.Max( delta, 0.001f );
-        LocalPosition = pos;
-        return true;
     }
 
 }

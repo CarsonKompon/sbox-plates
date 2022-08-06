@@ -1,7 +1,7 @@
 using Sandbox;
 
 
-[PlatesEvent]
+ 
 public class PlateReturnToNormalEvent : PlatesEventAttribute
 {
     public PlateReturnToNormalEvent(){
@@ -14,9 +14,6 @@ public class PlateReturnToNormalEvent : PlatesEventAttribute
         Plate newPlate = new Plate(plate.Position, 1, plate.owner);
         newPlate.SetGlow( true, Color.Blue );
         if(plate.owner is PlatesPlayer ply) ply.CurrentPlate = newPlate; 
-		foreach (var ent in plate.PlateEnts){
-            ent.Delete();
-        }
         plate.Delete();
     }
 }
