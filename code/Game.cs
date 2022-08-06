@@ -146,6 +146,7 @@ public partial class PlatesGame : Sandbox.Game
 	[ConCmd.Admin("plates_start", Help = "Forces the game to start if one isn't already active")]
 	public static void StartGame()
 	{
+
 		// If game is already active, do nothing
 		if((int)GameState > (int)PlatesGameState.STARTING_SOON) return;
 

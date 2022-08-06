@@ -103,8 +103,11 @@ public partial class PlatesGame
 				ent = plat;
 				EventSubtext = EventSubtext + plat.ownerName;
 				CurrentEvent.OnEvent(ent as Plate);
-				GameServices.RecordEvent(plat.owner, "Plate Event: " + CurrentEvent.Name);
-				(plat.owner.Pawn as PlatesPlayer).EventCount++;
+                if(plat.owner is Client)
+                {
+				    GameServices.RecordEvent(plat.owner, "Plate Event: " + CurrentEvent.Name);
+                    if(plat.owner.Pawn is PlatesPlayer player) player.EventCount++;
+                }
 				break;
 			default:
 				ent = null;
@@ -140,6 +143,18 @@ public partial class PlatesGame
 		return null;
 	}
 
+    public static PlatesRoundAttribute GetRoundFromCommand(string roundName)
+	{
+		foreach(var _round in RoundTypes)
+		{
+			if(_round.command == roundName)
+			{
+				return _round;
+			}
+		}
+		return null;
+	}
+
     /// <summary>
 	/// Add an Event to the queue for the current game
 	/// </summary>
@@ -155,6 +170,24 @@ public partial class PlatesGame
 		{
 			EventQueue.Add(_event);
 			Log.Info("PLATES: " + eventName + " added to event queue");
+		}
+	}
+
+    /// <summary>
+	/// Add a Round to the queue for the round list
+	/// </summary>
+	[ConCmd.Admin("plates_round", Help = "Adds a round to the queue for the round list")]
+	public static void QueueRound(string roundName)
+	{
+		var _round = GetRoundFromCommand(roundName);
+		if(_round == null)
+		{
+			Log.Error("PLATES: There is no round with name " + roundName);
+		}
+		else
+		{
+			RoundQueue.Add(_round);
+			Log.Info("PLATES: " + roundName + " added to round queue");
 		}
 	}
 }

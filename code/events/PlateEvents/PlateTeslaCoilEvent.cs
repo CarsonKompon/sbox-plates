@@ -27,11 +27,12 @@ public class TeslaCoilEnt : ModelEntity
 
     public Player nearest;
 
-    public TeslaCoilEnt()
+    public TeslaCoilEnt() {}
+
+    public override void Spawn()
     {
         SetModel("models/teslacoil.vmdl");
-
-		SetupPhysicsFromModel(PhysicsMotionType.Dynamic, false);
+		SetupPhysicsFromModel(PhysicsMotionType.Dynamic);
     }
 
     [Event.Tick]

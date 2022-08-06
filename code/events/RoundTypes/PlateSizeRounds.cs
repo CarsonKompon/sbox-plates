@@ -2,7 +2,7 @@ using System.Linq;
 using Sandbox;
 
 
-[PlatesRound]
+ 
 public class BigPlatesRoundType : PlatesRoundAttribute
 {
     public BigPlatesRoundType(){
@@ -18,7 +18,7 @@ public class BigPlatesRoundType : PlatesRoundAttribute
     }
 }
 
-[PlatesRound]
+ 
 public class RandomSizePlatesRoundType : PlatesRoundAttribute
 {
     public RandomSizePlatesRoundType(){
@@ -35,7 +35,7 @@ public class RandomSizePlatesRoundType : PlatesRoundAttribute
     }
 }
 
-[PlatesRound]
+ 
 public class MicroPlatesRoundType : PlatesRoundAttribute
 {
     public MicroPlatesRoundType(){
