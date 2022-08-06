@@ -52,6 +52,16 @@ public partial class RoundQueueScreenUI : WorldPanel
         PanelBounds = new Rect(-width * .5f, -height * .5f, width, height);
 
         Instance = this;
+        Populate();
+    }
+
+    [ClientRpc]
+    public static void Populate()
+    {
+        foreach(var round in PlatesGame.RoundQueue)
+        {
+            AddRound(round.name);
+        }
     }
 
     [ClientRpc]
