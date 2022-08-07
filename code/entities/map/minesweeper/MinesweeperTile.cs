@@ -15,11 +15,16 @@ public partial class MinesweeperTile : Panel
 	public MinesweeperPodium podium;
 	public bool revealed = false;
 	public MinesweeperTileType type;
+	public Player activePlayer = null;
 
+	private Label label;
+
+	public int adjacentMines = 0;
 	public MinesweeperTile()
 	{
 		StyleSheet.Load( "/entities/map/minesweeper/MinesweeperTile.scss" );
 		AddClass( "sweep-tile-wrapper" );
+		label = new Label();
 		button = Add.Button( "crung-oo-lean", () =>
 		{
 			Log.Info( $"{Xval} {Yval} WAS PRESSED, IT WAS A {type}" );
@@ -37,13 +42,14 @@ public partial class MinesweeperTile : Panel
 		Yval = y;
 		button.Text = $"";
 		this.type = type;
-		if ( this.type == MinesweeperTileType.Mine )
+		if ( this.type == MinesweeperTileType.Money )
 		{
-			button.Add.Label( "🍩 CLICK" );
+			button.AddChild( label );
 		}
 	}
 	public override void Tick()
 	{
+		label.Text = $"{adjacentMines}";
 		if ( Input.Pressed( InputButton.Jump ) || Input.Pressed( InputButton.Walk ) || Input.Pressed( InputButton.Duck ) )
 		{
 			// SetActive( false );
@@ -53,6 +59,7 @@ public partial class MinesweeperTile : Panel
 	public void Reset()
 	{
 		this.revealed = false;
+		adjacentMines = 0;
 		//TODO: Make this not random
 		this.type = Rand.Int( 0, 2 ) == 2 ? MinesweeperTileType.Mine : MinesweeperTileType.Money;
 	}
