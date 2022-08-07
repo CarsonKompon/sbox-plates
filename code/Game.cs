@@ -9,7 +9,7 @@ public partial class PlatesGame : Sandbox.Game
 {
 	[Net] public static PlatesGameState GameState {get;set;} = PlatesGameState.STARTING_SOON;
 
-	// Game-related variables:
+	// Game-related variables
 	[Net] public static RealTimeSince GameTimer {get;set;} = -30f;
 	[Net] public static RealTimeSince GameLength {get;set;} = 0f;
 	[Net] public static float LastTimer {get;set;} = -10f;
@@ -20,6 +20,12 @@ public partial class PlatesGame : Sandbox.Game
 	[Net] public static PlatesRoundAttribute GameRound {get;set;}
 	[Net] public static int AffectedPlayers {get;set;} = 0;
 	[Net] public static int TotalAffectedPlayers {get;set;} = 0;
+	
+	// Console variables
+	[ConVar.Replicated("plates_round_timer", Help = "Set the time between rounds in seconds")]
+	public static float TimeBetweenRounds {get;set;} = 10f;
+	[ConVar.Replicated("plates_minimum_players", Help = "Set the minimum required players to start a round")]
+	public static int MinimumRequiredPlayers {get;set;} = 2;
 
 	// Networked text
 	[Net] public static string EventText {get;set;} = "";
@@ -92,7 +98,7 @@ public partial class PlatesGame : Sandbox.Game
 				if(GameTimer >= 0)
 				{
 					GameState = PlatesGameState.STARTING_SOON;
-					GameTimer = -30f;
+					GameTimer = -TimeBetweenRounds;
 				}
 				break;
 			case PlatesGameState.GAME_OVER:
@@ -103,7 +109,7 @@ public partial class PlatesGame : Sandbox.Game
 					{
 						(GameClients[i].Pawn as PlatesPlayer)?.Respawn();
 					}
-					GameTimer = -10f;
+					GameTimer = -TimeBetweenRounds;
 					GameState = PlatesGameState.STARTING_SOON;
 				}
 				break;
@@ -112,7 +118,7 @@ public partial class PlatesGame : Sandbox.Game
 				EventSubtext = "";
 				if(GameTimer >= 0)
 				{
-					if(Client.All.Count > 1)
+					if(Client.All.Count >= MinimumRequiredPlayers)
 					{
 						StartGame();
 					}
@@ -373,7 +379,7 @@ public partial class PlatesGame : Sandbox.Game
 		return true;
 	}
 
-	/// </summary>
+	/// <summary>
 	/// Sends a log to the kill feed
 	/// </summary>
 	[ClientRpc]
@@ -390,7 +396,6 @@ public partial class PlatesGame : Sandbox.Game
 		}
 		if(_showKill) KillFeed.Current?.AddEntry(leftid, left, rightid, right, method);
 	}
-
 }
 
 public class LossInformation : BaseNetworkable

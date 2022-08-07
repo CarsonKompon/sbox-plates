@@ -11,9 +11,20 @@ public class PlateReturnToNormalEvent : PlatesEventAttribute
     }
 
     public override void OnEvent(Plate plate){
-        Plate newPlate = new Plate(plate.Position, 1, plate.owner);
+        Plate newPlate;
+        if(plate.owner.IsValid())
+        {
+            newPlate = new Plate(plate.Position, 1, plate.owner);
+            if(plate.owner is PlatesPlayer ply)
+            {
+                ply.CurrentPlate = newPlate;
+            }
+        }
+        else
+        {
+            newPlate = new Plate(plate.Position, 1, plate.ownerName);
+        }
         newPlate.SetGlow( true, Color.Blue );
-        if(plate.owner is PlatesPlayer ply) ply.CurrentPlate = newPlate; 
         plate.Delete();
     }
 }

@@ -29,33 +29,27 @@ public partial class VitalInfo : Panel
 	}
 
 	public override void Tick(){
-		var player = Local.Pawn as PlatesPlayer;
+		if(Local.Pawn is PlatesPlayer player)
+		{
+			var plateSize = "N/A";
+			if(player.CurrentPlate.IsValid())
+			{
+				plateSize = MathF.Ceiling(player.CurrentPlate.GetSize()*92) + "\"";
+			}
+			InfoPanel.SetClass("open", player.InGame);
 
-		var plateSize = "N/A";
-		var pl = player.CurrentPlate;
-		if(pl.IsValid()) plateSize = MathF.Ceiling(pl.toScale.x*92) + "\""; 
-		InfoPanel.SetClass("open", player.InGame);
+			if(player.Controller is PlatesWalkController){
+				var walkController = ((player as PlatesPlayer).Controller as PlatesWalkController);
+				if(player == null) return;
 
-		if(player.Controller is PlatesWalkController){
-			var walkController = ((player as PlatesPlayer).Controller as PlatesWalkController);
-			if(player == null) return;
+				HealthBar.Style.Width = Length.Percent(player.Health);
 
-			HealthBar.Style.Width = Length.Percent(player.Health);
+				HP.Text = $"HP: {player.Health.CeilToInt()}";
+				Money.Text = "$" + String.Format("{0:n0}", PlatesPlayerData.GetLocalData().Money);
+				Info.Text = $"Speed: {String.Format("{0:0.00}", walkController.Speed)}x\nJump: {String.Format("{0:0.00}", walkController.JumpPower)}x\nPlate Size: {plateSize}";
+			}
 
-			HP.Text = $"HP: {player.Health.CeilToInt()}";
-			Money.Text = "$" + String.Format("{0:n0}", PlatesPlayerData.GetLocalData().Money);
-			Info.Text = $"Speed: {String.Format("{0:0.00}", walkController.Speed)}x\nJump: {String.Format("{0:0.00}", walkController.JumpPower)}x\nPlate Size: {plateSize}";
+			TickAvatar();
 		}
-
-		TickAvatar();
-		/*
-		else if(player.Controller is MarbleController){
-			var walkController = ((player as PlatesPlayer).Controller as MarbleController);
-			if(player == null) return;
-
-			HP.Text = $"HP: {player.Health.CeilToInt()}";
-			Info.Text = $"Speed: 1.00x\nJump: 0.00x\nPlate Size: {plateSize}";
-		}
-		*/
 	}
 }
