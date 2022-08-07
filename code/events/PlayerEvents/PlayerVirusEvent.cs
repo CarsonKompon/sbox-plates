@@ -53,7 +53,7 @@ public partial class PlyVirusEnt : Entity
 
     protected override void OnDestroy()
     {
-        if(IsServer) cure.Delete();
+        if(IsServer) cure?.Delete();
         base.OnDestroy();
     }
 

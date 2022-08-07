@@ -15,7 +15,7 @@ public partial class RoundInfo : Panel
 	//private static Label infoLabel;
 
 	public RoundInfo(){
-        StyleSheet.Load( "/ui/roundinfo.scss" );
+        StyleSheet.Load( "/ui/screen/roundinfo.scss" );
         AddClass( "roundinfo" );
 
         Header = Add.Panel( "header" );

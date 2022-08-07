@@ -15,7 +15,9 @@ public class BarrelDropPlayerEvent : PlatesEventAttribute
         var barrel = new Prop();
         barrel.Position = new Vector3(ent.Position.x+Rand.Int(-60,60), ent.Position.y+Rand.Int(-60,60), 10000);
         barrel.Rotation = Rotation.From(new Angles(Rand.Float()*360,Rand.Float()*360,Rand.Float()*360));
+        barrel.AngularVelocity = new Angles(Rand.Float()*5,Rand.Float()*5,Rand.Float()*5) * Rand.FromArray(new int[] {1,-1});
         barrel.SetModel("models/rust_props/barrels/fuel_barrel.vmdl");
+        PlatesGame.AddEntity(barrel);
     }
 }
 

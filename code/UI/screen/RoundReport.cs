@@ -16,7 +16,7 @@ public partial class RoundReport : Panel
     private static RealTimeSince Timer = 0f;
 
 	public RoundReport(){
-        StyleSheet.Load( "/ui/roundreport.scss" );
+        StyleSheet.Load( "/ui/screen/roundreport.scss" );
         AddClass( "roundreport" );
 
         Header = Add.Panel( "header" );

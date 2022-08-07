@@ -16,7 +16,6 @@ public partial class PlatesHud : HudEntity<RootPanel>
         RootPanel.AddChild<RoundReport>();
 
         RootPanel.AddChild<InventoryBar>();
-
         RootPanel.AddChild<Crosshair>();
 
         RootPanel.AddChild<PlatesChatBox>();

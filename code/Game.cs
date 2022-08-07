@@ -30,7 +30,7 @@ public partial class PlatesGame : Sandbox.Game
 		if(IsServer)
 		{
 			// Create the HUD Instance
-			new PlatesHud();
+			_ = new PlatesHud();
 
 			// Load the game events
 			LoadEvents();

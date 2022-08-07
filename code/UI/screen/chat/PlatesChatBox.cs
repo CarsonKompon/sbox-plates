@@ -14,7 +14,7 @@ public partial class PlatesChatBox : Panel
 	{
 		Current = this;
 
-		StyleSheet.Load( "/ui/chat/plateschatbox.scss" );
+		StyleSheet.Load( "/ui/screen/chat/plateschatbox.scss" );
 
 		Canvas = Add.Panel( "chat_canvas" );
 
