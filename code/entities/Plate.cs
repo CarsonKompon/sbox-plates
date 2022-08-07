@@ -12,7 +12,6 @@ public partial class Plate : MeshEntity
     [Net] public Client owner {get;set;} = null;
     [Net] public string ownerName {get;set;}
     [Net] public bool isDead {get;set;} = false;
-    [Net] public DateTime deathTime {get;set;} 
 
     [Net] public List<Entity> PlateEnts {get;set;} = new();
     [Net] public Vector3 TargetPostion {get;set;}
@@ -20,6 +19,8 @@ public partial class Plate : MeshEntity
     [Net] private Vector3 MovementSpeed {get;set;}
     private Glow glow;
     private PlateNameTag plateTag = null;
+
+    int fadeOutIncrement = 0;
 
     public Plate(){}
 
@@ -58,7 +59,6 @@ public partial class Plate : MeshEntity
         RenderColor = Color.White;
     }
 
-    [Event.Tick]
     public override void Tick(){
         base.Tick();
 
@@ -73,32 +73,30 @@ public partial class Plate : MeshEntity
         {
             ConstructModel();
         }
+    }
 
-        if(IsServer)
+    [Event.Tick.Server]
+    public void ServerTick()
+    {
+        if(scale.x <= 0 || scale.y <= 0 || scale.z <= 0)
         {
-            if(scale.x <= 0 || scale.y <= 0 || scale.z <= 0)
-            {
-                Delete();
-            }
+            Delete();
+        }
 
-            if(MovementTime < 0f)
-            {
-                //if(motionType == PhysicsMotionType.Static) SetMotionType(PhysicsMotionType.Dynamic);
-                Position += MovementSpeed;
-                Velocity = MovementSpeed;
-            }
+        if(MovementTime < 0f)
+        {
+            //if(motionType == PhysicsMotionType.Static) SetMotionType(PhysicsMotionType.Dynamic);
+            Position += MovementSpeed;
+            Velocity = MovementSpeed;
         }
 
         if(isDead)
         {
-            if(RenderColor.a > 0)
+            if(fadeOutIncrement % 2 == 0 && RenderColor.a > 0f)
             {
-                SetAlpha(RenderColor.a - 1.0f/(7*60.0f));
-                if(IsServer && RenderColor.a <= 0)
-                {
-                    Delete();
-                }
+                SetAlpha(RenderColor.a - 0.004f);
             }
+            fadeOutIncrement++;
         }
     }
 
@@ -122,11 +120,9 @@ public partial class Plate : MeshEntity
     public void Kill(){
         if(!isDead){
             Sound.FromEntity("plates_death", this);
-            isDead = true;
             SetColor(Color.Red);
-            deathTime = DateTime.Now;
-            //MoveTo(Position+Vector3.Up,8);
             DeleteAsync(7);
+            isDead = true;
         }
     }
 

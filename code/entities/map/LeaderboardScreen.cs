@@ -6,7 +6,7 @@ using SandboxEditor;
 using System;
 using System.Net;
 
-[Library("plates_leaderboard_screen", Description = "A screen that displays the top ranks in a leaderboard"), HammerEntity]
+[Library("plates_screen_leaderboard", Description = "A screen that displays the top ranks in a leaderboard"), HammerEntity]
 [EditorModel("models/leaderboard_screen.vmdl")]
 public partial class LeaderboardScreen : Prop
 {
@@ -15,7 +15,7 @@ public partial class LeaderboardScreen : Prop
     {
         base.Spawn();
         SetModel("models/leaderboard_screen.vmdl");
-        SetupPhysicsFromModel(PhysicsMotionType.Keyframed);
+        SetupPhysicsFromModel(PhysicsMotionType.Static);
         EnableAllCollisions = true;
         Tags.Add("solid");
     }

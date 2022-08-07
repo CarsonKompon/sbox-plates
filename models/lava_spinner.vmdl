@@ -28,16 +28,12 @@
 				children = 
 				[
 					{
-						_class = "PhysicsShapeBox"
+						_class = "PhysicsHullFromRender"
 						parent_bone = ""
 						surface_prop = "default"
-						collision_group = ""
-						collision_interact_as = ""
-						collision_interact_with = ""
-						collision_interact_exclude = ""
-						origin = [ 0.0, 0.0, 0.0 ]
-						angles = [ 0.0, 0.0, 0.0 ]
-						dimensions = [ 233.5, 5.0, 5.0 ]
+						collision_tags = "solid"
+						faceMergeAngle = 20.0
+						maxHullVertices = 32
 					},
 				]
 			},
@@ -64,31 +60,10 @@
 					},
 				]
 			},
-			{
-				_class = "GameDataList"
-				children = 
-				[
-					{
-						_class = "GenericGameData"
-						game_class = "prop_data"
-						game_keys = 
-						{
-							base = ""
-							allowstatic = true
-							bakelighting = true
-							spawn_motion_disabled = false
-							health = -1.0
-							min_impact_damage_speed = 0.0
-							impact_damage = 10.0
-							parent_bodygroup_name = ""
-							parent_bodygroup_value = 0
-						}
-					},
-				]
-			},
 		]
 		model_archetype = "physics_prop_model"
 		primary_associated_entity = "prop_physics"
 		anim_graph_name = ""
+		base_model_name = ""
 	}
 }

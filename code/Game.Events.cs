@@ -179,15 +179,29 @@ public partial class PlatesGame
 	[ConCmd.Admin("plates_round", Help = "Adds a round to the queue for the round list")]
 	public static void QueueRound(string roundName)
 	{
-		var _round = GetRoundFromCommand(roundName);
-		if(_round == null)
+		var round = GetRoundFromCommand(roundName);
+		if(round == null)
 		{
 			Log.Error("PLATES: There is no round with name " + roundName);
 		}
 		else
 		{
-			RoundQueue.Add(_round);
-			Log.Info("PLATES: " + roundName + " added to round queue");
+			QueueRound(round);
+            Log.Info("PLATES: " + roundName + " added to round queue");
 		}
-	}
+    }
+
+    public static void QueueRound(PlatesRoundAttribute round = null)
+    {
+		if(round == null)
+		{
+			do
+			{
+				round = Rand.FromList(RoundTypes);
+			}
+			while(RoundQueue.Count > 0 && round == RoundQueue[RoundQueue.Count-1]);
+		}
+        RoundQueue.Add(round);
+        RoundQueueScreenUI.AddRound(round.name);
+    }
 }
