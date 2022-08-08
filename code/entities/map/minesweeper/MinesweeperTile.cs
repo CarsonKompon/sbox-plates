@@ -2,18 +2,28 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-public enum MinesweeperTileType
-{
-	Money,
-	Mine,
-};
 public partial class MinesweeperTile : Panel
 {
 	public int Xval;
 	public int Yval;
 	private Button button;
-	public MinesweeperPodium podium;
-	public bool revealed = false;
+	public MinesweeperUI SweepUI;
+	private bool _revealed = false;
+	public bool revealed
+	{
+		get
+		{
+			return _revealed;
+		}
+		set
+		{
+			_revealed = value;
+			if ( value )
+			{
+				this.AddClass( "revealed" );
+			}
+		}
+	}
 	public MinesweeperTileType type;
 	public Player activePlayer = null;
 
@@ -25,35 +35,59 @@ public partial class MinesweeperTile : Panel
 		StyleSheet.Load( "/entities/map/minesweeper/MinesweeperTile.scss" );
 		AddClass( "sweep-tile-wrapper" );
 		label = new Label();
-		button = Add.Button( "crung-oo-lean", () =>
-		{
-			Log.Info( $"{Xval} {Yval} WAS PRESSED, IT WAS A {type}" );
-			this.AddClass( "revealed" );
-			this.revealed = true;
-			// Sound.FromEntity( "captain morgan spiced h", podium );
-
-		} );
+		button = Add.Button( "crung-oo-lean", RevealTile );
 		button.AddClass( "sweep-tile" );
 	}
-	public MinesweeperTile( MinesweeperTileType type, int x, int y, MinesweeperPodium podi ) : this()
+	public MinesweeperTile( MinesweeperUI inpUI, MinesweeperTileType type, int x, int y ) : this()
 	{
-		podium = podi;
+		SweepUI = inpUI;
 		Xval = x;
 		Yval = y;
-		button.Text = $"";
+		button.Text = $"{Xval},{Yval}";
 		this.type = type;
 		if ( this.type == MinesweeperTileType.Money )
 		{
+			AddClass( "money" );
 			button.AddChild( label );
+		}
+		else
+		{
+			AddClass( "mine" );
 		}
 	}
 	public override void Tick()
 	{
-		label.Text = $"{adjacentMines}";
+		label.Text = $"{(adjacentMines != 0 ? adjacentMines : "")}";
+		switch ( adjacentMines )
+		{
+			case 1:
+				label.Style.FontColor = Color.Green;
+				break;
+			case 2:
+				label.Style.FontColor = Color.Yellow;
+				break;
+			case 3:
+				label.Style.FontColor = Color.Orange;
+				break;
+			case 4:
+				label.Style.FontColor = Color.Red;
+				break;
+			default:
+				label.Style.FontColor = Color.White;
+				break;
+		}
 		if ( Input.Pressed( InputButton.Jump ) || Input.Pressed( InputButton.Walk ) || Input.Pressed( InputButton.Duck ) )
 		{
 			// SetActive( false );
 		}
+	}
+
+	public void RevealTile()
+	{
+		Log.Info( $"{Xval} {Yval} WAS PRESSED, IT WAS A {type}" );
+		Log.Info( $"{SweepUI}" );
+		// this.revealed = true;
+
 	}
 
 	public void Reset()
