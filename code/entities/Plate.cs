@@ -14,7 +14,7 @@ public partial class Plate : MeshEntity
     [Net] public bool isDead {get;set;} = false;
 
     [Net] public List<Entity> PlateEnts {get;set;} = new();
-    [Net] public Vector3 TargetPostion {get;set;}
+    [Net] private Vector3 TargetPosition {get;set;}
     [Net] private RealTimeSince MovementTime {get;set;}
     [Net] private Vector3 MovementSpeed {get;set;}
     private Glow glow;
@@ -29,7 +29,7 @@ public partial class Plate : MeshEntity
         Tags.Add("plate");
         Position = pos;
         ownerName = own;
-        TargetPostion = Position;
+        TargetPosition = Position;
         
         var _newScale = new Vector3(size, size, 0.03f);
         scale = _newScale;
@@ -145,12 +145,6 @@ public partial class Plate : MeshEntity
         PlateEnts.Add(ent);
     }
 
-    public void SetMotionType(PhysicsMotionType type)
-    {
-        motionType = type;
-        SetupPhysicsFromModel(motionType);
-    }
-
     public void SetColor(Color color)
     {
         RenderColor = color;//.WithAlpha(RenderColor.a);
@@ -169,17 +163,30 @@ public partial class Plate : MeshEntity
         glow.Active = visible;
     }
 
-    public void Raise(float _amount, float _time = 1f)
+    public void SetPosition(Vector3 target)
     {
-        TargetPostion = TargetPostion.WithZ(TargetPostion.z + _amount);
-        if(MovementTime > 0) MovementTime = 0f;
-        MovementTime -= _time;
-        MovementSpeed = (TargetPostion - Position) / (Math.Abs(MovementTime) * 60f);
+        Position = target;
+        TargetPosition = target;
+        MovementTime = 0f;
+        MovementSpeed = Vector3.Zero;
     }
 
-    public void Lower(float _amount, float _time = 1f)
+    new public void MoveTo(Vector3 target, float time = 1f)
     {
-        Raise(-_amount, _time);
+        TargetPosition = target;
+        if(MovementTime > 0) MovementTime = 0f;
+        MovementTime -= time;
+        MovementSpeed = (TargetPosition - Position) / (Math.Abs(MovementTime) * 60f);
+    }
+
+    public void MoveToLocal(Vector3 localTarget, float time = 1f)
+    {
+        MoveTo(TargetPosition + localTarget, time);
+    }
+
+    public void Rise(float amount, float time = 1f)
+    {
+        MoveTo(TargetPosition.WithZ(TargetPosition.z + amount), time);
     }
 
     public void SetSize(float _size)

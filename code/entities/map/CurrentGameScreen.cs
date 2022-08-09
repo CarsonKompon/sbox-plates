@@ -105,7 +105,6 @@ public partial class CurrentGameScreenUI : WorldPanel
 
     public void Populate(CurrentGameScreen own = null)
     {
-        Log.Info("WE RUNNIN IN THIS");
         ContentInGame.DeleteChildren();
         //ContentEliminated.DeleteChildren();
         if(own != null) owner = own;
