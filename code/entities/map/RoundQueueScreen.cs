@@ -5,12 +5,18 @@ using Sandbox.UI.Construct;
 using SandboxEditor;
 using System;
 using System.Net;
+using System.Collections.Generic;
+using System.Linq;
 
 [Library("plates_screen_round_queue", Description = "A screen that displays the top ranks in a leaderboard"), HammerEntity]
 [EditorModel("models/leaderboard_screen.vmdl")]
 public partial class RoundQueueScreen : Prop
 {
+    public static RoundQueueScreen Instance = null;
+    public List<string> RoundQueue = new();
     private RoundQueueScreenUI screen = null;
+    private RealTimeSince timer = 0f;
+
     public override void Spawn()
     {
         base.Spawn();
@@ -18,69 +24,104 @@ public partial class RoundQueueScreen : Prop
         SetupPhysicsFromModel(PhysicsMotionType.Static);
         EnableAllCollisions = true;
         Tags.Add("solid");
+        Instance = this;
     }
 
-    [Event.Tick]
-    public void Tick()
+    public override void ClientSpawn()
     {
-        if(IsClient && screen == null)
-        {
-            screen = new RoundQueueScreenUI(Scale);
-            screen.Position = Position + (Rotation.Up * (64 * Scale)) + (Rotation.Left * (5.25f * Scale));
-            screen.Rotation = Rotation.LookAt(Rotation.Left);
-        }
-    }
-}
+        screen = new RoundQueueScreenUI(this, Scale);
+        screen.Position = Position + (Rotation.Up * (64 * Scale)) + (Rotation.Left * (5.25f * Scale));
+        screen.Rotation = Rotation.LookAt(Rotation.Left);
 
-public partial class RoundQueueScreenUI : WorldPanel
-{
-    public RealTimeSince TimeSinceUpdate = 0f;
-    public Label Header;
-    public Panel Content;
-    public static RoundQueueScreenUI Instance;
-
-    public RoundQueueScreenUI(){}
-    public RoundQueueScreenUI(float scale)
-    {
-        StyleSheet.Load("/entities/map/roundqueuescreen.scss");
-
-        Header = Add.Label("Round Queue", "header");
-        Add.Label("This screen is WIP and is not working properly yet", "subheader"); // TODO: Remove this when fixed
-        Content = Add.Panel("content");
-
-        var width = 96 * 20 * scale;
-        var height = 128 * 20 * scale;
-        PanelBounds = new Rect(-width * .5f, -height * .5f, width, height);
+        PlatesGame.RequestRoundQueueForScreen();
 
         Instance = this;
-        Populate();
     }
 
-    public override void Tick()
+    [Event.Tick.Client]
+    public void ClientTick()
     {
-        if(TimeSinceUpdate > 5f)
+        if(timer > 5f)
         {
-            if(Content.ChildrenCount == 0)
+            if(RoundQueue.Count == 0)
             {
-                Populate();
+                PlatesGame.RequestRoundQueueForScreen();
             }
-            TimeSinceUpdate = 0f;
+            timer = 0f;
         }
     }
 
     [ClientRpc]
-    public static void Populate()
+    public static void Populate(string[] rounds)
     {
-        foreach(var round in PlatesGame.RoundQueue)
+        if(Instance.RoundQueue.Count == 0)
         {
-            AddRound(round.name);
+            Instance.RoundQueue = rounds.ToList();
+            Instance?.screen?.Populate(Instance);
         }
     }
 
     [ClientRpc]
     public static void AddRound(string name)
     {
-        var e = Instance.Content.AddChild<RoundQueueScreenUIEntry>();
+        Instance?.screen?.AddRound(name);
+    }
+
+    [ClientRpc]
+    public static void RemoveLatest()
+    {
+        Instance?.screen?.RemoveLatest();
+    }
+}
+
+public partial class RoundQueueScreenUI : WorldPanel
+{
+    public RoundQueueScreen owner;
+    public Label Header;
+    public Panel Content;
+
+    public RoundQueueScreenUI(){}
+    public RoundQueueScreenUI(RoundQueueScreen own, float scale)
+    {
+        StyleSheet.Load("/entities/map/roundqueuescreen.scss");
+
+        Header = Add.Label("Round Queue", "header");
+        //Add.Label("This screen is WIP and is not working properly yet", "subheader");
+        Content = Add.Panel("content");
+
+        owner = own;
+
+        var width = 96 * 20 * scale;
+        var height = 128 * 20 * scale;
+        PanelBounds = new Rect(-width * .5f, -height * .5f, width, height);
+    }
+
+    // [Event.Tick.Client]
+    // public void ClientTick()
+    // {
+    //     if(TimeSinceUpdate > 5f)
+    //     {
+    //         if(Content.ChildrenCount == 0)
+    //         {
+    //             Populate();
+    //         }
+    //         TimeSinceUpdate = 0f;
+    //     }
+    // }
+
+    public void Populate(RoundQueueScreen own)
+    {
+        Content.DeleteChildren();
+        owner = own;
+        foreach(var round in owner.RoundQueue)
+        {
+            AddRound(round);
+        }
+    }
+
+    public void AddRound(string name)
+    {
+        var e = Content.AddChild<RoundQueueScreenUIEntry>();
         e.Name.Text = name;
         // foreach(var child in Instance.Content.Children)
         // {
@@ -98,14 +139,9 @@ public partial class RoundQueueScreenUI : WorldPanel
         // }
     }
 
-    [ClientRpc]
-    public static void RemoveLatest()
+    public void RemoveLatest()
     {
-        foreach(var child in Instance.Content.Children)
-        {
-            child.Delete();
-            break;
-        }
+        Content.Children.ToList()[0]?.Delete();
     }
 }
 

@@ -13,7 +13,7 @@ public class PlateRiseEvent : PlatesEventAttribute
     }
 
     public override void OnEvent(Plate plate){
-        plate.Raise(50f);
+        plate.Rise(50f);
     }
 }
 
@@ -27,7 +27,7 @@ public class PlateLowerEvent : PlatesEventAttribute
     }
     
     public override void OnEvent(Plate plate){
-        plate.Lower(50f);
+        plate.Rise(-50f);
     }
 }
 
@@ -41,7 +41,7 @@ public class PlateRiseRandomEvent : PlatesEventAttribute
     }
 
     public override void OnEvent(Plate plate){
-        plate.Raise(Rand.Float(-100,100));
+        plate.Rise(Rand.Float(-100,100));
     }
 }
 

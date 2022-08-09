@@ -53,21 +53,21 @@ currentgamescreenui
             margin-left: 2px;
             margin-right: 2px;
             transform: scaleX(1);
-            opacity: 1;
-            transition: all 0.2s ease-in;
+            // opacity: 1;
+            // transition: all 0.2s ease-in;
             text-align: center;
 
-            &:intro
-            {
-                opacity: 0;
-            }
+            // &:intro
+            // {
+            //     opacity: 0;
+            // }
 
-            &:outro
-            {
-                transition: all 1s ease-in;
-                opacity: 0;
-                top: 10%;
-            }
+            // &:outro
+            // {
+            //     transition: all 1s ease-in;
+            //     opacity: 0;
+            //     top: 10%;
+            // }
 
             .avatar
             {

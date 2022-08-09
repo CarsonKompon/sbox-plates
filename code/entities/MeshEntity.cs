@@ -9,7 +9,8 @@ public partial class MeshEntity : ModelEntity
 	[Net, Predicted] public Vector3 scale {get;set;} = new Vector3(1f, 1f, 0.03f);
 	[Net, Predicted] public Vector3 toScale {get;set;} = new Vector3(1f, 1f, 0.03f);
 	public PhysicsMotionType motionType = PhysicsMotionType.Static;
-    public string surface = "normal";
+    private string material = "materials/plate.vmat";
+	private string surface = "normal";
 	private string _lastModel;
 	private string _lastMaterial;
 
@@ -46,9 +47,15 @@ public partial class MeshEntity : ModelEntity
         ConstructModel();
     }
 
+	public void SetMaterial(string newMaterial)
+    {
+		material = newMaterial;
+        ConstructModel();
+    }
+
 	public void ConstructModel()
 	{
-		ModelString = VertexMeshBuilder.GenerateRectangleServer((int)MathX.Floor(scale.x*200), (int)MathX.Floor(scale.y*200), (int)MathX.Floor(scale.z*200), surface);
+		ModelString = VertexMeshBuilder.GenerateRectangleServer((int)MathX.Floor(scale.x*200), (int)MathX.Floor(scale.y*200), (int)MathX.Floor(scale.z*200), material, surface);
 		Model = VertexModel;
 		SetupPhysicsFromModel(motionType);
 	}

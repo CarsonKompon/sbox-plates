@@ -43,6 +43,7 @@ public class PlateFlipEvent : PlatesEventAttribute
         name = "plate_flip";
         text = " plate(s) will flip in ";
         type = EventType.Plate;
+        hidden = true;
     }
 
     public override void OnEvent(Plate plate){

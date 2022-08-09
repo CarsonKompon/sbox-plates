@@ -17,7 +17,6 @@ public partial class PlatesPlayer : Player
 	[Net] public Plate CurrentPlate { get; set; }
 	[Net] public int EventCount { get; set; } = 0;
 	[Net] public bool InGame { get; set; } = false;
-	private NameTag nameTag = null;
 
 	public PlatesPlayer()
 	{
@@ -30,7 +29,7 @@ public partial class PlatesPlayer : Player
 		glow.RangeMax = 2000;
 		glow.Color = Color.Blue;
 
-		Inventory = new Inventory(this);
+		Inventory = new Inventory( this );
 	}
 
 	public PlatesPlayer( Client cl ) : this()
@@ -47,6 +46,11 @@ public partial class PlatesPlayer : Player
 			RenderColor = Color.White;
 			Velocity = Vector3.Zero;
 		}
+	}
+
+	public override void ClientSpawn()
+	{
+		base.ClientSpawn();
 	}
 
 	public override void Respawn()
@@ -95,8 +99,6 @@ public partial class PlatesPlayer : Player
 			child.EnableDrawing = false;
 		}
 
-		if ( nameTag != null ) nameTag.Delete();
-
 		Inventory.DropActive();
 		Inventory.DeleteContents();
 	}
@@ -104,7 +106,6 @@ public partial class PlatesPlayer : Player
 	protected override void OnDestroy()
 	{
 		base.OnDestroy();
-		if ( nameTag != null ) nameTag.Delete();
 	}
 
 	public override void TakeDamage( DamageInfo info )
@@ -124,15 +125,6 @@ public partial class PlatesPlayer : Player
 		// if ( DevController != null ) return DevController;
 
 		return base.GetActiveController();
-	}
-
-	[Event.Tick]
-	public void Tick()
-	{
-		if ( IsClient && nameTag == null && Client != Local.Client )
-		{
-			nameTag = new NameTag( this );
-		}
 	}
 
 	public override void Simulate( Client cl )

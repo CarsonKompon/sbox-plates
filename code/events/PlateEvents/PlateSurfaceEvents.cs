@@ -1,15 +1,16 @@
 using Sandbox;
 
  
-public class PlateSlipperyEvent : PlatesEventAttribute
+public class PlateIceEvent : PlatesEventAttribute
 {
-    public PlateSlipperyEvent(){
-        name = "plate_slippery";
-        text = " plate(s) will become slippery in ";
+    public PlateIceEvent(){
+        name = "plate_ice";
+        text = " plate(s) will become an ice rink in ";
         type = EventType.Plate;
     }
 
     public override void OnEvent(Plate plate){
         plate.SetSurface("plate_slippery");
+        plate.SetMaterial("materials/plate_ice.vmat");
     }
 }

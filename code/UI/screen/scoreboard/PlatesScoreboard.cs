@@ -18,7 +18,7 @@ namespace Sandbox.UI
 
 		public PlatesScoreboard()
 		{
-			StyleSheet.Load( "/ui/scoreboard/platesscoreboard.scss" );
+			StyleSheet.Load( "/ui/screen/scoreboard/platesscoreboard.scss" );
 			AddClass( "scoreboard" );
 
 			AddHeader();

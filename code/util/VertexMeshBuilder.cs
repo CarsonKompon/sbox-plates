@@ -8,9 +8,9 @@ public partial class VertexMeshBuilder
 {
 	public List<MeshVertex> vertices = new();
 	public static Dictionary<string, Model> Models = new();
-	public static string CreateRectangleModel(Vector3 size, string surface)
+	public static string CreateRectangleModel(Vector3 size, string material, string surface)
 	{
-		var key = $"rect_{size.x}_{size.y}_{size.z}_{surface}";
+		var key = $"rect_{size.x}_{size.y}_{size.z}_{material}_{surface}";
 		if (Models.ContainsKey(key))
 		{
 			return key;
@@ -21,7 +21,7 @@ public partial class VertexMeshBuilder
 		var vertexBuilder = new VertexMeshBuilder();
 		vertexBuilder.AddRectangle(Vector3.Zero, size, 64, Color.White);
 
-		var mesh = new Mesh(Material.Load("materials/plate.vmat"));
+		var mesh = new Mesh(Material.Load(material));
 
 		mesh.CreateVertexBuffer<MeshVertex>(vertexBuilder.vertices.Count, MeshVertex.Layout, vertexBuilder.vertices.ToArray());
 		mesh.SetBounds(mins, maxs);
@@ -37,27 +37,27 @@ public partial class VertexMeshBuilder
 		return key;
 	}
 
-	public static MeshEntity SpawnEntity(int length, int width, int height, string surface)
+	public static MeshEntity SpawnEntity(int length, int width, int height, string material, string surface)
 	{
-		var vertexModel = GenerateRectangleServer(length, width, height, surface);
+		var vertexModel = GenerateRectangleServer(length, width, height, material, surface);
 		MeshEntity entity = new() { ModelString = vertexModel };
 		entity.Tick();
 		return entity;
 	}
 
 	[ClientRpc]
-	public static void GenerateRectangleClient(int length, int width, int height, string surface)
+	public static void GenerateRectangleClient(int length, int width, int height, string material, string surface)
 	{
-		GenerateRectangle(length, width, height, surface);
+		GenerateRectangle(length, width, height, material, surface);
 	}
-	public static string GenerateRectangleServer(int length, int width, int height, string surface)
+	public static string GenerateRectangleServer(int length, int width, int height, string material, string surface)
 	{
-		GenerateRectangleClient(length, width, height, surface);
-		return GenerateRectangle(length, width, height, surface);
+		GenerateRectangleClient(length, width, height, material, surface);
+		return GenerateRectangle(length, width, height, material, surface);
 	}
-	public static string GenerateRectangle(int length, int width, int height, string surface)
+	public static string GenerateRectangle(int length, int width, int height, string material, string surface)
 	{
-		return CreateRectangleModel(new Vector3(length, width, height), surface);
+		return CreateRectangleModel(new Vector3(length, width, height), material, surface);
 	}
 
 	private void AddRectangle(Vector3 position, Vector3 size, int texSize, Color color = new Color())
