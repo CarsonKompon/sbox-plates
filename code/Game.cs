@@ -203,8 +203,12 @@ public partial class PlatesGame : Sandbox.Game
 	/// <summary>
 	/// Ends a game of Plates assuming one is already in progress
 	/// </summary>
+	[ConCmd.Admin("plates_end", Help = "Forces the game to end if one is active")]
 	public static void EndGame()
 	{
+		// If game isn't active, do nothing
+		if((int)GameState <= (int)PlatesGameState.STARTING_SOON) return;
+
 		// Make sure winners are set proper
 		foreach(var client in GameClients)
 		{
