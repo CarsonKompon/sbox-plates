@@ -46,7 +46,7 @@ public partial class MinesweeperUI : WorldPanel
 		// 	FillBoard();
 		// }
 	}
-	public void FillBoard( IList<MinesweeperTileType> sweepers )
+	public void FillBoard( IList<MinesweeperTileType> sweepers, IList<bool> revealedPanels )
 	{
 		Tiles = new List<MinesweeperTile>( podium.gameState.dimensions ^ 2 );
 		for ( int forX = 0; forX < podium.gameState.dimensions; forX++ )
@@ -55,7 +55,55 @@ public partial class MinesweeperUI : WorldPanel
 			for ( int forY = 0; forY < podium.gameState.dimensions; forY++ )
 			{
 				Log.Info( $"Setting a {sweepers[forY * podium.gameState.dimensions + forX]}" );
-				GameContainer.AddChild( new MinesweeperTile( this, sweepers[forY * podium.gameState.dimensions + forX], forX, forY ) );
+				MinesweeperTile t = new MinesweeperTile( this, sweepers[forY * podium.gameState.dimensions + forX], forX, forY );
+				t.revealed = revealedPanels[forY * podium.gameState.dimensions + forX];
+				GameContainer.AddChild( t );
+
+				Tiles.Add( t );
+			}
+		}
+
+		for ( int forX = 0; forX < podium.gameState.dimensions; forX++ )
+		{
+			//y
+			for ( int forY = 0; forY < podium.gameState.dimensions; forY++ )
+			{
+				MinesweeperTileType targetTile = Tiles[forY * podium.gameState.dimensions + forX].type;
+				// 1 = up, 2 = down, 3 = left, 4 = right
+				Vector2[] tilesToCheck = new Vector2[4];
+				Array.Fill( tilesToCheck, new Vector2( -1, -1 ) );
+				// Log.Info( $"tile {forX}, {forY}" );
+				if ( forY != 0 )
+				{
+					tilesToCheck[0] = new Vector2( forX, forY ) + Vector2.Down;
+				}
+				if ( forX != 0 )
+				{
+					tilesToCheck[1] = new Vector2( forX, forY ) + Vector2.Right;
+				}
+				if ( forY != 4 )
+				{
+					tilesToCheck[2] = new Vector2( forX, forY ) + Vector2.Up;
+				}
+				if ( forX != 4 )
+				{
+					tilesToCheck[3] = new Vector2( forX, forY ) + Vector2.Left;
+				}
+
+				foreach ( var coords in tilesToCheck )
+				{
+					int[] coordsAsInt = new int[2] { Convert.ToInt32( Math.Round( coords.x ) ), Convert.ToInt32( Math.Round( coords.y ) ) };
+					if ( coordsAsInt[0] != -1 && coordsAsInt[1] != -1 )
+					{
+						// Log.Info( $"looking for {coords}" );
+						MinesweeperTileType tiletocheck = Tiles[coordsAsInt[1] * podium.gameState.dimensions + coordsAsInt[0]].type;
+						if ( Tiles[coordsAsInt[1] * podium.gameState.dimensions + coordsAsInt[0]].type == MinesweeperTileType.Mine )
+						{
+							Tiles[forY * podium.gameState.dimensions + forX].adjacentMines++;
+						};
+
+					}
+				}
 			}
 		}
 		populated = true;

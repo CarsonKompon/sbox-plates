@@ -29,7 +29,6 @@ public partial class MinesweeperGameState : Entity
 	public MinesweeperGameState()
 	{
 		Tiles = new List<MinesweeperTileType>( new MinesweeperTileType[dimensions * dimensions] );
-		Log.Info( $"{Tiles.Count}" );
 		revealedTiles = new List<bool>( new bool[dimensions * dimensions] );
 		Log.Info( $"setting UI for {UIState}" );
 	}
@@ -37,11 +36,13 @@ public partial class MinesweeperGameState : Entity
 	public void handleTileClick( int x, int y )
 	{
 		MinesweeperTileType target = Tiles[y * dimensions + x];
+		revealedTiles[y * dimensions + x] = true;
 		Log.Info( $"{target}" );
 	}
 	private void SetupMines()
 	{
 
+		Tiles = new List<MinesweeperTileType>( new MinesweeperTileType[dimensions * dimensions] );
 		Log.Info( $"Setting up ms grid for x: {dimensions}, y: {dimensions}" );
 		// Mine Generation
 		for ( int forX = 0; forX < dimensions; forX++ )
@@ -61,12 +62,12 @@ public partial class MinesweeperGameState : Entity
 		// // Adjacent Mine Labelling
 		//TODO: this can probably be better
 
-		// for ( int forX = 0; forX < Tiles.GetLength( 0 ); forX++ )
+		// for ( int forX = 0; forX < dimensions; forX++ )
 		// {
 		// 	//y
-		// 	for ( int forY = 0; forY < Tiles.GetLength( 1 ); forY++ )
+		// 	for ( int forY = 0; forY < dimensions; forY++ )
 		// 	{
-		// 		MinesweeperTileType targetTile = Tiles[forX, forY];
+		// 		MinesweeperTileType targetTile = Tiles[forY * dimensions + forX];
 		// 		// 1 = up, 2 = down, 3 = left, 4 = right
 		// 		Vector2[] tilesToCheck = new Vector2[4];
 		// 		Array.Fill( tilesToCheck, new Vector2( -1, -1 ) );
@@ -94,10 +95,10 @@ public partial class MinesweeperGameState : Entity
 		// 			if ( coordsAsInt[0] != -1 && coordsAsInt[1] != -1 )
 		// 			{
 		// 				// Log.Info( $"looking for {coords}" );
-		// 				MinesweeperTileType tiletocheck = Tiles[coordsAsInt[0], coordsAsInt[1]];
-		// 				if ( Tiles[coordsAsInt[0], coordsAsInt[1]].type == MinesweeperTileType.Mine )
+		// 				MinesweeperTileType tiletocheck = Tiles[coordsAsInt[1] * dimensions + coordsAsInt[0]];
+		// 				if ( Tiles[coordsAsInt[1] * dimensions + coordsAsInt[0]] == MinesweeperTileType.Mine )
 		// 				{
-		// 					targetTile.adjacentMines++;
+		// 					adjacentMines[forY * dimensions + forX]++;
 		// 				};
 
 		// 			}

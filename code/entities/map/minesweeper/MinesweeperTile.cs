@@ -34,8 +34,9 @@ public partial class MinesweeperTile : Panel
 	{
 		StyleSheet.Load( "/entities/map/minesweeper/MinesweeperTile.scss" );
 		AddClass( "sweep-tile-wrapper" );
+		AddEventListener( "onclick", RevealTile );
 		label = new Label();
-		button = Add.Button( "crung-oo-lean", RevealTile );
+		button = Add.Button( "crung-oo-lean" );
 		button.AddClass( "sweep-tile" );
 	}
 	public MinesweeperTile( MinesweeperUI inpUI, MinesweeperTileType type, int x, int y ) : this()
@@ -86,7 +87,9 @@ public partial class MinesweeperTile : Panel
 	{
 		Log.Info( $"{Xval} {Yval} WAS PRESSED, IT WAS A {type}" );
 		Log.Info( $"{SweepUI}" );
-		// this.revealed = true;
+
+		SweepUI.podium.gameState.handleTileClick( Xval, Yval );
+		revealed = true;
 
 	}
 

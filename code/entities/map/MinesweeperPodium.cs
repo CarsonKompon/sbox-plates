@@ -79,7 +79,7 @@ public partial class MinesweeperPodium : Prop, IUse
 		{
 			Log.Info( $"{item}" );
 		}
-		screen.FillBoard( gameState.Tiles );
+		screen.FillBoard( gameState.Tiles, gameState.revealedTiles );
 	}
 	[ClientRpc]
 	public void ClearBoard()
