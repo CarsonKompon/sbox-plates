@@ -1,6 +1,6 @@
 using Sandbox;
 
-public partial class MeshEntity : ModelEntity
+public partial class MeshEntity : Prop
 {
 	[Net] public string ModelString { get; set; }
 	[Net] public string MaterialOverride { get; set; } = "";

@@ -15,8 +15,10 @@ public partial class Plate : MeshEntity
 
     [Net] public List<Entity> PlateEnts {get;set;} = new();
     [Net] private Vector3 TargetPosition {get;set;}
+    [Net] private Rotation TargetRotation {get;set;}
     [Net] private RealTimeSince MovementTime {get;set;}
     [Net] private Vector3 MovementSpeed {get;set;}
+    [Net] public bool IsFragile {get;set;} = false;
     private Glow glow;
     private PlateNameTag plateTag = null;
 
@@ -30,6 +32,7 @@ public partial class Plate : MeshEntity
         Position = pos;
         ownerName = own;
         TargetPosition = Position;
+        TargetRotation = Rotation;
         
         var _newScale = new Vector3(size, size, 0.03f);
         scale = _newScale;
@@ -139,6 +142,12 @@ public partial class Plate : MeshEntity
         base.OnDestroy();
     }
 
+    public void SetMotionType(PhysicsMotionType type)
+    {
+        motionType = type;
+        SetupPhysicsFromModel(motionType);
+    }
+
     public void AddEntity(Entity ent, bool setTransform = false)
     {
         if(setTransform) ent.Parent = this;
@@ -217,6 +226,17 @@ public partial class Plate : MeshEntity
     public void AddHeight(float _amount)
     {
         toScale = toScale.WithZ(toScale.z + _amount);
+    }
+
+    public override void StartTouch(Entity other)
+    {
+        base.StartTouch(other);
+
+        if(IsFragile && other.Velocity.Length > 80)
+        {
+            Sound.FromWorld("plates_glass_break", Position);
+            Delete();
+        }
     }
 
 }
