@@ -155,6 +155,17 @@ public partial class PlatesGame
 		return null;
 	}
 
+	/// <summary>
+	/// Fills the queue
+	/// </summary>
+	public static void FillQueue(int amount = 4)
+	{
+		while(RoundQueue.Count < amount)
+		{
+			QueueRound();
+		}
+	}
+
     /// <summary>
 	/// Add an Event to the queue for the current game
 	/// </summary>
@@ -202,6 +213,6 @@ public partial class PlatesGame
 			while(RoundQueue.Count > 0 && round == RoundQueue[RoundQueue.Count-1]);
 		}
         RoundQueue.Add(round);
-        RoundQueueScreenUI.AddRound(round.name);
+        RoundQueueScreen.AddRound(round.name);
     }
 }

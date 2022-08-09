@@ -40,12 +40,6 @@ public partial class PlatesGame : Sandbox.Game
 
 			// Load the game events
 			LoadEvents();
-			
-			// Initialize the Round Queue with 4 rounds
-			for(var i=0; i<4; i++)
-			{
-				QueueRound();
-			}
 		}
 	}
 
@@ -160,7 +154,6 @@ public partial class PlatesGame : Sandbox.Game
 	[ConCmd.Admin("plates_start", Help = "Forces the game to start if one isn't already active")]
 	public static void StartGame()
 	{
-
 		// If game is already active, do nothing
 		if((int)GameState > (int)PlatesGameState.STARTING_SOON) return;
 
@@ -191,18 +184,15 @@ public partial class PlatesGame : Sandbox.Game
 		InitPlates();
 		AssignPlates();
 
-		// Add rounds to the queue if there aren't enough
-		while(RoundQueue.Count < 5)
-		{
-			QueueRound();
-		}
+		// Fill the round queue if there aren't enough
+		FillQueue(5);
 
 		// Get the oldest round in the queue
 		GameRound = RoundQueue[0];
 		GameRound.OnEvent();
 		RoundQueue.RemoveAt(0);
 		
-		RoundQueueScreenUI.RemoveLatest();
+		RoundQueueScreen.RemoveLatest();
 		RoundInfo.SetRoundText(GameRound.name, GameRound.description);
 
 		GetNextEvent();
@@ -343,6 +333,18 @@ public partial class PlatesGame : Sandbox.Game
 				player.SetGlow(false);
 			}
 		}
+	}
+
+	[ConCmd.Server]
+	public static void RequestRoundQueueForScreen()
+	{
+		Log.Info("GOT REQUEST!");
+		List<string> rounds = new();
+		foreach(var round in RoundQueue)
+		{
+			rounds.Add(round.name);
+		}
+		RoundQueueScreen.Populate(rounds.ToArray());
 	}
 
 	public override void DoPlayerNoclip( Client player ) {}
