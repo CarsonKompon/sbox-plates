@@ -21,6 +21,7 @@ public class CircleFormationRoundType : PlatesRoundAttribute
             if(client.Pawn is PlatesPlayer ply && ply.CurrentPlate is Plate plate)
             {
                 plate.Position = new Vector3(MathF.Sin(2f * MathF.PI * ((float)i/(float)clientCount))*distance, MathF.Cos(2f * MathF.PI * ((float)i/(float)clientCount))*distance, 0);
+                plate.TargetPostion = plate.Position;
                 ply.Position = plate.Position + Vector3.Up*100;
             }
             i++;

@@ -78,7 +78,7 @@ public partial class PlatesGame : Sandbox.Game
 
 		// Remove client from game clients list
 		SetLose(client);
-		GameClients.Remove(client);
+		if(GameClients.Remove(client)) RequestGamePlayersForScreen();
 	}
 
 	[Event.Tick.Server]
@@ -174,7 +174,6 @@ public partial class PlatesGame : Sandbox.Game
 			var client = Client.All[i];
 			GameClients.Add(client);
 			GetClientRank(client);
-			CurrentGameScreenUI.AddClient(client);
 		}
 
 		// Keep track of how many players we started with
@@ -192,6 +191,7 @@ public partial class PlatesGame : Sandbox.Game
 		GameRound.OnEvent();
 		RoundQueue.RemoveAt(0);
 		
+		RequestGamePlayersForScreen();
 		RoundQueueScreen.RemoveLatest();
 		RoundInfo.SetRoundText(GameRound.name, GameRound.description);
 
@@ -248,7 +248,7 @@ public partial class PlatesGame : Sandbox.Game
 		GameTimer = -10;
 		GameState = PlatesGameState.GAME_OVER;
 
-		CurrentGameScreenUI.ClearList();
+		CurrentGameScreen.ClearList();
 
 		GameServices.EndGame();
 	}
@@ -340,9 +340,25 @@ public partial class PlatesGame : Sandbox.Game
 	}
 
 	[ConCmd.Server]
+	public static void RequestGamePlayersForScreen()
+	{
+		List<long> ingameIds = new();
+		List<string> ingameNames = new();
+		foreach(var cl in GameClients)
+		{
+			ingameIds.Add(cl.PlayerId);
+			ingameNames.Add(cl.Name);
+		}
+		// foreach(var el in Eliminated)
+		// {
+		// 	eliminated.Add(el.client.PlayerId, el.client.Name);
+		// }
+		CurrentGameScreen.Populate(ingameIds.ToArray(), ingameNames.ToArray());
+	}
+
+	[ConCmd.Server]
 	public static void RequestRoundQueueForScreen()
 	{
-		Log.Info("GOT REQUEST!");
 		List<string> rounds = new();
 		foreach(var round in RoundQueue)
 		{

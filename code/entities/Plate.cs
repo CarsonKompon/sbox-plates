@@ -169,7 +169,7 @@ public partial class Plate : MeshEntity
         glow.Active = visible;
     }
 
-    public async void Raise(float _amount, float _time = 1f)
+    public void Raise(float _amount, float _time = 1f)
     {
         TargetPostion = TargetPostion.WithZ(TargetPostion.z + _amount);
         if(MovementTime > 0) MovementTime = 0f;

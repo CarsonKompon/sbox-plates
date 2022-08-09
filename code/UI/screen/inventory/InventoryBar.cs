@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class InventoryBar : Panel
 {
 	readonly List<InventoryIcon> slots = new();
-    private int currentSlot = -1;
+    //private int currentSlot = -1;
 
 	public InventoryBar()
 	{

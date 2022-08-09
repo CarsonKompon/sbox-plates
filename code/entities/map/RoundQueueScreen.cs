@@ -12,8 +12,8 @@ using System.Linq;
 [EditorModel("models/leaderboard_screen.vmdl")]
 public partial class RoundQueueScreen : Prop
 {
-    public static RoundQueueScreen Instance {get;set;} = null;
-    public List<string> RoundQueue {get;set;} = new();
+    public static RoundQueueScreen Instance = null;
+    public List<string> RoundQueue = new();
     private RoundQueueScreenUI screen = null;
     private RealTimeSince timer = 0f;
 
@@ -77,7 +77,6 @@ public partial class RoundQueueScreen : Prop
 public partial class RoundQueueScreenUI : WorldPanel
 {
     public RoundQueueScreen owner;
-    public RealTimeSince TimeSinceUpdate = 0f;
     public Label Header;
     public Panel Content;
 
@@ -87,7 +86,7 @@ public partial class RoundQueueScreenUI : WorldPanel
         StyleSheet.Load("/entities/map/roundqueuescreen.scss");
 
         Header = Add.Label("Round Queue", "header");
-        Add.Label("This screen is WIP and is not working properly yet", "subheader"); // TODO: Remove this when fixed
+        //Add.Label("This screen is WIP and is not working properly yet", "subheader");
         Content = Add.Panel("content");
 
         owner = own;
