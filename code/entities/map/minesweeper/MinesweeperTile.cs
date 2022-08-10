@@ -20,7 +20,7 @@ public partial class MinesweeperTile : Panel
 			_revealed = value;
 			if ( value )
 			{
-				this.AddClass( "revealed" );
+				button.AddClass( "revealed" );
 			}
 		}
 	}
@@ -34,9 +34,8 @@ public partial class MinesweeperTile : Panel
 	{
 		StyleSheet.Load( "/entities/map/minesweeper/MinesweeperTile.scss" );
 		AddClass( "sweep-tile-wrapper" );
-		AddEventListener( "onclick", RevealTile );
 		label = new Label();
-		button = Add.Button( "crung-oo-lean" );
+		button = Add.Button( "" );
 		button.AddClass( "sweep-tile" );
 	}
 	public MinesweeperTile( MinesweeperUI inpUI, MinesweeperTileType type, int x, int y ) : this()
@@ -44,28 +43,28 @@ public partial class MinesweeperTile : Panel
 		SweepUI = inpUI;
 		Xval = x;
 		Yval = y;
-		button.Text = $"{Xval},{Yval}";
+		// button.Text = $"{Xval},{Yval}";
 		this.type = type;
 		if ( this.type == MinesweeperTileType.Money )
 		{
-			AddClass( "money" );
+			button.AddClass( "money" );
 			button.AddChild( label );
 		}
 		else
 		{
-			AddClass( "mine" );
+			button.AddClass( "mine" );
 		}
 	}
 	public override void Tick()
 	{
-		label.Text = $"{(adjacentMines != 0 ? adjacentMines : "")}";
+		label.Text = $"{(adjacentMines != 0 && revealed ? adjacentMines : "")}";
 		switch ( adjacentMines )
 		{
 			case 1:
 				label.Style.FontColor = Color.Green;
 				break;
 			case 2:
-				label.Style.FontColor = Color.Yellow;
+				label.Style.FontColor = Color.Yellow.Darken( .2f );
 				break;
 			case 3:
 				label.Style.FontColor = Color.Orange;
@@ -83,13 +82,25 @@ public partial class MinesweeperTile : Panel
 		}
 	}
 
+	protected override void OnClick( MousePanelEvent e )
+	{
+		base.OnClick( e );
+
+		if ( Local.Client.PlayerId == SweepUI.podium.gameState.activePlayerId )
+		{
+			RevealTile();
+		}
+	}
+
 	public void RevealTile()
 	{
-		Log.Info( $"{Xval} {Yval} WAS PRESSED, IT WAS A {type}" );
-		Log.Info( $"{SweepUI}" );
-
-		SweepUI.podium.handleTileClick( Xval, Yval );
-		revealed = true;
+		// Log.Info( $"{SweepUI}" );
+		if ( !revealed )
+		{
+			Log.Info( $"{Xval} {Yval} WAS PRESSED, IT WAS A {type}" );
+			SweepUI.podium.handleTileClick( Xval, Yval );
+		}
+		// revealed = true;
 
 	}
 

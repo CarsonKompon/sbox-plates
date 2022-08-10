@@ -11,7 +11,6 @@ public partial class MinesweeperUI : WorldPanel
 	Panel MinedSweep;
 	public Panel GameContainer;
 	public bool Active;
-	private bool populated = false;
 	public List<MinesweeperTile> Tiles { get; set; } = new();
 	public MinesweeperPodium podium;
 
@@ -41,20 +40,19 @@ public partial class MinesweeperUI : WorldPanel
 	public override void Tick()
 	{
 		SetClass( "show-ui", true );
-		// if ( podium.gameState.UIState == MinesweeperState.Playing && !populated )
-		// {
-		// 	FillBoard();
-		// }
 	}
 	public void FillBoard( IList<MinesweeperTileType> sweepers, IList<bool> revealedPanels )
 	{
-		Log.Info( $"{Tiles.Count}" );
 		if ( Tiles.Count < (podium.gameState.dimensions * podium.gameState.dimensions) )
 		{
 			Tiles = new List<MinesweeperTile>( new MinesweeperTile[podium.gameState.dimensions * podium.gameState.dimensions] );
 		}
 		// clense ui
 		GameContainer.DeleteChildren();
+		if ( podium.gameState.UIState == MinesweeperState.Idle )
+		{
+			return;
+		}
 		for ( int forX = 0; forX < podium.gameState.dimensions; forX++ )
 		{
 			//y
@@ -78,7 +76,6 @@ public partial class MinesweeperUI : WorldPanel
 				// 1 = up, 2 = down, 3 = left, 4 = right
 				Vector2[] tilesToCheck = new Vector2[4];
 				Array.Fill( tilesToCheck, new Vector2( -1, -1 ) );
-				// Log.Info( $"tile {forX}, {forY}" );
 				if ( forY != 0 )
 				{
 					tilesToCheck[0] = new Vector2( forX, forY ) + Vector2.Down;
@@ -87,11 +84,11 @@ public partial class MinesweeperUI : WorldPanel
 				{
 					tilesToCheck[1] = new Vector2( forX, forY ) + Vector2.Right;
 				}
-				if ( forY != 4 )
+				if ( forY != podium.gameState.dimensions - 1 )
 				{
 					tilesToCheck[2] = new Vector2( forX, forY ) + Vector2.Up;
 				}
-				if ( forX != 4 )
+				if ( forX != podium.gameState.dimensions - 1 )
 				{
 					tilesToCheck[3] = new Vector2( forX, forY ) + Vector2.Left;
 				}
@@ -112,13 +109,11 @@ public partial class MinesweeperUI : WorldPanel
 				}
 			}
 		}
-		populated = true;
 	}
 	public void YeetMines()
 	{
 		Tiles.Clear();
 		GameContainer.DeleteChildren();
-		populated = false;
 	}
 
 	public void SetActive( bool inp )

@@ -1,16 +1,12 @@
 .sweep-tile-wrapper {
 	height: 20%;
 	width: 20%;
+	padding: 5px;
 	text-align: right;
+	border-radius: 10%;
+	z-index: 1;
 	&:hover{
-		border-radius: 10%;
-		background-color: aqua;
-	}
-	&.mine.revealed {
-		background-color: red;
-	}
-	&.money.revealed {
-		background-color: yellowgreen;
+		background-color: gray;
 	}
 }
 .sweep-tile {
@@ -20,10 +16,14 @@
 	font-weight: 700;
 	flex-direction: column;
 	justify-content: flex-end;
-	text-align: right;
-	align-self: flex-end;
 	height: 90%;
 	width: 90%;
-	margin: 15px;
+	margin: 10px;
 	background-color: black;
+	&.mine.revealed {
+		background-color: red;
+	}
+	&.money.revealed {
+		background-color: yellow;
+	}
 }

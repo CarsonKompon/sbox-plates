@@ -7,13 +7,13 @@
 		VolumeRandom = 0
 		Pitch = 1
 		PitchRandom = 0
-		Decibels = 80
+		Decibels = 70
 		Sounds = 
 		[
-			resource:"sounds/vine-boom.vsnd",
+			resource:"sounds/yeah.vsnd",
 		]
 		SelectionMode = "Random"
-		MaximumDistance = 1484.3214
-		MinimumDistance = 74.21607
+		MaximumDistance = 1143.9335
+		MinimumDistance = 57.196674
 	}
 }

@@ -54,14 +54,15 @@ public partial class MinesweeperPodium : Prop, IUse
 
 	public bool IsUsable( Entity user )
 	{
-		return true;
+		return gameState.UIState == MinesweeperState.Idle;
 	}
 
 
 	public bool OnUse( Entity user )
 	{
-		gameState.Reset();
+		gameState.Reset( NetworkIdent );
 		ClearBoard();
+		gameState.activePlayerId = user.Client.PlayerId;
 		gameState.Play();
 		BuildUI();
 		// Sound.FromEntity( "captain morgan spiced h", this );
@@ -98,7 +99,7 @@ public partial class MinesweeperPodium : Prop, IUse
 
 	public void Fail()
 	{
-		gameState.Lose();
+		gameState.Lose( this.NetworkIdent );
 	}
 	// [ClientRpc]
 	// public void ResetUI()
