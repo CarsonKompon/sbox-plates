@@ -84,7 +84,7 @@ public partial class PlateShrinkInfinitelyEnt : Entity
     public void Tick(){
         if(plate.IsValid() && timer > 0.5f){
             plate.Shrink(0.004f);
-            timer = 0.5f;
+            timer = 0f;
         }
     }
 }
