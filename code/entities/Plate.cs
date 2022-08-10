@@ -228,6 +228,11 @@ public partial class Plate : MeshEntity
         toScale = toScale.WithZ(toScale.z + _amount);
     }
 
+    public float GetHeight()
+    {
+        return toScale.z;
+    }
+
     public override void StartTouch(Entity other)
     {
         base.StartTouch(other);

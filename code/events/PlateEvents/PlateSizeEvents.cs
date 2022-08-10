@@ -80,6 +80,12 @@ public partial class PlateShrinkInfinitelyEnt : Entity
         plate = plat;
     }
 
+    public override void Spawn()
+    {
+        // Client doesn't need to know about this
+        Transmit = TransmitType.Never;
+    }
+
     [Event.Tick.Server]
     public void Tick(){
         if(plate.IsValid() && timer > 0.5f){
@@ -111,6 +117,12 @@ public partial class PlateGrowInfinitelyEnt : Entity
     public PlateGrowInfinitelyEnt(){}
     public PlateGrowInfinitelyEnt(Plate plat){
         plate = plat;
+    }
+
+    public override void Spawn()
+    {
+        // Client doesn't need to know about this
+        Transmit = TransmitType.Never;
     }
 
     [Event.Tick.Server]

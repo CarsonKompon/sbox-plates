@@ -19,7 +19,7 @@ public class PlateLavaSpinnerEvent : PlatesEventAttribute
     }
 }
 
-public class PlateLavaSpinnerEnt : ModelEntity
+public class PlateLavaSpinnerEnt : Prop
 {
 
     public float size = 1;
@@ -29,7 +29,7 @@ public class PlateLavaSpinnerEnt : ModelEntity
         Position = pos;
 
         SetModel("models/lava_spinner.vmdl");
-		SetupPhysicsFromModel(PhysicsMotionType.Keyframed);
+		SetupPhysicsFromModel(PhysicsMotionType.Dynamic);
         size = scale;
         RenderColor = Color.Red;
         //Health = 0.4f;
@@ -41,15 +41,21 @@ public class PlateLavaSpinnerEnt : ModelEntity
     public void Tick(){
         if(IsServer){
             //Rotation += Rotation.FromYaw(1);
-            //LocalRotation *= Rotation.FromYaw(1f);
+            LocalRotation *= Rotation.FromYaw(1f);
             Scale = size;
         }
     }
 
 
-    public override void Touch( Entity other )
+    public override void StartTouch( Entity other )
     {
-        base.Touch(other);
+        Log.Info("AYO");
+        base.StartTouch(other);
         other.TakeDamage( DamageInfo.Generic( 0.1f ) );
     }
+}
+
+public partial class PlatesPlayer
+{
+    
 }
