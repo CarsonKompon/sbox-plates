@@ -232,7 +232,7 @@ public partial class Plate : MeshEntity
     {
         base.StartTouch(other);
 
-        if(IsFragile && other.Velocity.Length > 80)
+        if(IsFragile && (other.Velocity.Length > 80 || Rand.Int(99999)==1))
         {
             Sound.FromWorld("plates_glass_break", Position);
             Delete();
