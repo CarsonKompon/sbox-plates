@@ -88,7 +88,7 @@ public partial class MinesweeperTile : Panel
 		Log.Info( $"{Xval} {Yval} WAS PRESSED, IT WAS A {type}" );
 		Log.Info( $"{SweepUI}" );
 
-		SweepUI.podium.gameState.handleTileClick( Xval, Yval );
+		SweepUI.podium.handleTileClick( Xval, Yval );
 		revealed = true;
 
 	}

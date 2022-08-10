@@ -12,7 +12,7 @@ public partial class MinesweeperUI : WorldPanel
 	public Panel GameContainer;
 	public bool Active;
 	private bool populated = false;
-	public List<MinesweeperTile> Tiles { get; set; }
+	public List<MinesweeperTile> Tiles { get; set; } = new();
 	public MinesweeperPodium podium;
 
 
@@ -48,18 +48,24 @@ public partial class MinesweeperUI : WorldPanel
 	}
 	public void FillBoard( IList<MinesweeperTileType> sweepers, IList<bool> revealedPanels )
 	{
-		Tiles = new List<MinesweeperTile>( podium.gameState.dimensions ^ 2 );
+		Log.Info( $"{Tiles.Count}" );
+		if ( Tiles.Count < (podium.gameState.dimensions * podium.gameState.dimensions) )
+		{
+			Tiles = new List<MinesweeperTile>( new MinesweeperTile[podium.gameState.dimensions * podium.gameState.dimensions] );
+		}
+		// clense ui
+		GameContainer.DeleteChildren();
 		for ( int forX = 0; forX < podium.gameState.dimensions; forX++ )
 		{
 			//y
 			for ( int forY = 0; forY < podium.gameState.dimensions; forY++ )
 			{
-				Log.Info( $"Setting a {sweepers[forY * podium.gameState.dimensions + forX]}" );
 				MinesweeperTile t = new MinesweeperTile( this, sweepers[forY * podium.gameState.dimensions + forX], forX, forY );
 				t.revealed = revealedPanels[forY * podium.gameState.dimensions + forX];
+				// Log.Info( $"Setting a {sweepers[forY * podium.gameState.dimensions + forX]}, revealed is {t.revealed}" );
 				GameContainer.AddChild( t );
 
-				Tiles.Add( t );
+				Tiles[forY * podium.gameState.dimensions + forX] = t;
 			}
 		}
 
@@ -110,13 +116,16 @@ public partial class MinesweeperUI : WorldPanel
 	}
 	public void YeetMines()
 	{
+		Tiles.Clear();
 		GameContainer.DeleteChildren();
+		populated = false;
 	}
 
 	public void SetActive( bool inp )
 	{
 		Active = inp;
 	}
+
 	// private void SetupMines()
 	// {
 

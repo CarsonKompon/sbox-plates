@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Sandbox;
-using Sandbox.Html;
+using System.Collections.Generic;
 using SandboxEditor;
 
 [Spawnable]
@@ -10,16 +10,11 @@ using SandboxEditor;
 public partial class MinesweeperPodium : Prop, IUse
 {
 	public MinesweeperUI screen { get; set; }
-	[Net]
-	public MinesweeperGameState gameState { get; set; }
+	[Net] public MinesweeperGameState gameState { get; set; } = new();
 	RealTimeSince randomTimer = 0f;
 
 	public MinesweeperPodium()
 	{
-		if ( IsServer )
-		{
-			gameState = new MinesweeperGameState();
-		}
 	}
 	public override void Spawn()
 	{
@@ -27,35 +22,35 @@ public partial class MinesweeperPodium : Prop, IUse
 
 		SetModel( "models/ms_podium.vmdl" );
 		SetupPhysicsFromModel( PhysicsMotionType.Static );
+		if ( IsServer )
+		{
+			gameState = new MinesweeperGameState();
+			MinesweeperGameState.podiums.Add( this );
+		}
+		BuildUI();
+
 
 	}
 
 	public override void ClientSpawn()
 	{
 		base.ClientSpawn();
+		// if ( IsClient )
+		// {
+		// 	gameState = gameState;
+		// }
+
 		if ( screen == null )
 		{
 			screen = new MinesweeperUI( Scale, this );
 			screen.Position = Position + (Rotation.Backward * (80 * Scale));
 			screen.Position += (Rotation.Up * (90 * Scale));
 			screen.Rotation = Rotation.LookAt( Rotation.Forward );
-
 		}
 	}
 	[Event.Tick]
 	public void Tick()
-	{
-		// Log.Info( $"{IsClientOnly}" );
-		// if ( IsClient && screen == null )
-		// {
-		// 	screen = new MinesweeperUI( Scale, this );
-		// 	screen.Position = Position + (Rotation.Backward * (80 * Scale));
-		// 	screen.Position += (Rotation.Up * (90 * Scale));
-		// 	screen.Rotation = Rotation.LookAt( Rotation.Forward );
-		// 	gameState = new MinesweeperGameState();
-
-		// }
-	}
+	{ }
 
 	public bool IsUsable( Entity user )
 	{
@@ -65,6 +60,7 @@ public partial class MinesweeperPodium : Prop, IUse
 
 	public bool OnUse( Entity user )
 	{
+		gameState.Reset();
 		ClearBoard();
 		gameState.Play();
 		BuildUI();
@@ -75,16 +71,29 @@ public partial class MinesweeperPodium : Prop, IUse
 	[ClientRpc]
 	public void BuildUI()
 	{
-		foreach ( var item in gameState.Tiles )
-		{
-			Log.Info( $"{item}" );
-		}
+		Log.Info( $"{gameState}" );
 		screen.FillBoard( gameState.Tiles, gameState.revealedTiles );
 	}
 	[ClientRpc]
 	public void ClearBoard()
 	{
 		screen.YeetMines();
+	}
+
+	[ClientRpc]
+	public void RevealTile( int index )
+	{
+		screen.Tiles[index].RevealTile();
+
+	}
+	public void handleTileClick( int x, int y )
+	{
+
+		MinesweeperTileType target = gameState.Tiles[y * gameState.dimensions + x];
+		gameState.revealedTiles[y * gameState.dimensions + x] = true;
+		MinesweeperGameState.handleTileClickGS( this.NetworkIdent, x, y );
+		BuildUI();
+		// Log.Info( $"{target}" );
 	}
 
 	public void Fail()

@@ -21,6 +21,8 @@ public enum MinesweeperTileType
 public partial class MinesweeperGameState : Entity
 {
 
+	public static List<MinesweeperPodium> podiums = new();
+
 	[Net] public MinesweeperState UIState { get; set; }
 	[Net] public List<MinesweeperTileType> Tiles { get; set; }
 	[Net] public List<bool> revealedTiles { get; set; }
@@ -32,12 +34,21 @@ public partial class MinesweeperGameState : Entity
 		revealedTiles = new List<bool>( new bool[dimensions * dimensions] );
 		Log.Info( $"setting UI for {UIState}" );
 	}
+	// public MinesweeperGameState( MinesweeperPodium podi ) : this()
+	// {
+	// 	podium = podi;
+	// 	Log.Info( $"{podium} {IsClient} {IsServer}" );
+	// }
 
-	public void handleTileClick( int x, int y )
+	[ConCmd.Server]
+	public static void handleTileClickGS( int nIdent, int x, int y )
 	{
-		MinesweeperTileType target = Tiles[y * dimensions + x];
-		revealedTiles[y * dimensions + x] = true;
+		MinesweeperPodium podi = podiums.Find( pod => pod.NetworkIdent == nIdent );
+		MinesweeperTileType target = podi.gameState.Tiles[y * podi.gameState.dimensions + x];
+		podi.gameState.revealedTiles[y * podi.gameState.dimensions + x] = true;
+		podi.BuildUI();
 		Log.Info( $"{target}" );
+
 	}
 	private void SetupMines()
 	{
@@ -57,58 +68,18 @@ public partial class MinesweeperGameState : Entity
 
 			}
 		}
-
-
-		// // Adjacent Mine Labelling
-		//TODO: this can probably be better
-
-		// for ( int forX = 0; forX < dimensions; forX++ )
-		// {
-		// 	//y
-		// 	for ( int forY = 0; forY < dimensions; forY++ )
-		// 	{
-		// 		MinesweeperTileType targetTile = Tiles[forY * dimensions + forX];
-		// 		// 1 = up, 2 = down, 3 = left, 4 = right
-		// 		Vector2[] tilesToCheck = new Vector2[4];
-		// 		Array.Fill( tilesToCheck, new Vector2( -1, -1 ) );
-		// 		// Log.Info( $"tile {forX}, {forY}" );
-		// 		if ( forY != 0 )
-		// 		{
-		// 			tilesToCheck[0] = new Vector2( forX, forY ) + Vector2.Down;
-		// 		}
-		// 		if ( forX != 0 )
-		// 		{
-		// 			tilesToCheck[1] = new Vector2( forX, forY ) + Vector2.Right;
-		// 		}
-		// 		if ( forY != 4 )
-		// 		{
-		// 			tilesToCheck[2] = new Vector2( forX, forY ) + Vector2.Up;
-		// 		}
-		// 		if ( forX != 4 )
-		// 		{
-		// 			tilesToCheck[3] = new Vector2( forX, forY ) + Vector2.Left;
-		// 		}
-
-		// 		foreach ( var coords in tilesToCheck )
-		// 		{
-		// 			int[] coordsAsInt = new int[2] { Convert.ToInt32( Math.Round( coords.x ) ), Convert.ToInt32( Math.Round( coords.y ) ) };
-		// 			if ( coordsAsInt[0] != -1 && coordsAsInt[1] != -1 )
-		// 			{
-		// 				// Log.Info( $"looking for {coords}" );
-		// 				MinesweeperTileType tiletocheck = Tiles[coordsAsInt[1] * dimensions + coordsAsInt[0]];
-		// 				if ( Tiles[coordsAsInt[1] * dimensions + coordsAsInt[0]] == MinesweeperTileType.Mine )
-		// 				{
-		// 					adjacentMines[forY * dimensions + forX]++;
-		// 				};
-
-		// 			}
-		// 		}
-		// 	}
-		// }
+		UIState = MinesweeperState.Playing;
 
 	}
 
-	// [ClientRpc]
+	public void Reset()
+	{
+		revealedTiles = new List<bool>();
+		for ( int i = 0; i < dimensions * dimensions; i++ )
+		{
+			revealedTiles.Add( false );
+		}
+	}
 	public void Play()
 	{
 		SetupMines();
@@ -121,19 +92,4 @@ public partial class MinesweeperGameState : Entity
 		// 	tile.revealed = true;
 		// }
 	}
-
-	// public void ResetUIAfterDelay( float timeToWait )
-	// {
-
-	// 	GameTask.RunInThreadAsync( async () =>
-	// 	{
-	// 		// Log.Info( $"{IsServer}" );
-
-	// 		Log.Info( $"Resetting UI for {ui}" );
-	// 		await GameTask.DelaySeconds( timeToWait );
-	// 		Log.Info( "RESETTING UI" );
-	// 		ui.Reset();
-	// 	} );
-
-	// }
 }
