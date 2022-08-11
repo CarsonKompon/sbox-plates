@@ -37,7 +37,7 @@ public partial class PlatesGame
 		EventSubtext = "";
 		LastTimer = -10f;
 
-		PlatesPlayer.GiveMoney(10);
+		PlayerDataManager.GiveAllMoney(10);
 
 		ResetGlows();
 

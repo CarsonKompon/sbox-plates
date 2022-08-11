@@ -2,6 +2,7 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Text.Json;
 
 public enum PlatesGameState {NOT_ENOUGH_PLAYERS = -2, GAME_OVER = -1, STARTING_SOON = 0, SELECTING_EVENT = 1, PERFORMING_EVENT = 2}
 
@@ -54,6 +55,10 @@ public partial class PlatesGame : Sandbox.Game
 		var player = new PlatesPlayer( client );
 		player.Respawn();
 		client.Pawn = player;
+
+		// Request Player Data
+		PlayerDataManager.AddTempEntry( client.PlayerId );
+		PlayerDataManager.RequestPlayerData(To.Single(client));
 
 		// Set client variables
 		GetClientRank(client);
@@ -298,8 +303,10 @@ public partial class PlatesGame : Sandbox.Game
 				{
 					ply.CurrentPlate = plate;
 					ply.InGame = true;
+					ply.Position = plate.Position + Vector3.Up * 100.0f;
+					ply.BaseVelocity = Vector3.Zero;
+					ply.Velocity = Vector3.Zero;
 				}
-				Client.All[_curPlayer].Pawn.Position = plate.Position + Vector3.Up * 100.0f;
 			}
 			_curPlayer++;
 		}

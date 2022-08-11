@@ -22,8 +22,8 @@ namespace Sandbox.UI
 			AddClass( "entry" );
 
 			PlayerName = Add.Label( "PlayerName", "name" );
-			Wins = Add.Label( "", "rank" );
-			Rank = Add.Label( "", "wins" );
+			Rank = Add.Label( "", "rank" );
+			Wins = Add.Label( "", "wins" );
 			Ping = Add.Label( "", "ping" );
 		}
 
@@ -49,8 +49,8 @@ namespace Sandbox.UI
 		public virtual void UpdateData()
 		{
 			PlayerName.Text = Client.Name;
+			Rank.Text = PlayerDataManager.GetMoney(Client.PlayerId).ToString();
 			Wins.Text = Client.GetInt( "wins" ).ToString();
-			Rank.Text = Client.GetInt( "rank" ).ToString();
 			Ping.Text = Client.Ping.ToString();
 			SetClass( "me", Client == Local.Client );
 		}

@@ -15,7 +15,8 @@ public partial class VitalInfo : Panel
 	public Label Info;
 	public Label Disclaimer;
 	
-	public VitalInfo(){
+	public VitalInfo()
+	{
 		Disclaimer = Add.Label("Plates of Fate is currently in a WIP state. Please report bugs on the github issues page.", "disclaimer");
 
 		VitalsPanel = Add.Panel("vitals");
@@ -28,7 +29,8 @@ public partial class VitalInfo : Panel
 		RefreshAvatar();
 	}
 
-	public override void Tick(){
+	public override void Tick()
+	{
 		if(Local.Pawn is PlatesPlayer player)
 		{
 			var plateSize = "N/A";
@@ -45,7 +47,7 @@ public partial class VitalInfo : Panel
 				HealthBar.Style.Width = Length.Percent(player.Health);
 
 				HP.Text = $"HP: {player.Health.CeilToInt()}";
-				Money.Text = "$" + String.Format("{0:n0}", PlatesPlayerData.GetLocalData().Money);
+				Money.Text = "$" + String.Format("{0:n0}", PlayerDataManager.LocalData.Money);
 				Info.Text = $"Speed: {String.Format("{0:0.00}", walkController.Speed)}x\nJump: {String.Format("{0:0.00}", walkController.JumpPower)}x\nPlate Size: {plateSize}";
 			}
 

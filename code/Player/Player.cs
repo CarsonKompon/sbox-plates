@@ -234,16 +234,4 @@ public partial class PlatesPlayer : Player
 		}
 		glow.Active = visible;
 	}
-
-	[ClientRpc]
-	public static void GiveMoney(int amount, bool force = false)
-	{
-		if(Local.Pawn is PlatesPlayer ply)
-		{
-			if(force || ply.InGame)
-			{
-				PlatesPlayerData.GiveMoney(amount);
-			}
-		}
-	}
 }

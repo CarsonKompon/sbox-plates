@@ -64,7 +64,7 @@ namespace Sandbox.UI
 		{
 			Header = Add.Panel( "header" );
 			Header.Add.Label( "Name", "name" );
-			Header.Add.Label( "Rank", "rank" );
+			Header.Add.Label( "Money", "rank" );
 			Header.Add.Label( "Wins", "wins" );
 			Header.Add.Label( "Ping", "ping" );
 		}
