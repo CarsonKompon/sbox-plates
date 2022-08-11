@@ -27,7 +27,7 @@ public partial class MinesweeperPodium : Prop, IUse
 			gameState = new MinesweeperGameState();
 			MinesweeperGameState.podiums.Add( this );
 		}
-		BuildUI();
+		BuildUI( gameState );
 
 
 	}
@@ -35,10 +35,6 @@ public partial class MinesweeperPodium : Prop, IUse
 	public override void ClientSpawn()
 	{
 		base.ClientSpawn();
-		// if ( IsClient )
-		// {
-		// 	gameState = gameState;
-		// }
 
 		if ( screen == null )
 		{
@@ -64,16 +60,15 @@ public partial class MinesweeperPodium : Prop, IUse
 		ClearBoard();
 		gameState.activePlayerId = user.Client.PlayerId;
 		gameState.Play();
-		BuildUI();
+		BuildUI( gameState );
 		// Sound.FromEntity( "captain morgan spiced h", this );
 		return false;
 	}
 
-	[ClientRpc]
-	public void BuildUI()
+	[ClientRpc, Event.Hotload]
+	public void BuildUI( MinesweeperGameState state )
 	{
-		Log.Info( $"{gameState}" );
-		screen.FillBoard( gameState.Tiles, gameState.revealedTiles );
+		screen.FillBoard( state.Tiles, state.revealedTiles );
 	}
 	[ClientRpc]
 	public void ClearBoard()
@@ -93,7 +88,7 @@ public partial class MinesweeperPodium : Prop, IUse
 		MinesweeperTileType target = gameState.Tiles[y * gameState.dimensions + x];
 		gameState.revealedTiles[y * gameState.dimensions + x] = true;
 		MinesweeperGameState.handleTileClickGS( this.NetworkIdent, x, y );
-		BuildUI();
+		BuildUI( gameState );
 		// Log.Info( $"{target}" );
 	}
 
@@ -101,17 +96,6 @@ public partial class MinesweeperPodium : Prop, IUse
 	{
 		gameState.Lose( this.NetworkIdent );
 	}
-	// [ClientRpc]
-	// public void ResetUI()
-	// {
-	// 	screen?.Reset();
-	// }
-	// [ClientRpc]
-	// public void FailClientUI()
-	// {
-	// 	screen?.Fail();
-	// }
-
 
 }
 

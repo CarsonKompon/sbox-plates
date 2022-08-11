@@ -76,10 +76,9 @@ public partial class MinesweeperTile : Panel
 				label.Style.FontColor = Color.White;
 				break;
 		}
-		if ( Input.Pressed( InputButton.Jump ) || Input.Pressed( InputButton.Walk ) || Input.Pressed( InputButton.Duck ) )
-		{
-			// SetActive( false );
-		}
+		Style.Width = Length.Percent( (1f / SweepUI.podium.gameState.dimensions) * 100f );
+		Style.Height = Length.Percent( (1f / SweepUI.podium.gameState.dimensions) * 100f );
+		// Log.Info( $"LISCENCED {Style.Width}granthony{Style.Height}" );
 	}
 
 	protected override void OnClick( MousePanelEvent e )
@@ -94,27 +93,13 @@ public partial class MinesweeperTile : Panel
 
 	public void RevealTile()
 	{
-		// Log.Info( $"{SweepUI}" );
 		if ( !revealed )
 		{
 			Log.Info( $"{Xval} {Yval} WAS PRESSED, IT WAS A {type}" );
 			SweepUI.podium.handleTileClick( Xval, Yval );
 		}
-		// revealed = true;
 
 	}
 
-	public void Reset()
-	{
-		this.revealed = false;
-		adjacentMines = 0;
-		//TODO: Make this not random
-		this.type = Rand.Int( 0, 2 ) == 2 ? MinesweeperTileType.Mine : MinesweeperTileType.Money;
-	}
 
-	// [ClientRpc]
-	// public static void SetActive( bool status )
-	// {
-	// 	Active = status;
-	// }
 }
