@@ -128,6 +128,11 @@ public partial class PlatesPlayer : Player
 	{
 		base.Simulate( cl );
 
+		if(GroundEntity is ConveyorBelt belt)
+		{
+			BaseVelocity = belt.Direction * belt.Speed;
+		}
+
 		if(Input.ActiveChild != null)
 		{
 			ActiveChild = Input.ActiveChild;
