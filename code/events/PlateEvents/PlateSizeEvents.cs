@@ -73,16 +73,24 @@ public class PlateShrinkInfinitely : PlatesEventAttribute
 public partial class PlateShrinkInfinitelyEnt : Entity
 {
     [Net] public Plate plate {get;set;}
+    private RealTimeSince timer = 0f;
 
     public PlateShrinkInfinitelyEnt(){}
     public PlateShrinkInfinitelyEnt(Plate plat){
         plate = plat;
     }
 
+    public override void Spawn()
+    {
+        // Client doesn't need to know about this
+        Transmit = TransmitType.Never;
+    }
+
     [Event.Tick.Server]
     public void Tick(){
-        if(plate.IsValid()){
-            plate.Shrink(0.0001f);
+        if(plate.IsValid() && timer > 0.5f){
+            plate.Shrink(0.004f);
+            timer = 0f;
         }
     }
 }
@@ -104,16 +112,24 @@ public class PlateGrowInfinitely : PlatesEventAttribute
 public partial class PlateGrowInfinitelyEnt : Entity
 {
     [Net] public Plate plate {get;set;}
+    private RealTimeSince timer = 0f;
 
     public PlateGrowInfinitelyEnt(){}
     public PlateGrowInfinitelyEnt(Plate plat){
         plate = plat;
     }
 
+    public override void Spawn()
+    {
+        // Client doesn't need to know about this
+        Transmit = TransmitType.Never;
+    }
+
     [Event.Tick.Server]
     public void Tick(){
-        if(plate.IsValid()){
-            plate.Grow(0.000005f);
+        if(plate.IsValid() && timer > 2f){
+            plate.Grow(0.004f);
+            timer = 0f;
         }
     }
 }

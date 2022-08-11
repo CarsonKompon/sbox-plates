@@ -26,6 +26,7 @@ public class TeslaCoilEnt : ModelEntity
 {
 
     public Player nearest;
+    private DamageInfo damage;
 
     public TeslaCoilEnt() {}
 
@@ -33,6 +34,9 @@ public class TeslaCoilEnt : ModelEntity
     {
         SetModel("models/teslacoil.vmdl");
 		SetupPhysicsFromModel(PhysicsMotionType.Dynamic);
+        Name = "Tesla Coil";
+        damage = new DamageInfo().WithAttacker(this);
+        damage.Damage = 0.2f;
     }
 
     [Event.Tick]
@@ -42,7 +46,7 @@ public class TeslaCoilEnt : ModelEntity
             var distance = Vector3.DistanceBetween( nearest.Position, Position );
             if(distance <= 150){
                 DebugOverlay.Line(Position + Rotation.Up * 70, nearest.Position + nearest.Rotation.Up * 40);
-                nearest.TakeDamage(DamageInfo.Generic( 0.2f ));
+                nearest.TakeDamage(damage);
             }
         }else if(IsClient){
             nearest = Entity.All.OfType<Player>().OrderBy( x => Vector3.DistanceBetween( x.Position + x.Rotation.Up * 40, Position + Rotation.Up * 70 ) ).ToArray()[0];

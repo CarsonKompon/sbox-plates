@@ -1,7 +1,8 @@
 using Sandbox;
+using SandboxEditor;
 
 [Library("plates_kill_trigger", Description = "A trigger that instantly kills players.")]
-[SandboxEditor.Solid]
+[HammerEntity, Solid]
 public class KillWallEntity : ModelEntity
 {
     public override void Spawn()

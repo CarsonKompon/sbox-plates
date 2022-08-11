@@ -131,6 +131,11 @@ public partial class PlatesPlayer : Player
 	{
 		base.Simulate( cl );
 
+		if ( GroundEntity is ConveyorBelt belt )
+		{
+			BaseVelocity = belt.Direction * belt.Speed;
+		}
+
 		if ( Input.ActiveChild != null )
 		{
 			ActiveChild = Input.ActiveChild;
@@ -196,7 +201,7 @@ public partial class PlatesPlayer : Player
 		animHelper.AimAngle = Input.Rotation;
 		animHelper.FootShuffle = shuffle;
 		animHelper.DuckLevel = MathX.Lerp( animHelper.DuckLevel, controller.HasTag( "ducked" ) ? 1 : 0, Time.Delta * 10.0f );
-		animHelper.VoiceLevel = (Host.IsClient && Client.IsValid()) ? Client.TimeSinceLastVoice < 0.5f ? Client.VoiceLevel : 0.0f : 0.0f;
+		animHelper.VoiceLevel = (Host.IsClient && Client.IsValid()) ? Client.TimeSinceLastVoice < 1f ? Client.VoiceLevel : 0.0f : 0.0f;
 		animHelper.IsGrounded = GroundEntity != null;
 		animHelper.IsSitting = controller.HasTag( "sitting" );
 		animHelper.IsNoclipping = controller.HasTag( "noclip" );

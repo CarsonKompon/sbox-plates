@@ -31,7 +31,7 @@ public partial class VertexMeshBuilder
 		modelBuilder.WithSurface(surface);
 		var box = new BBox(mins, maxs);
 		modelBuilder.AddCollisionBox(box.Size * 0.5f, box.Center);
-		modelBuilder.WithMass(box.Size.x * box.Size.y * box.Size.z / 1000);
+		modelBuilder.WithMass(655);
 
 		Models[key] = modelBuilder.Create();
 		return key;
