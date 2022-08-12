@@ -43,6 +43,7 @@ public partial class EventWheel : Prop, IUse
             if(Speed <= 0f)
             {
                 Speed = 0f;
+                Spinning = false;
             }
         }
         Rotation *= Rotation.FromYaw(Speed);
