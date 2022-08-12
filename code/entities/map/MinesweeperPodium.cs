@@ -9,7 +9,7 @@ using SandboxEditor;
 public partial class MinesweeperPodium : Prop, IUse
 {
 	[Property(Title = "Board Dimensions")] public int dimensions {get;set;} = 5;
-	public MinesweeperUI screen { get; set; }
+	public MinesweeperUI screen;
 	[Net] public MinesweeperGameState gameState { get; set; } = new();
 	RealTimeSince randomTimer = 0f;
 
@@ -41,7 +41,7 @@ public partial class MinesweeperPodium : Prop, IUse
 			screen = new MinesweeperUI( Scale, this );
 			screen.Position = Position + (Rotation.Backward * (80 * Scale));
 			screen.Position += (Rotation.Up * (90 * Scale));
-			screen.Rotation = Rotation.LookAt( Rotation.Forward );
+			screen.Rotation = Rotation;
 		}
 	}
 	[Event.Tick]
