@@ -39,7 +39,7 @@ public partial class MinesweeperUI : WorldPanel
 	public override void Tick()
 	{
 		SetClass( "show-ui", true );
-		GameContainer.Style.FlexBasis = Length.Percent( (1 / podium.gameState.dimensions) * 100 );
+		GameContainer.Style.FlexBasis = Length.Percent( (1 / podium.dimensions) * 100 );
 	}
 	public void FillBoard( IList<MinesweeperTileType> sweepers, IList<bool> revealedPanels )
 	{

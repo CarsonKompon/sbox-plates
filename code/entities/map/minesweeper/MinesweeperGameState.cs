@@ -28,7 +28,7 @@ public partial class MinesweeperGameState : Entity
 	[Net] public MinesweeperState UIState { get; set; }
 	[Net] public List<MinesweeperTileType> Tiles { get; set; }
 	[Net] public List<bool> revealedTiles { get; set; }
-	[Net, Property] public int dimensions { get; set; } = 22;
+	[Net] public int dimensions { get; set; } = 5;
 
 	Func<int, MinesweeperPodium> currentPodium
 	{
@@ -38,11 +38,12 @@ public partial class MinesweeperGameState : Entity
 		}
 	}
 
-	public MinesweeperGameState()
+	public MinesweeperGameState(){}
+	public MinesweeperGameState(int dim = 5)
 	{
+		dimensions = dim;
 		Tiles = new List<MinesweeperTileType>( new MinesweeperTileType[dimensions * dimensions] );
 		revealedTiles = new List<bool>( new bool[dimensions * dimensions] );
-		Log.Info( $"setting UI for {UIState}" );
 	}
 	// public MinesweeperGameState( MinesweeperPodium podi )
 	// {
@@ -71,7 +72,6 @@ public partial class MinesweeperGameState : Entity
 	{
 
 		Tiles = new List<MinesweeperTileType>( new MinesweeperTileType[dimensions * dimensions] );
-		Log.Info( $"Setting up ms grid for x: {dimensions}, y: {dimensions}" );
 		// Mine Generation
 		for ( int forX = 0; forX < dimensions; forX++ )
 		{

@@ -1,4 +1,5 @@
 ﻿using Sandbox;
+using Sandbox.UI;
 using Sandbox.Component;
 
 public partial class PlatesPlayer : Player
@@ -16,6 +17,7 @@ public partial class PlatesPlayer : Player
 	[Net] public Plate CurrentPlate {get; set;}
 	[Net] public int EventCount {get;set;} = 0;
 	[Net] public bool InGame {get;set;} = false;
+
 
 	public PlatesPlayer()
 	{
@@ -212,6 +214,13 @@ public partial class PlatesPlayer : Player
 		}
 
 		lastWeapon = ActiveChild;
+	}
+
+	WorldInput WorldInput = new();
+	public override void BuildInput( InputBuilder input )
+	{
+		WorldInput.Ray = new Ray( EyePosition, EyeRotation.Forward );
+		WorldInput.MouseLeftPressed = input.Down( InputButton.PrimaryAttack );
 	}
 
 	public override void StartTouch( Entity other )

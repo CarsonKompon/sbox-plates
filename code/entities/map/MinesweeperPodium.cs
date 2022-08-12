@@ -4,11 +4,11 @@ using Sandbox;
 using System.Collections.Generic;
 using SandboxEditor;
 
-[Spawnable]
-[Library( "plates_ms_play_podium", Title = "Minesweeper Play Podium" ), HammerEntity]
-[EditorModel( "models/ms_podium.vmdl" )]
+[Library( "plates_casino_minesweep", Title = "Minesweeper Play Podium" )]
+[HammerEntity, EditorModel( "models/ms_podium.vmdl" )]
 public partial class MinesweeperPodium : Prop, IUse
 {
+	[Property(Title = "Board Dimensions")] public int dimensions {get;set;} = 5;
 	public MinesweeperUI screen { get; set; }
 	[Net] public MinesweeperGameState gameState { get; set; } = new();
 	RealTimeSince randomTimer = 0f;
@@ -24,7 +24,7 @@ public partial class MinesweeperPodium : Prop, IUse
 		SetupPhysicsFromModel( PhysicsMotionType.Static );
 		if ( IsServer )
 		{
-			gameState = new MinesweeperGameState();
+			gameState = new MinesweeperGameState(dimensions);
 			MinesweeperGameState.podiums.Add( this );
 		}
 		BuildUI( gameState );

@@ -462,7 +462,6 @@ public partial class PlatesGame : Sandbox.Game
 	[ClientRpc]
 	public override void OnKilledMessage(long leftid, string left, long rightid, string right, string method)
 	{
-		Log.Info($"{leftid} {left} {rightid} {right}");
 		var _showKill = false;
 		foreach(Client cl in Client.All)
 		{

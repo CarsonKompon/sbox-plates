@@ -146,13 +146,11 @@ public static partial class PlayerDataManager
     [ConCmd.Server]
 	private static void AddPlayerDataEntry(string dataString)
 	{
-		Log.Info($"We ARE a server with deeta {dataString}");
 		PlayerData data = JsonSerializer.Deserialize<PlayerData>(dataString);
 		foreach(var client in Client.All)
 		{
 			if(client.PlayerId == data.PlayerId)
 			{
-				Log.Info($"SERVER: New Player Just Dropped {data.PlayerId} {data}");
 				PlayerDataManager.AddEntry(data.PlayerId, data, dataString);
 				break;
 			}

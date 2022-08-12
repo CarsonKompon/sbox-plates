@@ -78,7 +78,6 @@ public partial class MinesweeperTile : Panel
 		}
 		Style.Width = Length.Percent( (1f / SweepUI.podium.gameState.dimensions) * 100f );
 		Style.Height = Length.Percent( (1f / SweepUI.podium.gameState.dimensions) * 100f );
-		// Log.Info( $"LISCENCED {Style.Width}granthony{Style.Height}" );
 	}
 
 	protected override void OnClick( MousePanelEvent e )
@@ -95,7 +94,6 @@ public partial class MinesweeperTile : Panel
 	{
 		if ( !revealed )
 		{
-			Log.Info( $"{Xval} {Yval} WAS PRESSED, IT WAS A {type}" );
 			SweepUI.podium.handleTileClick( Xval, Yval );
 		}
 
