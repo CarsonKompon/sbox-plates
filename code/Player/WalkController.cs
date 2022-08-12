@@ -2,7 +2,7 @@ using Sandbox;
 
 public partial class PlatesWalkController : WalkController
 {
-	[Net] public float Speed { get; set; } = 2;
+	[Net] public float Speed { get; set; } = 1;
 	[Net] public float JumpPower { get; set; } = 1;
 	[Net] public float InputMultiplier { get; set; } = 1;
 	[Net] public float ForwardInput { get; set; } = 0;
