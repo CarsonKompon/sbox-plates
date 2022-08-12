@@ -1,0 +1,36 @@
+.sweep-tile-wrapper {
+	// height: 100%;
+	// width: 100%;
+	
+	padding: 5px;
+	text-align: right;
+	justify-content: center;
+	border-radius: 10%;
+	z-index: 1;
+	transition: background-color .2s ease-in;
+	&:hover{
+		background-color: gray;
+		&:active {
+			background-color: black;
+		}
+	}
+}
+.sweep-tile {
+	border-radius: 10%;
+	padding-bottom: 5%;
+	padding-right: 5%;
+	font-weight: 700;
+	flex-direction: column;
+	justify-content: flex-end;
+	align-self: center;
+	height: 90%;
+	width: 90%;
+	background-color: black;
+	// @include transition(.3s background-color ease-in);
+	&.mine.revealed {
+		background-color: red;
+	}
+	&.money.revealed {
+		background-color: yellow;
+	}
+}
