@@ -32,7 +32,7 @@ public partial class MinesweeperTile : Panel
 	public int adjacentMines = 0;
 	public MinesweeperTile()
 	{
-		StyleSheet.Load( "/entities/map/minesweeper/MinesweeperTile.scss" );
+		StyleSheet.Load( "/entities/map/casino/minesweeper/MinesweeperTile.scss" );
 		AddClass( "sweep-tile-wrapper" );
 		label = new Label();
 		button = Add.Button( "" );

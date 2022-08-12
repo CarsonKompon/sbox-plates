@@ -26,7 +26,7 @@ public partial class MinesweeperUI : WorldPanel
 		MinedSweep.Add.Label( "Plate Sweeper", "title" );
 		GameContainer = MinedSweep.Add.Panel( "minesweeper-game-container" );
 
-		StyleSheet.Load( "/entities/map/minesweeper/MinesweeperUI.scss" );
+		StyleSheet.Load( "/entities/map/casino/minesweeper/MinesweeperUI.scss" );
 		AddClass( "minesweeper-ui" );
 
 

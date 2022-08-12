@@ -39,6 +39,9 @@ public static partial class PlayerDataManager
     /// </summary>
     public static void GiveAllMoney(int amount, bool force = false)
     {
+        List<long> ids = new();
+        List<int> moneys = new();
+
         var sendingClients = new List<Client>();
         foreach(var client in Client.All)
         {
@@ -46,11 +49,15 @@ public static partial class PlayerDataManager
             {
                 PlayerData data = Players[client.PlayerId];
                 data.Money += amount;
+
+                ids.Add(data.PlayerId);
+                moneys.Add(data.Money);
                 
                 sendingClients.Add(client);
             }
         }
-        UpdateAllEntries(JsonSerializer.Serialize(Players));
+
+        ClientUpdateMoneyMultiple(ids.ToArray(), moneys.ToArray());
     }
 
     /// <summary>
@@ -61,7 +68,7 @@ public static partial class PlayerDataManager
         PlayerData data = Players[id];
         data.Money += amount;
 
-        UpdateEntry(id, data);
+        ClientUpdateMoney(id, data.Money);
     }
 
     /// <summary>
@@ -82,7 +89,7 @@ public static partial class PlayerDataManager
         if(data.Money >= amount)
         {
             data.Money -= amount;
-            UpdateEntry(id, data);
+            ClientUpdateMoney(id, data.Money);
             return true;
         }
         return false;
@@ -119,14 +126,30 @@ public static partial class PlayerDataManager
     }
 
     [ClientRpc]
-    public static void UpdateEntry(long id, PlayerData data)
+    public static void ClientUpdateMoney(long id, int money)
     {
-        Players[id] = data;
+        PlayerData data = Players[id];
+        data.Money = money;
         if(id == Local.PlayerId) SaveLocalData();
     }
 
     [ClientRpc]
-    public static void UpdateAllEntries(string dataString)
+    public static void ClientUpdateMoneyMultiple(long[] ids, int[] moneys)
+    {
+        for(int i=0; i<ids.Length; i++)
+        {
+            var id = ids[i];
+            PlayerData data = Players[id];
+            if(data != null)
+            {
+                data.Money = moneys[i];
+            }
+            if(id == Local.PlayerId) SaveLocalData();
+        }
+    }
+
+    [ClientRpc]
+    public static void ClientUpdateEveryone(string dataString)
     {
         Players = JsonSerializer.Deserialize<IDictionary<long, PlayerData>>(dataString);
         SaveLocalData();

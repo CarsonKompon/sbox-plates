@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using SandboxEditor;
 
 [Library( "plates_casino_minesweep", Title = "Minesweeper Play Podium" )]
-[HammerEntity, EditorModel( "models/ms_podium.vmdl" )]
+[HammerEntity, EditorModel( "models/casino/podium_minesweep.vmdl" )]
 public partial class MinesweeperPodium : Prop, IUse
 {
 	[Property(Title = "Board Dimensions")] public int dimensions {get;set;} = 5;
@@ -20,7 +20,7 @@ public partial class MinesweeperPodium : Prop, IUse
 	{
 		base.Spawn();
 
-		SetModel( "models/ms_podium.vmdl" );
+		SetModel( "models/casino/podium_minesweep.vmdl" );
 		SetupPhysicsFromModel( PhysicsMotionType.Static );
 		if ( IsServer )
 		{
