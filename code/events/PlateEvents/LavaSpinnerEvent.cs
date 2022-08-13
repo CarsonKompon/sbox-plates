@@ -6,7 +6,8 @@ using Sandbox;
 public class PlateLavaSpinnerEvent : PlatesEventAttribute
 {
     public PlateLavaSpinnerEvent(){
-        name = "plate_lava_spinner";
+        name = "Plate Lava Spinner";
+        command = "plate_lava_spinner";
         text = " plate(s) will get a lava spinner in ";
         type = EventType.Plate;
         

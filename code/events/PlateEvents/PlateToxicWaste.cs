@@ -7,9 +7,11 @@ public class PlateToxicWasteEvent : PlatesEventAttribute
 {
 
     public PlateToxicWasteEvent(){
-        name = "plate_toxic_waste";
+        name = "Plate Toxic Waste";
+        command = "plate_toxic_waste";
         text = " plate(s) will receive a barrel of toxic waste in ";
         type = EventType.Plate;
+        rarity = EventRarity.Rare;
     }
 
     public override void OnEvent(Plate plate){

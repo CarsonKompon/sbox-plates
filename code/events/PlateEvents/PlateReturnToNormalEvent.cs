@@ -5,9 +5,11 @@ using Sandbox;
 public class PlateReturnToNormalEvent : PlatesEventAttribute
 {
     public PlateReturnToNormalEvent(){
-        name = "plate_return_normal";
+        name = "Plate Returns To Normal";
+        command = "plate_return_normal";
         text = " plate(s) will return to normal in ";
         type = EventType.Plate;
+        rarity = EventRarity.Rare;
     }
 
     public override void OnEvent(Plate plate){

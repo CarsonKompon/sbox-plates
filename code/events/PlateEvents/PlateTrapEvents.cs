@@ -6,9 +6,11 @@ public class PlateBarrelTrapEvent : PlatesEventAttribute
 {
 
     public PlateBarrelTrapEvent(){
-        name = "plate_barrel_trap";
+        name = "Plate Explosive Barrel";
+        command = "plate_barrel_trap";
         text = " plate(s) will receive an explosive barrel in ";
         type = EventType.Plate;
+        rarity = EventRarity.Uncommon;
     }
 
     public override void OnEvent(Plate plate){

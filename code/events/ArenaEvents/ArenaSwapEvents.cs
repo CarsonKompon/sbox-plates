@@ -7,11 +7,13 @@ public class PlayerSwapEvent : PlatesEventAttribute
 {
 
     public PlayerSwapEvent(){
-        name = "arena_player_swap";
+        name = "2 Players Swap Places";
+        command = "arena_player_swap";
         text = "2 players will swap places in ";
         minAffected = 1;
         maxAffected = 1;
         type = EventType.Arena;
+        rarity = EventRarity.Uncommon;
     }
 
     public override void OnEvent(){
@@ -32,11 +34,13 @@ public class PlayerSwapEvent : PlatesEventAttribute
 public class PlateSwapEvent : PlatesEventAttribute
 {
     public PlateSwapEvent(){
-        name = "arena_plate_swap";
+        name = "2 Plates Swap Places";
+        command = "arena_plate_swap";
         text = "2 plates will swap places in ";
         minAffected = 1;
         maxAffected = 1;
         type = EventType.Arena;
+        rarity = EventRarity.Uncommon;
     }
 
     public override void OnEvent(){

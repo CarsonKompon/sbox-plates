@@ -5,9 +5,11 @@ using System;
 public class PlayerSpeedUpEvent : PlatesEventAttribute
 {
     public PlayerSpeedUpEvent(){
-        name = "player_speed_up";
+        name = "Player Speeds Up";
+        command = "player_speed_up";
         text = " player(s) will speed up in ";
         type = EventType.Player;
+        rarity = EventRarity.Uncommon;
     }
 
     public override void OnEvent(Entity ent){
@@ -22,9 +24,11 @@ public class PlayerSpeedUpEvent : PlatesEventAttribute
 public class PlayerSpeedDownEvent : PlatesEventAttribute
 {
     public PlayerSpeedDownEvent(){
-        name = "player_speed_down";
+        name = "Player Speeds Down";
+        command = "player_speed_down";
         text = " player(s) will slow down in ";
         type = EventType.Player;
+        rarity = EventRarity.Uncommon;
     }
     
     public override void OnEvent(Entity ent){
@@ -38,9 +42,11 @@ public class PlayerSpeedDownEvent : PlatesEventAttribute
 public class PlayerJumpUpEvent : PlatesEventAttribute
 {
     public PlayerJumpUpEvent(){
-        name = "player_jump_up";
+        name = "Player Jumps Higher";
+        command = "player_jump_up";
         text = " player(s) will jump 25% higher in ";
         type = EventType.Player;
+        rarity = EventRarity.Uncommon;
     }
 
     public override void OnEvent(Entity ent){
@@ -53,9 +59,11 @@ public class PlayerJumpUpEvent : PlatesEventAttribute
 public class PlayerJumpDownEvent : PlatesEventAttribute
 {
     public PlayerJumpDownEvent(){
-        name = "player_jump_down";
+        name = "Player Jumps Lower";
+        command = "player_jump_down";
         text = " player(s) will jump 25% lower in ";
         type = EventType.Player;
+        rarity = EventRarity.Uncommon;
     }
 
     public override void OnEvent(Entity ent){
@@ -70,9 +78,11 @@ public class PlayerJumpDownEvent : PlatesEventAttribute
 public class PlayerWalkBackwardsEvent : PlatesEventAttribute
 {
     public PlayerWalkBackwardsEvent(){
-        name = "player_walk_backwards";
+        name = "Player Reversed Controls";
+        command = "player_walk_backwards";
         text = " player(s) will have their controls reversed in ";
         type = EventType.Player;
+        rarity = EventRarity.Rare;
     }
 
     public override void OnEvent(Entity ent){
@@ -86,9 +96,11 @@ public class PlayerWalkBackwardsEvent : PlatesEventAttribute
 public class PlayerWalkRandomlyEvent : PlatesEventAttribute
 {
     public PlayerWalkRandomlyEvent(){
-        name = "player_walk_randomly";
+        name = "Player Walks Randomly";
+        command = "player_walk_randomly";
         text = " player(s) will walk randomly in ";
         type = EventType.Player;
+        rarity = EventRarity.Uncommon;
     }
 
     public override void OnEvent(Entity ent){

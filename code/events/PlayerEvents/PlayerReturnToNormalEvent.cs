@@ -5,9 +5,11 @@ using Sandbox;
 public class PlayerReturnToNormalEvent : PlatesEventAttribute
 {
     public PlayerReturnToNormalEvent(){
-        name = "player_return_normal";
+        name = "Player Returns To Normal";
+        command = "player_return_normal";
         text = " player(s) will return to normal in ";
         type = EventType.Player;
+        rarity = EventRarity.Rare;
     }
 
     public override void OnEvent(Entity ent){

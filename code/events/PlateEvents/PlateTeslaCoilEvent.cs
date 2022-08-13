@@ -7,9 +7,11 @@ public class PlateTeslaCoilEvent : PlatesEventAttribute
 {
 
     public PlateTeslaCoilEvent(){
-        name = "plate_tesla_coil";
+        name = "Plate Tesla Coil";
+        command = "plate_tesla_coil";
         text = " plate(s) will receive a tesla coil in ";
         type = EventType.Plate;
+        rarity = EventRarity.Rare;
     }
 
     public override void OnEvent(Plate plate){
