@@ -6,7 +6,8 @@ public class BarrelDropPlayerEvent : PlatesEventAttribute
 {
 
     public BarrelDropPlayerEvent(){
-        name = "player_barrel_drop";
+        name = "Explosive Barrel Drops On Player";
+        command = "player_barrel_drop";
         text = " player(s) will have an Explosive Barrel dropped on them in ";
         type = EventType.Player;
     }

@@ -4,9 +4,11 @@ using Sandbox;
 public class PlayerInvisibleEvent : PlatesEventAttribute
 {
     public PlayerInvisibleEvent(){
-        name = "player_invisible";
+        name = "Invisible Player";
+        command = "player_invisible";
         text = " player(s) will become invisible in ";
         type = EventType.Player;
+        rarity = EventRarity.Rare;
     }
 
     public override void OnEvent(Entity ent){
@@ -20,7 +22,8 @@ public class PlayerInvisibleEvent : PlatesEventAttribute
 public class PlayerGhostEvent : PlatesEventAttribute
 {
     public PlayerGhostEvent(){
-        name = "player_ghost";
+        name = "Ghost Player";
+        command = "player_ghost";
         text = " player(s) will become ghost-like in ";
         type = EventType.Player;
     }

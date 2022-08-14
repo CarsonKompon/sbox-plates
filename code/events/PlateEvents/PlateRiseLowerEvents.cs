@@ -7,7 +7,8 @@ using System;
 public class PlateRiseEvent : PlatesEventAttribute
 {
     public PlateRiseEvent(){
-        name = "plate_rise";
+        name = "Plate Rises";
+        command = "plate_rise";
         text = " plate(s) will rise in ";
         type = EventType.Plate;
     }
@@ -21,7 +22,8 @@ public class PlateRiseEvent : PlatesEventAttribute
 public class PlateLowerEvent : PlatesEventAttribute
 {
     public PlateLowerEvent(){
-        name = "plate_lower";
+        name = "Plate Lowers";
+        command = "plate_lower";
         text = " plate(s) will lower in ";
         type = EventType.Plate;
     }
@@ -35,9 +37,11 @@ public class PlateLowerEvent : PlatesEventAttribute
 public class PlateRiseRandomEvent : PlatesEventAttribute
 {
     public PlateRiseRandomEvent(){
-        name = "plate_rise_random";
+        name = "Plate Rise/Lower Random Amount";
+        command = "plate_rise_random";
         text = " plate(s) will rise or lower a random amount in ";
         type = EventType.Plate;
+        rarity = EventRarity.Uncommon;
     }
 
     public override void OnEvent(Plate plate){

@@ -7,11 +7,13 @@ public class PlateLandMineEvent : PlatesEventAttribute
 {
 
     public PlateLandMineEvent(){
-        name = "plate_landmine";
+        name = "Plate Landmine";
+        command = "plate_landmine";
         text = " plate(s) will receive a landmine in ";
         type = EventType.Plate;
         minAffected = 1;
         maxAffected = 1;
+        rarity = EventRarity.Uncommon;
     }
 
     public override void OnEvent(Plate plate){

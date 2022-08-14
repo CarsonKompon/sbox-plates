@@ -131,11 +131,11 @@ public partial class PlatesGame
 		else EventSubtext = EventSubtext + ", ";
 	}
 
-    public static PlatesEventAttribute GetEventFromName(string eventName)
+    public static PlatesEventAttribute GetEventFromCommand(string eventName)
 	{
 		foreach(var _ev in Events)
 		{
-			if(_ev.name == eventName)
+			if(_ev.command == eventName)
 			{
 				return _ev;
 			}
@@ -172,7 +172,7 @@ public partial class PlatesGame
 	[ConCmd.Admin("plates_event", Help = "Adds an event to the queue for the current game")]
 	public static void QueueEvent(string eventName)
 	{
-		var _event = GetEventFromName(eventName);
+		var _event = GetEventFromCommand(eventName);
 		if(_event == null)
 		{
 			Log.Error("PLATES: There is no event with name " + eventName);

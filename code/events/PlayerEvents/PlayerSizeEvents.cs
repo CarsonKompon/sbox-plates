@@ -4,9 +4,11 @@ using Sandbox;
 public class PlayerGrowEvent : PlatesEventAttribute
 {
     public PlayerGrowEvent(){
-        name = "player_grow";
+        name = "Player Grows";
+        command = "player_grow";
         text = " player(s) will grow in ";
         type = EventType.Player;
+        rarity = EventRarity.Uncommon;
     }
 
     public override void OnEvent(Entity ent){
@@ -18,9 +20,11 @@ public class PlayerGrowEvent : PlatesEventAttribute
 public class PlayerShrinkEvent : PlatesEventAttribute
 {
     public PlayerShrinkEvent(){
-        name = "player_shrink";
+        name = "Player Shrinks";
+        command = "player_shrink";
         text = " player(s) will shrink in ";
         type = EventType.Player;
+        rarity = EventRarity.Uncommon;
     }
     
     public override void OnEvent(Entity ent){

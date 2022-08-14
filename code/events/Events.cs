@@ -5,10 +5,12 @@ using System.Collections.Generic;
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
 public class PlatesEventAttribute : LibraryAttribute
 {
-    public virtual string name {get;set;} = "nothing";
+    public virtual string name {get;set;} = "Nothing";
+    public virtual string command {get;set;} = "nothing";
     public virtual string text {get;set;} = " plates will do nothing in ";
     public virtual string subtext {get;set;} = "";
     public virtual EventType type {get;set;} = EventType.Plate;
+    public virtual EventRarity rarity {get;set;} = EventRarity.Common;
 
     public virtual bool hidden {get;set;} = false;
 
@@ -33,5 +35,6 @@ public class PlatesRoundAttribute : LibraryAttribute
 }
 
 public enum EventType { Player,Plate,Arena }
+public enum EventRarity { Common, Uncommon, Rare, Epic }
 
 public class LoadUI : LibraryAttribute {}

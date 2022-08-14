@@ -122,4 +122,11 @@ public partial class PlatesWalkController : WalkController
 		}
 	}
 
+	public override void AirMove()
+	{
+		SurfaceFriction = 1f;
+
+		base.AirMove();
+	}
+
 }

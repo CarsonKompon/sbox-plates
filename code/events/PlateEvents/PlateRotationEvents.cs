@@ -5,7 +5,8 @@ using System;
 public class PlateRotateEvent : PlatesEventAttribute
 {
     public PlateRotateEvent(){
-        name = "plate_rotate";
+        name = "Plate Rotates";
+        command = "plate_rotate";
         text = " plate(s) will start rotating in ";
         type = EventType.Plate;
     }
@@ -40,7 +41,8 @@ public partial class PlateRotateEnt : Entity
 public class PlateFlipEvent : PlatesEventAttribute
 {
     public PlateFlipEvent(){
-        name = "plate_flip";
+        name = "Plate Flips";
+        command = "plate_flip";
         text = " plate(s) will flip in ";
         type = EventType.Plate;
         hidden = true;

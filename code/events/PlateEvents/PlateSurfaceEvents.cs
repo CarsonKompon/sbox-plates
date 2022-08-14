@@ -4,9 +4,11 @@ using Sandbox;
 public class PlateIceEvent : PlatesEventAttribute
 {
     public PlateIceEvent(){
-        name = "plate_ice";
+        name = "Icy Plate";
+        command = "plate_ice";
         text = " plate(s) will become an ice rink in ";
         type = EventType.Plate;
+        rarity = EventRarity.Uncommon;
     }
 
     public override void OnEvent(Plate plate){

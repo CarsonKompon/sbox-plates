@@ -6,9 +6,11 @@ using System.Collections.Generic;
 public class PlayerStinkyEvent : PlatesEventAttribute
 {
     public PlayerStinkyEvent(){
-        name = "player_smell_bad";
+        name = "Player Smell Bad";
+        command = "player_smell_bad";
         text = " player(s) will smell bad in ";
         type = EventType.Player;
+        rarity = EventRarity.Rare;
     }
 
     public override void OnEvent(Entity ent){

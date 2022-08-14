@@ -11,9 +11,11 @@ using Sandbox.UI.Construct;
 public class PlayerVirusEvent : PlatesEventAttribute
 {
     public PlayerVirusEvent(){
-        name = "player_virus";
-        text = " player(s) will get the virus in ";
+        name = "Player Gets A Curable Virus";
+        command = "player_virus";
+        text = " player(s) will get a curable virus in ";
         type = EventType.Player;
+        rarity = EventRarity.Rare;
     }
 
     public override void OnEvent(Entity ent){

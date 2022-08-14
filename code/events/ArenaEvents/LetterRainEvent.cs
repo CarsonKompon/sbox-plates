@@ -6,12 +6,14 @@ using System;
 public partial class LetterRainEvent : PlatesEventAttribute
 {
     public LetterRainEvent(){
-        name = "arena_letter_rain";
+        name = "Letter Rain";
+        command = "arena_letter_rain";
         text = "Letters will rain from the sky in ";
         subtext = "Letters will rain from the sky for 2 minutes.";
         type = EventType.Arena;
         minAffected = 1;
         maxAffected = 1;
+        rarity = EventRarity.Rare;
     }
 
     public override void OnEvent(){

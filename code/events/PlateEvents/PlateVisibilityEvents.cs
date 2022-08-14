@@ -6,7 +6,8 @@ public class PlateColourEvent : PlatesEventAttribute
 {
 
     public PlateColourEvent(){
-        name = "plate_colour";
+        name = "Plate Colour Change";
+        command = "plate_colour";
         text = " plate(s) will change colour in ";
         type = EventType.Plate;
     }
@@ -20,7 +21,8 @@ public class PlateColourEvent : PlatesEventAttribute
 public class PlateInvisibleEvent : PlatesEventAttribute
 {
     public PlateInvisibleEvent(){
-        name = "plate_invisible";
+        name = "Invisible Plate";
+        command = "plate_invisible";
         text = " plate(s) will become invisible in ";
         type = EventType.Plate;
     }
@@ -33,7 +35,8 @@ public class PlateInvisibleEvent : PlatesEventAttribute
 public class PlateFadeInOutEvent : PlatesEventAttribute
 {
     public PlateFadeInOutEvent(){
-        name = "plate_fade_in_out";
+        name = "Plate Fade In And Out";
+        command = "plate_fade_in_out";
         text = " plate(s) will fade in and out in ";
         type = EventType.Plate;
     }

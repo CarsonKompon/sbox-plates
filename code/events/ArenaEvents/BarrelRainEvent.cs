@@ -5,12 +5,14 @@ using System;
 public partial class BarrelRainEvent : PlatesEventAttribute
 {
     public BarrelRainEvent(){
-        name = "arena_barrel_rain";
+        name = "Explosive Barrel Rain";
+        command = "arena_barrel_rain";
         text = "Explosive Barrels will rain from the sky in ";
         subtext = "Explosive Barrels will rain from the sky for 2 minutes.";
         type = EventType.Arena;
         minAffected = 1;
         maxAffected = 1;
+        rarity = EventRarity.Rare;
     }
 
     public override void OnEvent(){
