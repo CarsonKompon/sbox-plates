@@ -8,10 +8,12 @@ using SandboxEditor;
 [HammerEntity, EditorModel( "models/casino/podium_minesweep.vmdl" )]
 public partial class MinesweeperPodium : Prop, IUse
 {
-	[Property(Title = "Board Dimensions")] public int dimensions {get;set;} = 5;
+	[Property( Title = "Board Dimensions" )] public int dimensions { get; set; } = 5;
 	public MinesweeperUI screen;
 	[Net] public MinesweeperGameState gameState { get; set; } = new();
 	RealTimeSince randomTimer = 0f;
+
+	public int wagerAmount { get; set; } = 100;
 
 	public MinesweeperPodium()
 	{
@@ -24,7 +26,7 @@ public partial class MinesweeperPodium : Prop, IUse
 		SetupPhysicsFromModel( PhysicsMotionType.Static );
 		if ( IsServer )
 		{
-			gameState = new MinesweeperGameState(dimensions);
+			gameState = new MinesweeperGameState( dimensions );
 			MinesweeperGameState.podiums.Add( this );
 		}
 		BuildUI( gameState );
@@ -46,22 +48,35 @@ public partial class MinesweeperPodium : Prop, IUse
 	}
 	[Event.Tick]
 	public void Tick()
-	{ }
+	{
+		// if ( gameState.UIState == MinesweeperState.Playing )
+		// {
+
+		// }
+	}
 
 	public bool IsUsable( Entity user )
 	{
-		return gameState.UIState == MinesweeperState.Idle;
+		return (gameState.UIState == MinesweeperState.Idle && PlayerDataManager.HasMoney( user.Client.PlayerId, wagerAmount )) || (gameState.UIState == MinesweeperState.Playing && user.Client.PlayerId == gameState.activePlayerId);
 	}
 
 
 	public bool OnUse( Entity user )
 	{
-		gameState.Reset( NetworkIdent );
-		ClearBoard();
-		gameState.activePlayerId = user.Client.PlayerId;
-		gameState.Play();
-		BuildUI( gameState );
-		// Sound.FromEntity( "captain morgan spiced h", this );
+		if ( PlayerDataManager.HasMoney( user.Client.PlayerId, wagerAmount ) && gameState.UIState == MinesweeperState.Idle )
+		{
+			gameState.Reset( NetworkIdent );
+			gameState.Play( user.Client.PlayerId, wagerAmount );
+			ClearBoard();
+			PlayerDataManager.SpendMoney( user.Client.PlayerId, wagerAmount );
+			BuildUI( gameState );
+			// Sound.FromEntity( "captain morgan spiced h", this );
+		}
+		else if ( gameState.UIState == MinesweeperState.Playing && user.Client.PlayerId == gameState.activePlayerId )
+		{
+			PlayerDataManager.GiveMoney( user.Client.PlayerId, (int)Math.Round( gameState.wager * gameState.rewardMultiplier, 0 ) );
+			gameState.Lose( NetworkIdent );
+		}
 		return false;
 	}
 
