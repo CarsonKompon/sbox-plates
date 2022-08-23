@@ -14,6 +14,8 @@ public partial class MinesweeperUI : WorldPanel
 	public List<MinesweeperTile> Tiles { get; set; } = new();
 	public MinesweeperPodium podium;
 
+	public int activeRadius = 600;
+
 
 
 	public MinesweeperUI()
@@ -22,25 +24,27 @@ public partial class MinesweeperUI : WorldPanel
 	public MinesweeperUI( float scale, MinesweeperPodium podi ) : this()
 	{
 		podium = podi;
-		MinedSweep = Add.Panel( "minesweeper-card" );
-		MinedSweep.Add.Label( "Plate Sweeper", "title" );
-		GameContainer = MinedSweep.Add.Panel( "minesweeper-game-container" );
 
+		// UI setup
+		MinedSweep = Add.Panel( "minesweeper-card" );
+		MinedSweep.Add.Label( "💣💣💣💣💣💣💣\n💣Plate Sweeper💣\n💣💣💣💣💣💣💣", "title" );
+		GameContainer = MinedSweep.Add.Panel( "minesweeper-game-container" );
 		StyleSheet.Load( "/entities/map/casino/minesweeper/MinesweeperUI.scss" );
 		AddClass( "minesweeper-ui" );
-
-
-		var width = 200 * 20 * scale;
-		var height = 200 * 20 * scale;
+		var width = 190 * 20 * scale;
+		var height = 190 * 20 * scale;
 		PanelBounds = new Rect( -width * .5f, -height * .5f, width, height );
 	}
 
 	// }
 	public override void Tick()
 	{
-		SetClass( "show-ui", true );
-		GameContainer.Style.FlexBasis = Length.Percent( (1 / podium.dimensions) * 100 );
+		SetClass( "show-ui", Local.Client.Pawn.Position.Distance( podium.Position ) < activeRadius );
+		GameContainer.Style.FlexBasis = Length.Percent( (1 / podium.dimensions + 5) * 100 );
 	}
+
+
+
 	public void FillBoard( IList<MinesweeperTileType> sweepers, IList<bool> revealedPanels )
 	{
 		if ( Tiles.Count < (podium.gameState.dimensions * podium.gameState.dimensions) )

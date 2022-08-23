@@ -25,12 +25,18 @@
 	align-self: center;
 	height: 90%;
 	width: 90%;
-	background-color: black;
+	background-color: gray;
+	background-image: url("sprites\question-mark.png");
+	background-repeat: no-repeat;
+	background-position: 5%;
+	background-size: 90%;
 	// @include transition(.3s background-color ease-in);
 	&.mine.revealed {
 		background-color: red;
+		background-image: url("sprites\mine.png");
 	}
 	&.money.revealed {
 		background-color: yellow;
+		background-image: url("sprites\money.png");
 	}
 }

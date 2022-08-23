@@ -39,7 +39,7 @@ public partial class MinesweeperGameState : Entity
 				if ( revealed ) revealedMonies++;
 
 			}
-			return MathC.Map( (float)revealedMonies, 0, totalMoneyTiles, 0.7f, 3.5f );
+			return MathC.Map( (float)revealedMonies, 0, totalMoneyTiles, 0.5f, 2.5f + dimensions - 3 );
 		}
 	}
 	public int totalMoneyTiles
@@ -95,9 +95,9 @@ public partial class MinesweeperGameState : Entity
 		else
 		{
 			Sound.FromEntity( "yeah", podi );
-			Log.Info( $"{podi.gameState.rewardMultiplier}" );
+			podi.RevealTile( y * podi.gameState.dimensions + x );
+			// Log.Info( $"{podi.gameState.rewardMultiplier}" );
 		}
-		podi.BuildUI( podi.gameState );
 
 	}
 	private void SetupMines()
@@ -105,17 +105,25 @@ public partial class MinesweeperGameState : Entity
 
 		Tiles = new List<MinesweeperTileType>( new MinesweeperTileType[dimensions * dimensions] );
 		// Mine Generation
-		for ( int forX = 0; forX < dimensions; forX++ )
+
+		switch ( Rand.Int( 0, 4 ) )
 		{
-			//y
-			for ( int forY = 0; forY < dimensions; forY++ )
-			{
+			//random
+			default:
+				for ( int forX = 0; forX < dimensions; forX++ )
+				{
+					//y
+					for ( int forY = 0; forY < dimensions; forY++ )
+					{
 
-				Tiles[forY * dimensions + forX] = Rand.Int( 0, 10 ) > (5 + Rand.Int( -1, 5 )) ? MinesweeperTileType.Mine : MinesweeperTileType.Money;
-				Log.Info( $"{Tiles[forY * dimensions + forX]}" );
-				revealedTiles[forY * dimensions + forX] = false;
+						Tiles[forY * dimensions + forX] = Rand.Int( 0, 10 ) > (5 + Rand.Int( -1, 5 )) ? MinesweeperTileType.Mine : MinesweeperTileType.Money;
+						// Log.Info( $"{Tiles[forY * dimensions + forX]}" );
+						revealedTiles[forY * dimensions + forX] = false;
 
-			}
+					}
+				}
+				break;
+
 		}
 
 	}
@@ -138,6 +146,12 @@ public partial class MinesweeperGameState : Entity
 		SetupMines();
 		wager = bet;
 	}
+
+	public void UpdateTile( int tileIndex )
+	{
+		MinesweeperPodium podi = podiums.Find( pod => pod.gameState.NetworkIdent == NetworkIdent );
+		podi.RevealTile( tileIndex );
+	}
 	async public void Lose( int ident )
 	{
 		MinesweeperPodium pod = currentPodium( ident );
@@ -148,7 +162,9 @@ public partial class MinesweeperGameState : Entity
 		}
 		pod.BuildUI( this );
 		UIState = MinesweeperState.Failed;
-		await GameTask.DelaySeconds( 5 );
+
+		await GameTask.DelayRealtimeSeconds( 5 );
+
 		UIState = MinesweeperState.Idle;
 		Reset( ident );
 		pod.ClearBoard();

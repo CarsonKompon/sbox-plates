@@ -5,11 +5,12 @@ using System.Collections.Generic;
 using SandboxEditor;
 
 [Library( "plates_casino_minesweep", Title = "Minesweeper Play Podium" )]
-[HammerEntity, EditorModel( "models/casino/podium_minesweep.vmdl" )]
+[HammerEntity, EditorModel( "models/casino/minesweeper_podium.vmdl" )]
 public partial class MinesweeperPodium : Prop, IUse
 {
 	[Property( Title = "Board Dimensions" )] public int dimensions { get; set; } = 5;
 	public MinesweeperUI screen;
+	public MinesweeperPodiumUI podiumInterface;
 	[Net] public MinesweeperGameState gameState { get; set; } = new();
 	RealTimeSince randomTimer = 0f;
 
@@ -22,7 +23,7 @@ public partial class MinesweeperPodium : Prop, IUse
 	{
 		base.Spawn();
 
-		SetModel( "models/casino/podium_minesweep.vmdl" );
+		SetModel( "models/casino/minesweeper_podium.vmdl" );
 		SetupPhysicsFromModel( PhysicsMotionType.Static );
 		if ( IsServer )
 		{
@@ -41,9 +42,15 @@ public partial class MinesweeperPodium : Prop, IUse
 		if ( screen == null )
 		{
 			screen = new MinesweeperUI( Scale, this );
-			screen.Position = Position + (Rotation.Backward * (80 * Scale));
-			screen.Position += (Rotation.Up * (90 * Scale));
+			screen.Position = Position + (Rotation.Up * (100 * Scale));
+			screen.Position += (Rotation.Right * (7 * Scale));
 			screen.Rotation = Rotation;
+		}
+		if ( podiumInterface == null )
+		{
+			// podiumInterface = new MinesweeperPodiumUI( Scale, this );
+			// podiumInterface.Position = Position + (Rotation.Backward * (0 * Scale));
+			// podiumInterface.Position += (Rotation.Up * (50 * Scale));
 		}
 	}
 	[Event.Tick]
@@ -75,6 +82,7 @@ public partial class MinesweeperPodium : Prop, IUse
 		else if ( gameState.UIState == MinesweeperState.Playing && user.Client.PlayerId == gameState.activePlayerId )
 		{
 			PlayerDataManager.GiveMoney( user.Client.PlayerId, (int)Math.Round( gameState.wager * gameState.rewardMultiplier, 0 ) );
+			Log.Info( $"PLATES: {user.Client.Name} cahed out at minesweeper for a {gameState.wager} at {gameState.rewardMultiplier} for a total of {gameState.rewardMultiplier * gameState.wager}. Was at {PlayerDataManager.GetMoney( user.Client.PlayerId ) - (gameState.rewardMultiplier * gameState.wager)}" );
 			gameState.Lose( NetworkIdent );
 		}
 		return false;
@@ -103,7 +111,7 @@ public partial class MinesweeperPodium : Prop, IUse
 		MinesweeperTileType target = gameState.Tiles[y * gameState.dimensions + x];
 		gameState.revealedTiles[y * gameState.dimensions + x] = true;
 		MinesweeperGameState.handleTileClickGS( this.NetworkIdent, x, y );
-		BuildUI( gameState );
+		// RevealTile( y * gameState.dimensions + x );
 		// Log.Info( $"{target}" );
 	}
 

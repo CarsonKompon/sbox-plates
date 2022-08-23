@@ -86,15 +86,23 @@ public partial class MinesweeperTile : Panel
 
 		if ( Local.Client.PlayerId == SweepUI.podium.gameState.activePlayerId )
 		{
-			RevealTile();
+			handleClick();
 		}
 	}
 
-	public void RevealTile()
+	public void handleClick()
 	{
 		if ( !revealed )
 		{
 			SweepUI.podium.handleTileClick( Xval, Yval );
+		}
+
+	}
+	public void RevealTile()
+	{
+		if ( !revealed )
+		{
+			revealed = true;
 		}
 
 	}

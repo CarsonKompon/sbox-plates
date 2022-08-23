@@ -4,10 +4,11 @@
 	z-index: 1000;
 	pointer-events: none;
 	transition: all 0.1s ease-in;
+	// transform: scale(1.5); anti granthonied rn
+	opacity: 0.2;
 	&.show-ui {
 		opacity: 1;
-		transform: scale(1.01);
-		transform: scale(1);
+		// transform: scale(1); anti granthonied rn
 		pointer-events: all;
 		
 	}
@@ -15,6 +16,8 @@
 .title {
 	height: 64px;
 	width: 50%;
+	margin-bottom: 64px;
+	color: white;
 	display: flex;
 	align-items: center;
 	text-align: center;
@@ -24,10 +27,11 @@
 	align-items: center;
 	margin:  10vh 10vw ;
 	width: 100%;
-	opacity: 0.8;
+	opacity: 0.98;
 	justify-content: center;
 	font-size: 64px;
-	background-color: white;
+	border-radius: 2%;
+	background-color: black;
 }
 
 .minesweeper-game-container {
@@ -37,7 +41,8 @@
 	justify-content: space-between;
 	align-content: space-between;
 	flex-wrap: wrap;
-	border-color: black;
-	border-width: 50px;
+	border-color: gray;
+	border-radius: 2%;
+	border-width: 15px;
 	flex-basis: auto;
 }
