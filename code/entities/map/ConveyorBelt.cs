@@ -1,8 +1,9 @@
 using Sandbox;
-using SandboxEditor;
+using Editor;
 
 [Library("plates_conveyor_belt", Description = "A conveyor belt that pushes entities on top")]
 [HammerEntity, Solid]
+
 public class ConveyorBelt : ModelEntity
 {
 	[Property(Title = "Conveyor Direction")]

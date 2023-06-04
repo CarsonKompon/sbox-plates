@@ -84,7 +84,7 @@ public partial class MinesweeperTile : Panel
 	{
 		base.OnClick( e );
 
-		if ( Local.Client.PlayerId == SweepUI.podium.gameState.activePlayerId )
+		if ( Game.LocalClient.SteamId == SweepUI.podium.gameState.activeSteamId )
 		{
 			RevealTile();
 		}

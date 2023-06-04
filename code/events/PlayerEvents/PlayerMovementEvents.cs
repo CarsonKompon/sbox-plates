@@ -120,8 +120,9 @@ public class WalkRandomlyEnt : Entity
         PlatesGame.AddEntity(this);
     }
 
-    [Event.Tick.Server]
+    [GameEvent.Tick.Server]
     public void Tick(){
+        Random Rand = new();
         if(Rand.Int(1,100) == 1){
             walkController.ForwardInput = (Rand.Float() * 2.0f) - 1.0f;
             walkController.SidewaysInput = (Rand.Float() * 2.0f) - 1.0f;

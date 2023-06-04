@@ -84,17 +84,17 @@ VitalInfo
 		}
 	}
 
-	.avatar
+	avatarhud
 	{
 		z-index: -1;
 		position: absolute;
+		background-color: rgba(black, 0.2);
 		left: 10px;
 		bottom: 10px;
 		width: 225px;
 		height: 225px;
 		border: 8px solid rgb(104, 161, 226);
 		border-radius: 100%;//1% 100% 1% 0px;
-		box-shadow: 3px 3px 12px rgb(#000, 0.4);
 	}
 
 	.disclaimer

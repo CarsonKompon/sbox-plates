@@ -1,5 +1,5 @@
 using Sandbox;
-using SandboxEditor;
+using Editor;
 
 [Library("plates_winners_podium", Description = "A character to be placed on a podium. This represents the winner in the specified position on round end."), HammerEntity]
 [EditorModel("models/citizen/citizen.vmdl")]
@@ -15,7 +15,7 @@ public partial class WinnersPodium : AnimatedEntity
         SetModel("models/citizen/citizen.vmdl");
     }
 
-    public void Dress(Client client)
+    public void Dress(IClient client)
     {
         Clothing.LoadFromClient(client);
         Clothing.DressEntity(this);

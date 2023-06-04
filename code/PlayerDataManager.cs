@@ -5,13 +5,13 @@ using System.Text.Json;
 
 public static partial class PlayerDataManager
 {
-    [Net] private static IDictionary<long, PlayerData> Players {get;set;} = new Dictionary<long, PlayerData>();
+    private static IDictionary<long, PlayerData> Players {get;set;} = new Dictionary<long, PlayerData>();
     public static PlayerData LocalData
     {
         get
         {
-            if(Players.Keys.Contains(Local.PlayerId)) return Players[Local.PlayerId];
-            return new PlayerData(Local.PlayerId);
+            if(Players.Keys.Contains(Game.LocalClient.SteamId)) return Players[Game.LocalClient.SteamId];
+            return new PlayerData(Game.LocalClient.SteamId);
         }
     }
     private static PlayerData PrivateLocalData = new();
@@ -30,7 +30,7 @@ public static partial class PlayerDataManager
     private static PlayerData LoadLocalData()
     {
         var data = FileSystem.Data.ReadJsonOrDefault<PlayerData>("playerdata.json", new PlayerData());
-        data.PlayerId = Local.PlayerId;
+        data.SteamId = Game.LocalClient.SteamId;
         return data;
     }
 
@@ -42,15 +42,15 @@ public static partial class PlayerDataManager
         List<long> ids = new();
         List<int> moneys = new();
 
-        var sendingClients = new List<Client>();
-        foreach(var client in Client.All)
+        var sendingClients = new List<IClient>();
+        foreach(var client in Game.Clients)
         {
             if(client.Pawn is PlatesPlayer ply && (force || ply.InGame))
             {
-                PlayerData data = Players[client.PlayerId];
+                PlayerData data = Players[client.SteamId];
                 data.Money += amount;
 
-                ids.Add(data.PlayerId);
+                ids.Add(data.SteamId);
                 moneys.Add(data.Money);
                 
                 sendingClients.Add(client);
@@ -130,7 +130,7 @@ public static partial class PlayerDataManager
     {
         PlayerData data = Players[id];
         data.Money = money;
-        if(id == Local.PlayerId) SaveLocalData();
+        if(id == Game.LocalClient.SteamId) SaveLocalData();
     }
 
     [ClientRpc]
@@ -144,7 +144,7 @@ public static partial class PlayerDataManager
             {
                 data.Money = moneys[i];
             }
-            if(id == Local.PlayerId) SaveLocalData();
+            if(id == Game.LocalClient.SteamId) SaveLocalData();
         }
     }
 
@@ -170,11 +170,11 @@ public static partial class PlayerDataManager
 	private static void AddPlayerDataEntry(string dataString)
 	{
 		PlayerData data = JsonSerializer.Deserialize<PlayerData>(dataString);
-		foreach(var client in Client.All)
+		foreach(var client in Game.Clients)
 		{
-			if(client.PlayerId == data.PlayerId)
+			if(client.SteamId == data.SteamId)
 			{
-				PlayerDataManager.AddEntry(data.PlayerId, data, dataString);
+				PlayerDataManager.AddEntry(data.SteamId, data, dataString);
 				break;
 			}
 		}
@@ -184,13 +184,13 @@ public static partial class PlayerDataManager
 
 public class PlayerData : BaseNetworkable
 {
-    public long PlayerId {get;set;}
+    public long SteamId {get;set;}
     public int Money {get;set;}
 
     public PlayerData(){}
     public PlayerData(long id = 0, int money = 0)
     {
-        PlayerId = id;
+        SteamId = id;
         Money = money;
     }
 }

@@ -5,7 +5,7 @@ public partial class PlatesHud : HudEntity<RootPanel>
 {
     public PlatesHud()
     {
-        if(!IsClient) return;
+        if(!Game.IsClient) return;
 
         RootPanel.StyleSheet.Load("/ui/PlatesHud.scss");
 

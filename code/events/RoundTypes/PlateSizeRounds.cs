@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Sandbox;
 
@@ -28,6 +29,7 @@ public class RandomSizePlatesRoundType : PlatesRoundAttribute
     }
 
     public override void OnEvent(){
+        Random Rand = new();
         foreach(var plate in Entity.All.OfType<Plate>()){
             var _scl = Rand.Float(0.2f, 2f);
             plate.SetSize(_scl);

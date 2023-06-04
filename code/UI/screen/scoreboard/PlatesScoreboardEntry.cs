@@ -1,6 +1,5 @@
 
 using Sandbox;
-using Sandbox.Hooks;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 using System;
@@ -10,7 +9,7 @@ namespace Sandbox.UI
 {
 	public partial class PlatesScoreboardEntry : Panel
 	{
-		public Client Client;
+		public IClient Client;
 
 		public Label PlayerName;
 		public Label Wins;
@@ -49,13 +48,13 @@ namespace Sandbox.UI
 		public virtual void UpdateData()
 		{
 			PlayerName.Text = Client.Name;
-			Rank.Text = PlayerDataManager.GetMoney(Client.PlayerId).ToString();
+			Rank.Text = PlayerDataManager.GetMoney(Client.SteamId).ToString();
 			Wins.Text = Client.GetInt( "wins" ).ToString();
 			Ping.Text = Client.Ping.ToString();
-			SetClass( "me", Client == Local.Client );
+			SetClass( "me", Client == Game.LocalClient );
 		}
 
-		public virtual void UpdateFrom( Client client )
+		public virtual void UpdateFrom( IClient client )
 		{
 			Client = client;
 			UpdateData();

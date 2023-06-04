@@ -17,7 +17,8 @@ public class PlayerSwapEvent : PlatesEventAttribute
     }
 
     public override void OnEvent(){
-        var ar = PlatesGame.GameClients.OrderBy(x => Rand.Double()).ToArray();
+        Random Rand = new();
+        var ar = PlatesGame.GameClients.OrderBy(x => Rand.Double(0f,1f)).ToArray();
         if(ar.Length < 2) return;
         var ply1 = ar[0];
         var ply2 = ar[1];
@@ -44,7 +45,8 @@ public class PlateSwapEvent : PlatesEventAttribute
     }
 
     public override void OnEvent(){
-        var ar = Entity.All.OfType<Plate>().OrderBy(x => Rand.Double()).ToArray();
+        Random Rand = new();
+        var ar = Entity.All.OfType<Plate>().OrderBy(x => Rand.Double(0f,1f)).ToArray();
         if(ar.Length < 2) return;
         var ply1 = ar[0];
         var ply2 = ar[1];

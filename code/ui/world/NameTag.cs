@@ -56,7 +56,7 @@ internal class NameTagComponent : EntityComponent<PlatesPlayer>
 
 	protected override void OnActivate()
 	{
-		NameTag = new NameTag(Entity.Client?.Name ?? Entity.Name, Entity.Client?.PlayerId);
+		NameTag = new NameTag(Entity.Client?.Name ?? Entity.Name, Entity.Client?.SteamId);
 	}
 
 	protected override void OnDeactivate()
@@ -65,17 +65,17 @@ internal class NameTagComponent : EntityComponent<PlatesPlayer>
         NameTag = null;
 	}
 
-    [Event.Frame]
+    [GameEvent.Client.Frame]
     public void FrameUpdate()
     {
         var tx = Entity.GetAttachment("hat") ?? Entity.Transform;
         tx.Position += Vector3.Up * 12f;
-        tx.Rotation = Rotation.LookAt(-CurrentView.Rotation.Forward);
+        tx.Rotation = Rotation.LookAt(-Camera.Rotation.Forward);
 
         NameTag.Transform = tx;
     }
 
-    [Event.Frame]
+    [GameEvent.Client.Frame]
     public static void SystemUpdate()
     {
         foreach(var player in Sandbox.Entity.All.OfType<PlatesPlayer>())
@@ -87,7 +87,7 @@ internal class NameTagComponent : EntityComponent<PlatesPlayer>
                 continue;
             }
 
-            var shouldRemove = player.Position.Distance(CurrentView.Position) > 800;
+            var shouldRemove = player.Position.Distance(Camera.Position) > 800;
             shouldRemove = shouldRemove || player.LifeState != LifeState.Alive;
             shouldRemove = shouldRemove || player.IsDormant;
 

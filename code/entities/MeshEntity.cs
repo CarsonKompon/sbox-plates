@@ -19,7 +19,7 @@ public partial class MeshEntity : Prop
 		ConstructModel();
 	}
 
-	[Sandbox.Event.Tick]
+	[GameEvent.Tick]
 	public virtual void Tick()
 	{
 		if (!VertexMeshBuilder.Models.ContainsKey(ModelString))
@@ -34,7 +34,7 @@ public partial class MeshEntity : Prop
 			_lastModel = ModelString;
 			_lastMaterial = "";
 		}
-		if (IsClient && MaterialOverride != null && MaterialOverride != "" && _lastMaterial != MaterialOverride)
+		if (Game.IsClient && MaterialOverride != null && MaterialOverride != "" && _lastMaterial != MaterialOverride)
 		{
 			SceneObject.SetMaterialOverride(Material.Load(MaterialOverride));
 			_lastMaterial = MaterialOverride;

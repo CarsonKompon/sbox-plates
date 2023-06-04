@@ -46,8 +46,9 @@ public partial class LetterRainEnt : Entity
         timer = -time;
     }
 
-    [Event.Tick.Server]
+    [GameEvent.Tick.Server]
     public void Tick(){
+        Random Rand = new();
         if(Rand.Int(0,200) == 1){
             var ent = new Prop();
             ent.Name = "Raining Letter";

@@ -30,8 +30,9 @@ public partial class BarrelRainEnt : Entity
         timer = -time;
     }
 
-    [Event.Tick.Server]
+    [GameEvent.Tick.Server]
     public void Tick(){
+        Random Rand = new();
         if(Rand.Int(1,500) == 1){
             var ent = new Prop();
             ent.Scale = 2;

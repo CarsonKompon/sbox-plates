@@ -26,14 +26,12 @@ public partial class PlateRotateEnt : Entity
         plate = plat;
     }
 
-    [Event.Tick]
+    [GameEvent.Tick.Server]
     public void Tick(){
-        if(IsServer){
-            if(plate.IsValid()){
-                plate.Rotation *= Rotation.FromYaw(1f);
-                return;
-            }else Delete();
-        }
+        if(plate.IsValid()){
+            plate.Rotation *= Rotation.FromYaw(1f);
+            return;
+        }else Delete();
     }
     
 }
@@ -63,14 +61,12 @@ public partial class PlateFlipEnt : Entity
         plate = plat;
     }
 
-    [Event.Tick]
+    [GameEvent.Tick.Server]
     public void Tick(){
-        if(IsServer){
-            if(plate.IsValid()){
-                plate.Rotation *= Rotation.FromRoll(1f);
-                return;
-            }else Delete();
-        }
+        if(plate.IsValid()){
+            plate.Rotation *= Rotation.FromRoll(1f);
+            return;
+        }else Delete();
     }
     
 }

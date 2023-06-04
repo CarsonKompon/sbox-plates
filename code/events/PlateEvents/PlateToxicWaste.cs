@@ -18,6 +18,7 @@ public class PlateToxicWasteEvent : PlatesEventAttribute
         var coil = new ToxicWasteEnt();
         coil.Position = plate.Position + (Vector3.Up * (plate.toScale.z/2f));
         var size = plate.GetSize();
+        Random Rand = new();
         coil.Position += Vector3.Left * Rand.Int(-50,50) * size;
         coil.Position += Vector3.Forward * Rand.Int(-50,50) * size;
         plate.AddEntity(coil, true);

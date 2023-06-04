@@ -80,13 +80,13 @@ public partial class VertexMeshBuilder
 
 	public static void CreateQuad(List<MeshVertex> vertices, Ray origin, Vector3 width, Vector3 height, int texSize = 64, Color color = new Color())
 	{
-		Vector3 normal = origin.Direction;
+		Vector3 normal = origin.Forward;
 		var tangent = width.Normal;
 
-		MeshVertex a = new(origin.Origin - width - height, normal, tangent, new Vector2(0, 0), color);
-		MeshVertex b = new(origin.Origin + width - height, normal, tangent, new Vector2(width.Length / texSize, 0), color);
-		MeshVertex c = new(origin.Origin + width + height, normal, tangent, new Vector2(width.Length / texSize, height.Length / texSize), color);
-		MeshVertex d = new(origin.Origin - width + height, normal, tangent, new Vector2(0, height.Length / texSize), color);
+		MeshVertex a = new(origin.Position - width - height, normal, tangent, new Vector2(0, 0), color);
+		MeshVertex b = new(origin.Position + width - height, normal, tangent, new Vector2(width.Length / texSize, 0), color);
+		MeshVertex c = new(origin.Position + width + height, normal, tangent, new Vector2(width.Length / texSize, height.Length / texSize), color);
+		MeshVertex d = new(origin.Position - width + height, normal, tangent, new Vector2(0, height.Length / texSize), color);
 
 		vertices.Add(a);
 		vertices.Add(b);

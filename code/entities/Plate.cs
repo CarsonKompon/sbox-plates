@@ -9,7 +9,7 @@ namespace Sandbox;
 [Spawnable]
 public partial class Plate : MeshEntity
 {
-    [Net] public Client owner {get;set;} = null;
+    [Net] public IClient owner {get;set;} = null;
     [Net] public string ownerName {get;set;}
     [Net] public bool isDead {get;set;} = false;
 
@@ -39,15 +39,13 @@ public partial class Plate : MeshEntity
         toScale = _newScale;
 
         glow = Components.GetOrCreate<Glow>();
-        glow.Active = false;
-        glow.RangeMin = 0;
-        glow.RangeMax = 2000;
+        glow.Enabled = false;
         glow.Color = Color.Blue;
 
         motionType = PhysicsMotionType.Keyframed;
     }
 
-    public Plate(Vector3 pos, float size, Client own) : this(pos, size, own.Name)
+    public Plate(Vector3 pos, float size, IClient own) : this(pos, size, own.Name)
     {
         owner = own;
     }
@@ -65,7 +63,7 @@ public partial class Plate : MeshEntity
     public override void Tick(){
         base.Tick();
 
-        if(IsClient && plateTag == null)
+        if(Game.IsClient && plateTag == null)
         {
             plateTag = new PlateNameTag(this);
         }
@@ -132,7 +130,7 @@ public partial class Plate : MeshEntity
     protected override void OnDestroy()
     {
         if(plateTag != null) plateTag.Delete();
-        if(IsServer)
+        if(Game.IsServer)
         {
             foreach(Entity ent in PlateEnts)
             {
@@ -169,7 +167,7 @@ public partial class Plate : MeshEntity
         if ( color == default )
             color = glow.Color;
 
-        glow.Active = visible;
+        glow.Enabled = visible;
     }
 
     public void SetPosition(Vector3 target)
@@ -237,6 +235,7 @@ public partial class Plate : MeshEntity
     {
         base.StartTouch(other);
 
+        Random Rand = new();
         if(IsFragile && (other.Velocity.Length > 80 || Rand.Int(99999)==1))
         {
             Sound.FromWorld("plates_glass_break", Position);

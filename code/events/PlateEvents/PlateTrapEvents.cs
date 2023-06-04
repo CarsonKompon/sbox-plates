@@ -15,6 +15,7 @@ public class PlateBarrelTrapEvent : PlatesEventAttribute
 
     public override void OnEvent(Plate plate){
         Prop barrel = new Prop();
+        Random Rand = new();
         barrel.SetModel("models/rust_props/barrels/fuel_barrel.vmdl");
         barrel.Position = plate.Position + Vector3.Up * 10;
         barrel.Position += Vector3.Left * Rand.Int(-50,50) * plate.Scale;

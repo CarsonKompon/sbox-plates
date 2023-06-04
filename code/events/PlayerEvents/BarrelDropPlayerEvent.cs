@@ -14,6 +14,7 @@ public class BarrelDropPlayerEvent : PlatesEventAttribute
 
     public override void OnEvent(Entity ent){
         var barrel = new Prop();
+        Random Rand = new();
         barrel.Position = new Vector3(ent.Position.x+Rand.Int(-60,60), ent.Position.y+Rand.Int(-60,60), 10000);
         barrel.Rotation = Rotation.From(new Angles(Rand.Float()*360,Rand.Float()*360,Rand.Float()*360));
         barrel.AngularVelocity = new Angles(Rand.Float()*5,Rand.Float()*5,Rand.Float()*5) * Rand.FromArray(new int[] {1,-1});

@@ -45,6 +45,7 @@ public class PlateRiseRandomEvent : PlatesEventAttribute
     }
 
     public override void OnEvent(Plate plate){
+        Random Rand = new Random();
         plate.Rise(Rand.Float(-100,100));
     }
 }

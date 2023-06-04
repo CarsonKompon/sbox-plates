@@ -24,10 +24,10 @@ public partial class MinesweeperGameState : Entity
 	public static List<MinesweeperPodium> podiums = new();
 	int localPodiumId { get; set; } = 0;
 
-	[Net] public long activePlayerId { get; set; }
+	[Net] public long activeSteamId { get; set; }
 	[Net] public MinesweeperState UIState { get; set; }
-	[Net] public List<MinesweeperTileType> Tiles { get; set; }
-	[Net] public List<bool> revealedTiles { get; set; }
+	[Net] public IList<MinesweeperTileType> Tiles { get; set; }
+	[Net] public IList<bool> revealedTiles { get; set; }
 	[Net] public int dimensions { get; set; } = 5;
 
 	Func<int, MinesweeperPodium> currentPodium
@@ -72,13 +72,13 @@ public partial class MinesweeperGameState : Entity
 	{
 
 		Tiles = new List<MinesweeperTileType>( new MinesweeperTileType[dimensions * dimensions] );
+		Random Rand = new();
 		// Mine Generation
 		for ( int forX = 0; forX < dimensions; forX++ )
 		{
 			//y
 			for ( int forY = 0; forY < dimensions; forY++ )
 			{
-
 				Tiles[forY * dimensions + forX] = Rand.Int( 0, 10 ) > (5 + Rand.Int( -4, 2 )) ? MinesweeperTileType.Mine : MinesweeperTileType.Money;
 				// Log.Info( $"{Tiles[forX, forY]}" );
 				revealedTiles[forY * dimensions + forX] = false;

@@ -20,6 +20,7 @@ public class PlayerVirusEvent : PlatesEventAttribute
 
     public override void OnEvent(Entity ent){
         //(ent as PlatesPlayer).RenderColor = Color.Green;
+        Random Rand = new();
         var plate = Rand.FromList(Entity.All.OfType<Plate>().ToList());
         var cure = new VirusCureEnt(plate as Entity, ent as PlatesPlayer);
         var virus = new PlyVirusEnt(ent, cure);
@@ -38,15 +39,16 @@ public partial class PlyVirusEnt : Entity
         cure = c;
     }
 
-    [Event.Tick]
+    [GameEvent.Tick]
     public void Tick(){
+        Random Rand = new();
         if(ent is PlatesPlayer ply){
             if(Rand.Int(4)==0)
             {
                 var part = Particles.Create("particles/virus.vpcf");
                 part.SetPosition(0,ent.Position + Vector3.Up*40);
             }
-            if(IsServer){
+            if(Game.IsServer){
                 if(!ply.InGame) Delete();
                 else ent.TakeDamage(DamageInfo.Generic( 0.002f ));
             }
@@ -55,7 +57,7 @@ public partial class PlyVirusEnt : Entity
 
     protected override void OnDestroy()
     {
-        if(IsServer) cure?.Delete();
+        if(Game.IsServer) cure?.Delete();
         base.OnDestroy();
     }
 
@@ -77,16 +79,16 @@ public partial class VirusCureEnt : Prop
         Position = e.Position + Vector3.Up*5;
         Scale = 0.1f;
         var client = p.Client;
-        owner = client.PlayerId;
+        owner = client.SteamId;
         ownerName = client.Name;
         //SetParent(e);
         PlatesGame.AddEntity(this);
     }
 
-    [Event.Tick]
+    [GameEvent.Tick.Client]
     private void Tick()
     {
-        if(IsClient && nameTag != null)
+        if(nameTag != null)
         {
             nameTag = new VirusNameTag(this);
         }
@@ -94,7 +96,7 @@ public partial class VirusCureEnt : Prop
 
     public override void StartTouch( Entity other )
     {
-        if(IsServer)
+        if(Game.IsServer)
         {
             foreach(var virus in Entity.All.OfType<PlyVirusEnt>())
             {
@@ -128,7 +130,7 @@ public class VirusNameTag : WorldPanel
         //Avatar = Add.Image( $"avatar:{plate.owner}" );
     }
 
-    [Event.Tick]
+    [GameEvent.Tick]
     public override void Tick()
     {
         base.Tick();

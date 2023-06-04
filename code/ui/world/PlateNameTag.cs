@@ -25,7 +25,7 @@ public class PlateNameTag : WorldPanel
 
         if(plate.owner != null)
         {
-            Avatar = Add.Image( $"avatar:{plate.owner.PlayerId}", "platetag-avatar" );
+            Avatar = Add.Image( $"avatar:{plate.owner.SteamId}", "platetag-avatar" );
         }
 
         var width = 900;
@@ -33,16 +33,16 @@ public class PlateNameTag : WorldPanel
         PanelBounds = new Rect(-width * .5f, -height * .5f, width, height);
     }
 
-    [Event.Frame]
+    [GameEvent.Client.Frame]
     public void OnFrame()
     {
         if(!plate.IsValid()) return;
 
         // Only draw if looking at the plate
-        var cPos = CurrentView.Position;
-        var tr = Trace.Ray( cPos, cPos + CurrentView.Rotation.Forward * 10000 )
+        var cPos = Camera.Position;
+        var tr = Trace.Ray( cPos, cPos + Camera.Rotation.Forward * 10000 )
                         .Size( 1.0f )
-                        .Ignore( CurrentView.Viewer )
+                        .Ignore( Camera.FirstPersonViewer )
                         .UseHitboxes()
                         .Run();
 

@@ -29,8 +29,8 @@ public partial class RoundInfo : Panel
     public override void Tick()
     {
         //base.Tick();
-        var _score = Input.Down(InputButton.Score);
-        if(Vis > 0f) Vis -= 1.0f/Global.TickRate;
+        var _score = Input.Down("score");
+        if(Vis > 0f) Vis -= 1.0f/Game.TickRate;
         SetClass("open", _score || (Vis > 0.0f));
         //SetClass("expand", Input.Down(InputButton.Score));
         Canvas.SetClass( "open", _score );

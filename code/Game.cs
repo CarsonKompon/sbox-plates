@@ -6,21 +6,21 @@ using System.Text.Json;
 
 public enum PlatesGameState {NOT_ENOUGH_PLAYERS = -2, GAME_OVER = -1, STARTING_SOON = 0, SELECTING_EVENT = 1, PERFORMING_EVENT = 2}
 
-public partial class PlatesGame : Sandbox.Game
+public partial class PlatesGame : GameManager
 {
-	[Net] public static PlatesGameState GameState {get;set;} = PlatesGameState.STARTING_SOON;
+	public static PlatesGameState GameState {get;set;} = PlatesGameState.STARTING_SOON;
 
 	// Game-related variables
-	[Net] public static RealTimeSince GameTimer {get;set;} = -30f;
-	[Net] public static RealTimeSince GameLength {get;set;} = 0f;
-	[Net] public static float LastTimer {get;set;} = -10f;
-	[Net] public static List<Client> GameClients {get;set;} = new();
-	[Net] public static List<LossInformation> Eliminated {get;set;} = new();
-	[Net] public static List<Entity> GameEntities {get;set;} = new();
-	[Net] public static int StartingPlayerCount {get;set;} = 1;
-	[Net] public static PlatesRoundAttribute GameRound {get;set;}
-	[Net] public static int AffectedPlayers {get;set;} = 0;
-	[Net] public static int TotalAffectedPlayers {get;set;} = 0;
+	public static RealTimeSince GameTimer {get;set;} = -30f;
+	public static RealTimeSince GameLength {get;set;} = 0f;
+	public static float LastTimer {get;set;} = -10f;
+	public static List<IClient> GameClients {get;set;} = new();
+	public static List<LossInformation> Eliminated {get;set;} = new();
+	public static List<Entity> GameEntities {get;set;} = new();
+	public static int StartingPlayerCount {get;set;} = 1;
+	public static PlatesRoundAttribute GameRound {get;set;}
+	public static int AffectedPlayers {get;set;} = 0;
+	public static int TotalAffectedPlayers {get;set;} = 0;
 	
 	// Console variables
 	[ConVar.Replicated("plates_round_timer", Help = "Set the time between rounds in seconds")]
@@ -29,12 +29,12 @@ public partial class PlatesGame : Sandbox.Game
 	public static int MinimumRequiredPlayers {get;set;} = 2;
 
 	// Networked text
-	[Net] public static string EventText {get;set;} = "";
-	[Net] public static string EventSubtext {get;set;} = "";
+	public static string EventText {get;set;} = "";
+	public static string EventSubtext {get;set;} = "";
 
 	public PlatesGame()
 	{
-		if(IsServer)
+		if(Game.IsServer)
 		{
 			// Create the HUD Instance
 			_ = new PlatesHud();
@@ -47,7 +47,7 @@ public partial class PlatesGame : Sandbox.Game
 	/// <summary>
 	/// A client joined the server. Give them a player to play with
 	/// </summary>
-	public override void ClientJoined( Client client )
+	public override void ClientJoined( IClient client )
 	{
 		base.ClientJoined( client );
 
@@ -57,20 +57,20 @@ public partial class PlatesGame : Sandbox.Game
 		client.Pawn = player;
 
 		// Request Player Data
-		PlayerDataManager.AddTempEntry( client.PlayerId );
+		PlayerDataManager.AddTempEntry( client.SteamId );
 		PlayerDataManager.RequestPlayerData(To.Single(client));
 
 		// Set client variables
-		GetClientRank(client);
+		//GetClientRank(client);
 	}
 	/// <summary>
 	/// A client is killed. Eliminate them if they were in-game
 	/// </summary>
-	public override void OnKilled( Client client, Entity pawn )
+	public override void OnKilled( IClient client, Entity pawn )
 	{
 		base.OnKilled(client, pawn);
 
-		if(!IsServer) return;
+		if(!Game.IsServer) return;
 		
 		foreach(var plate in Entity.All.OfType<Plate>())
 		{
@@ -86,7 +86,7 @@ public partial class PlatesGame : Sandbox.Game
 		if(GameClients.Remove(client)) RequestGamePlayersForScreen();
 	}
 
-	[Event.Tick.Server]
+	[GameEvent.Tick.Server]
 	public void ServerTick()
 	{
 		switch(GameState)
@@ -117,7 +117,7 @@ public partial class PlatesGame : Sandbox.Game
 				EventSubtext = "";
 				if(GameTimer >= 0)
 				{
-					if(Client.All.Count >= MinimumRequiredPlayers)
+					if(Game.Clients.Count >= MinimumRequiredPlayers)
 					{
 						StartGame();
 					}
@@ -174,15 +174,14 @@ public partial class PlatesGame : Sandbox.Game
 		// Add clients to the GameClients list
 		GameClients = new();
 		Eliminated = new();
-		for(var i=0; i<Client.All.Count; i++)
+		foreach(var client in Game.Clients)
 		{
-			var client = Client.All[i];
 			GameClients.Add(client);
-			GetClientRank(client);
+			//GetClientRank(client);
 		}
 
 		// Keep track of how many players we started with
-		StartingPlayerCount = Client.All.Count;
+		StartingPlayerCount = Game.Clients.Count;
 
 		// Initialize plates and assign a plate to each player
 		InitPlates();
@@ -201,8 +200,6 @@ public partial class PlatesGame : Sandbox.Game
 		RoundInfo.SetRoundText(GameRound.name, GameRound.description);
 
 		GetNextEvent();
-
-		GameServices.StartGame();
 	}
 
 	/// <summary>
@@ -228,11 +225,8 @@ public partial class PlatesGame : Sandbox.Game
 			}
 		}
 
-		// Set player win condition
-		var _winner = GetWinner();
-		_winner.SetGameResult(GameplayResult.Win);
-
 		// Play Round End Music
+		Random Rand = new();
 		var _r = Rand.Int(1, 9);
 		Sound.FromScreen("plates_round_end_" + _r);
 
@@ -254,19 +248,17 @@ public partial class PlatesGame : Sandbox.Game
 		GameState = PlatesGameState.GAME_OVER;
 
 		CurrentGameScreen.ClearList();
-
-		GameServices.EndGame();
 	}
 
-	public static async void GetClientRank(Client client)
-	{
-		//var gameRank = await client.FetchGameRankAsync();
-		var http = new Sandbox.Internal.Http(new Uri("https://sap.facepunch.com/asset/carsonk.plates/rank/" + client.PlayerId));
-        var response = await http.GetStringAsync();
-		var gameRank = Json.Deserialize<PlayerGameRank>(response);
-		client.SetInt("wins", gameRank.Wins);
-		client.SetInt("rank", gameRank.Global.Position);
-	}
+	// public static async void GetClientRank(IClient client)
+	// {
+	// 	//var gameRank = await client.FetchGameRankAsync();
+	// 	var http = new Sandbox.Internal.Http(new Uri("https://sap.facepunch.com/asset/carsonk.plates/rank/" + client.PlayerId));
+    //     var response = await http.GetStringAsync();
+	// 	var gameRank = Json.Deserialize<PlayerGameRank>(response);
+	// 	client.SetInt("wins", gameRank.Wins);
+	// 	client.SetInt("rank", gameRank.Global.Position);
+	// }
 
 	/// <summary>
 	/// Spawn a grid of plates
@@ -285,10 +277,12 @@ public partial class PlatesGame : Sandbox.Game
 	/// </summary>
 	public static void AssignPlates()
 	{
-		var _playerCount = Client.All.Count;
+		var _playerCount = Game.Clients.Count;
 		var _curPlayer = 0;
 
-		foreach(var plate in Entity.All.OfType<Plate>().OrderBy(x => Rand.Double()))
+		Random Rand = new();
+
+		foreach(var plate in Entity.All.OfType<Plate>().OrderBy(x => Rand.Double(0f, 1f)))
 		{
 			if(_curPlayer >= _playerCount)
 			{
@@ -296,7 +290,7 @@ public partial class PlatesGame : Sandbox.Game
 			}
 			else
 			{
-				var client = Client.All[_curPlayer];
+				var client = Game.Clients.ElementAt(_curPlayer);
 				plate.owner = client;
 				plate.ownerName = plate.owner.Name;
 				if(client.Pawn is PlatesPlayer ply)
@@ -317,17 +311,17 @@ public partial class PlatesGame : Sandbox.Game
 		GameEntities.Add(ent);
 	}
 
-	public static Client GetWinner()
+	public static IClient GetWinner()
 	{
 		return Eliminated[Eliminated.Count-1].client;
 	}
 
-	public static void SetLose(Client client)
+	public static void SetLose(IClient client)
 	{
 		if(GameClients.Contains(client)){
 			var _loss = new LossInformation(client, GameLength, (client.Pawn as PlatesPlayer).EventCount, GameClients.Count);
 			Eliminated.Add(_loss);
-			RoundReport.AddEntry(_loss.position, _loss.client.PlayerId, _loss.client.Name, _loss.timeAlive, _loss.eventCount);
+			RoundReport.AddEntry(_loss.position, _loss.client.SteamId, _loss.client.Name, _loss.timeAlive, _loss.eventCount);
 		}
 	}
 
@@ -337,7 +331,7 @@ public partial class PlatesGame : Sandbox.Game
 		{
 			plate.SetGlow(false);
 		}
-		foreach(var client in Client.All)
+		foreach(var client in Game.Clients)
 		{
 			if(client.Pawn is PlatesPlayer player)
 			{
@@ -387,7 +381,7 @@ public partial class PlatesGame : Sandbox.Game
 			var force = (forceScale * distanceMul) * ent.PhysicsBody.Mass;
 			var forceDir = (targetPos - position).Normal;
 
-			var damageInfo = DamageInfo.Explosion( position, forceDir * force, dmg )
+			var damageInfo = DamageInfo.FromExplosion( position, forceDir * force, dmg )
 				.WithAttacker( owner );
 
 			ent.TakeDamage( damageInfo );
@@ -401,7 +395,7 @@ public partial class PlatesGame : Sandbox.Game
 		List<string> ingameNames = new();
 		foreach(var cl in GameClients)
 		{
-			ingameIds.Add(cl.PlayerId);
+			ingameIds.Add(cl.SteamId);
 			ingameNames.Add(cl.Name);
 		}
 		// foreach(var el in Eliminated)
@@ -422,31 +416,23 @@ public partial class PlatesGame : Sandbox.Game
 		RoundQueueScreen.Populate(rounds.ToArray());
 	}
 
-	public override void DoPlayerNoclip( Client player ) {}
-
-	public override void DoPlayerDevCam( Client client )
-	{
-		if(client.IsListenServerHost) base.DoPlayerDevCam( client );
-	}
-
 	/// <summary>
 	/// Respawn all connected clients
 	/// </summary>
 	public static void RespawnAllPlayers()
 	{
-		for(var i=0; i<Client.All.Count; i++)
+		foreach(var client in Game.Clients)
 		{
-			(Client.All[i].Pawn as PlatesPlayer)?.Respawn();
+			if(client.Pawn is not PlatesPlayer player) continue;
+			player.Respawn();
 		}
 	}
 
 	/// <summary>
 	/// Should we send voice data to this player
 	/// </summary>
-	public override bool CanHearPlayerVoice( Client source, Client dest )
+	public override bool CanHearPlayerVoice( IClient source, IClient dest )
 	{
-		Host.AssertServer();
-
 		var sp = source.Pawn;
 		var dp = dest.Pawn;
 
@@ -463,9 +449,9 @@ public partial class PlatesGame : Sandbox.Game
 	public override void OnKilledMessage(long leftid, string left, long rightid, string right, string method)
 	{
 		var _showKill = false;
-		foreach(Client cl in Client.All)
+		foreach(IClient cl in Game.Clients)
 		{
-			if(cl.PlayerId == rightid && cl.Pawn is PlatesPlayer ply)
+			if(cl.SteamId == rightid && cl.Pawn is PlatesPlayer ply)
 			{
 				_showKill = ply.InGame;
 				break;
@@ -477,12 +463,12 @@ public partial class PlatesGame : Sandbox.Game
 
 public class LossInformation : BaseNetworkable
 {
-	public Client client = null;
+	public IClient client = null;
 	public float timeAlive = 0f;
 	public int eventCount = 0;
 	public int position = 1;
 
-	public LossInformation(Client _client, float _time, int _events, int _position)
+	public LossInformation(IClient _client, float _time, int _events, int _position)
 	{
 		client = _client;
 		timeAlive = _time;

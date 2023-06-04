@@ -20,6 +20,7 @@ public class PlateLandMineEvent : PlatesEventAttribute
         var ent = new LandMineEnt();
         ent.Position = plate.Position + (Vector3.Up * 3f);
         var size = plate.GetSize();
+        Random Rand = new();
         ent.Position += Vector3.Left * Rand.Int(-50,50) * size;
         ent.Position += Vector3.Forward * Rand.Int(-50,50) * size;
         plate.AddEntity(ent, true);

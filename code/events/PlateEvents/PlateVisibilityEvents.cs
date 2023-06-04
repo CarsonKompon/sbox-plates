@@ -13,6 +13,7 @@ public class PlateColourEvent : PlatesEventAttribute
     }
 
     public override void OnEvent(Plate plate){
+        Random Rand = new();
         plate.SetColor(Color.FromBytes(Rand.Int(0,255),Rand.Int(0,255),Rand.Int(0,255)));
     }
 }

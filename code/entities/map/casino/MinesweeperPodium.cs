@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Sandbox;
 using System.Collections.Generic;
-using SandboxEditor;
+using Editor;
 
 [Library( "plates_casino_minesweep", Title = "Minesweeper Play Podium" )]
 [HammerEntity, EditorModel( "models/casino/podium_minesweep.vmdl" )]
@@ -22,7 +22,7 @@ public partial class MinesweeperPodium : Prop, IUse
 
 		SetModel( "models/casino/podium_minesweep.vmdl" );
 		SetupPhysicsFromModel( PhysicsMotionType.Static );
-		if ( IsServer )
+		if ( Game.IsServer )
 		{
 			gameState = new MinesweeperGameState(dimensions);
 			MinesweeperGameState.podiums.Add( this );
@@ -58,7 +58,7 @@ public partial class MinesweeperPodium : Prop, IUse
 	{
 		gameState.Reset( NetworkIdent );
 		ClearBoard();
-		gameState.activePlayerId = user.Client.PlayerId;
+		gameState.activeSteamId = user.Client.SteamId;
 		gameState.Play();
 		BuildUI( gameState );
 		// Sound.FromEntity( "captain morgan spiced h", this );

@@ -17,7 +17,7 @@ public partial class VitalInfo : Panel
 	
 	public VitalInfo()
 	{
-		Disclaimer = Add.Label("Plates of Fate is currently in a WIP state. Please report bugs on the github issues page.", "disclaimer");
+		Disclaimer = Add.Label("Plates of Fate is in an unfinished state. Please report bugs on the github issues page.", "disclaimer");
 
 		VitalsPanel = Add.Panel("vitals");
 		InfoPanel = Add.Panel("info");
@@ -26,12 +26,14 @@ public partial class VitalInfo : Panel
 		HP = VitalsPanel.Add.Label("HP: 100", "hp");
 		Money = VitalsPanel.Add.Label("$10,000", "money");
 		Info = InfoPanel.Add.Label("Speed: 16\nJump: 50\nPlate Size: 92\"", "value");
-		RefreshAvatar();
+		//RefreshAvatar();
+		var avatarPanel = Add.Panel("avatar");
+		avatarPanel.AddChild<AvatarHud>();
 	}
 
 	public override void Tick()
 	{
-		if(Local.Pawn is PlatesPlayer player)
+		if(Game.LocalPawn is PlatesPlayer player)
 		{
 			var plateSize = "N/A";
 			if(player.CurrentPlate.IsValid())

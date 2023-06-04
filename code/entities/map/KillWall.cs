@@ -1,5 +1,5 @@
 using Sandbox;
-using SandboxEditor;
+using Editor;
 
 [Library("plates_kill_trigger", Description = "A trigger that instantly kills players.")]
 [HammerEntity, Solid]

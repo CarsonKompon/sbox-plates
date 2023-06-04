@@ -1,7 +1,7 @@
 using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
-using SandboxEditor;
+using Editor;
 using System;
 using System.Collections.Generic;
 
@@ -48,16 +48,17 @@ public partial class EventWheel : Prop, IUse
 
     public bool IsUsable( Entity user )
 	{
-        return !Spinning && PlayerDataManager.HasMoney(user.Client.PlayerId, 1);
+        return !Spinning && PlayerDataManager.HasMoney(user.Client.SteamId, 1);
 		return (int)PlatesGame.GameState >= (int)PlatesGameState.SELECTING_EVENT; // TODO: Implement this
 	}
 
 
 	public bool OnUse( Entity user )
 	{
-		if(IsServer)
+		if(Game.IsServer)
         {
-            PlayerDataManager.SpendMoney(user.Client.PlayerId, 1);
+            Random Rand = new();
+            PlayerDataManager.SpendMoney(user.Client.SteamId, 1);
             Speed = Rand.Float(10,20);
             Spinning = true;
         }

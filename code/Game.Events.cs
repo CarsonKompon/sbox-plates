@@ -5,12 +5,12 @@ using System.Collections.Generic;
 
 public partial class PlatesGame
 {
-    [Net] public static PlatesEventAttribute CurrentEvent {get;set;} = new();
-	[Net] public static List<PlatesEventAttribute> EventQueue {get;set;} = new();
+    public static PlatesEventAttribute CurrentEvent {get;set;} = new();
+	public static List<PlatesEventAttribute> EventQueue {get;set;} = new();
 
     public static List<PlatesEventAttribute> Events = new List<PlatesEventAttribute>();
 	public static List<PlatesRoundAttribute> RoundTypes = new List<PlatesRoundAttribute>();
-	[Net] public static List<PlatesRoundAttribute> RoundQueue {get;set;} = new();
+	public static List<PlatesRoundAttribute> RoundQueue {get;set;} = new();
 
 
     [Event.Hotload] // Reload Events on Hotload (Makes life easier when developing)
@@ -20,10 +20,10 @@ public partial class PlatesGame
 		Events = new();
 		RoundTypes = new();
 		// Populate it with classes that match the attribute
-		foreach(TypeDescription _td in TypeLibrary.GetDescriptions<PlatesEventAttribute>()){
+		foreach(TypeDescription _td in TypeLibrary.GetTypes<PlatesEventAttribute>()){
 			Events.Add(TypeLibrary.Create<PlatesEventAttribute>(_td.TargetType));
 		}
-		foreach(TypeDescription _td in TypeLibrary.GetDescriptions<PlatesRoundAttribute>()){
+		foreach(TypeDescription _td in TypeLibrary.GetTypes<PlatesRoundAttribute>()){
 			RoundTypes.Add(TypeLibrary.Create<PlatesRoundAttribute>(_td.TargetType));
 		}
 	}
@@ -40,6 +40,8 @@ public partial class PlatesGame
 		PlayerDataManager.GiveAllMoney(10);
 
 		ResetGlows();
+
+		Random Rand = new();
 
 		if(EventQueue.Count > 0)
 		{
@@ -75,15 +77,16 @@ public partial class PlatesGame
 		AffectedPlayers--;
 		GameTimer = -1f;
 
+		Random Rand = new();
+
 		switch(CurrentEvent.type)
 		{
 			case EventType.Player:
 				if(GameClients.Count == 0) return;
 				var ply = Rand.FromList(GameClients);
-				ent = ply.Pawn;
+				ent = (Entity)ply.Pawn;
 				EventSubtext = EventSubtext + ply.Name;
 				CurrentEvent.OnEvent(ent);
-				GameServices.RecordEvent(ply, "Player Event: " + CurrentEvent.Name);
 				(ply.Pawn as PlatesPlayer).EventCount++;
 				break;
 			case EventType.Plate:
@@ -103,9 +106,8 @@ public partial class PlatesGame
 				ent = plat;
 				EventSubtext = EventSubtext + plat.ownerName;
 				CurrentEvent.OnEvent(ent as Plate);
-                if(plat.owner is Client)
+                if(plat.owner is IClient)
                 {
-				    GameServices.RecordEvent(plat.owner, "Plate Event: " + CurrentEvent.Name);
                     if(plat.owner.Pawn is PlatesPlayer player) player.EventCount++;
                 }
 				break;
@@ -206,6 +208,7 @@ public partial class PlatesGame
     {
 		if(round == null)
 		{
+			Random Rand = new();
 			do
 			{
 				round = Rand.FromList(RoundTypes);

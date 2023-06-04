@@ -2,7 +2,7 @@ using Sandbox;
 using Sandbox.Internal;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
-using SandboxEditor;
+using Editor;
 using System;
 using System.Net;
 using System.Collections.Generic;

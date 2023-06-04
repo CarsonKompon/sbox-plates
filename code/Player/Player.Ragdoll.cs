@@ -1,11 +1,12 @@
 using Sandbox;
 
+
 partial class PlatesPlayer
 {
     [ClientRpc]
-    private void BecomeRagdollOnClient(Vector3 velocity, DamageFlags damageFlags, Vector3 forcePos, Vector3 force, int bone)
-    {
-        var ent = new ModelEntity();
+	private void BecomeRagdollOnClient( Vector3 velocity, Vector3 forcePos, Vector3 force, int bone, bool impulse, bool blast )
+	{
+		var ent = new ModelEntity();
 		ent.Tags.Add( "ragdoll", "solid", "debris" );
 		ent.Position = Position;
 		ent.Rotation = Rotation;
@@ -39,8 +40,7 @@ partial class PlatesPlayer
 			clothing.CopyMaterialGroup( e );
 		}
 
-		if ( damageFlags.HasFlag( DamageFlags.Bullet ) ||
-			 damageFlags.HasFlag( DamageFlags.PhysicsImpact ) )
+		if ( impulse )
 		{
 			PhysicsBody body = bone > 0 ? ent.GetBonePhysicsBody( bone ) : null;
 
@@ -54,7 +54,7 @@ partial class PlatesPlayer
 			}
 		}
 
-		if ( damageFlags.HasFlag( DamageFlags.Blast ) )
+		if ( blast )
 		{
 			if ( ent.PhysicsGroup != null )
 			{
@@ -66,6 +66,9 @@ partial class PlatesPlayer
 
 		Corpse = ent;
 
+		if ( IsLocalPawn )
+			Corpse.EnableDrawing = false;
+
 		ent.DeleteAsync( 10.0f );
-    }
+	}
 }

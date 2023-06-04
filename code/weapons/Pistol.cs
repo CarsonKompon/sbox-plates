@@ -20,7 +20,7 @@ partial class Pistol : Weapon
 
 	public override bool CanPrimaryAttack()
 	{
-		return base.CanPrimaryAttack() && Input.Pressed( InputButton.PrimaryAttack );
+		return base.CanPrimaryAttack() && Input.Pressed( "attack1" );
 	}
 
 	public override void AttackPrimary()
@@ -59,12 +59,5 @@ partial class Pistol : Weapon
 		{
 			Discharge();
 		}
-	}
-
-	public override void SimulateAnimator( PawnAnimator anim )
-	{
-		anim.SetAnimParameter( "holdtype", 1 );
-		anim.SetAnimParameter( "aim_body_weight", 1.0f );
-		anim.SetAnimParameter( "holdtype_handedness", 0 );
 	}
 }

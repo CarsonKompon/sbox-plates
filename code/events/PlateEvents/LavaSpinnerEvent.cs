@@ -38,19 +38,16 @@ public class PlateLavaSpinnerEnt : Prop
         //Parent = plate;
     }
 
-    [Event.Tick]
+    [GameEvent.Tick.Server]
     public void Tick(){
-        if(IsServer){
-            //Rotation += Rotation.FromYaw(1);
-            LocalRotation *= Rotation.FromYaw(1f);
-            Scale = size;
-        }
+        //Rotation += Rotation.FromYaw(1);
+        LocalRotation *= Rotation.FromYaw(1f);
+        Scale = size;
     }
 
 
     public override void StartTouch( Entity other )
     {
-        Log.Info("AYO");
         base.StartTouch(other);
         other.TakeDamage( DamageInfo.Generic( 0.1f ) );
     }
