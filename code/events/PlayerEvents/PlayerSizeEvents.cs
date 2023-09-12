@@ -1,7 +1,8 @@
 using Sandbox;
 
- 
-public class PlayerGrowEvent : PlatesEventAttribute
+ namespace Plates;
+
+public class PlayerGrowEvent : PlatesEvent
 {
     public PlayerGrowEvent(){
         name = "Player Grows";
@@ -17,7 +18,7 @@ public class PlayerGrowEvent : PlatesEventAttribute
 }
 
  
-public class PlayerShrinkEvent : PlatesEventAttribute
+public class PlayerShrinkEvent : PlatesEvent
 {
     public PlayerShrinkEvent(){
         name = "Player Shrinks";

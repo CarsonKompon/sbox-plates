@@ -4,6 +4,8 @@ using Sandbox;
 using System.Collections.Generic;
 using Editor;
 
+namespace Plates;
+
 [Library( "plates_casino_minesweep", Title = "Minesweeper Play Podium" )]
 [HammerEntity, EditorModel( "models/casino/podium_minesweep.vmdl" )]
 public partial class MinesweeperPodium : Prop, IUse

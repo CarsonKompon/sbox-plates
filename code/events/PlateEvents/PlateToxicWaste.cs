@@ -2,8 +2,9 @@ using System.Linq;
 using Sandbox;
 using System;
 
+namespace Plates;
  
-public class PlateToxicWasteEvent : PlatesEventAttribute
+public class PlateToxicWasteEvent : PlatesEvent
 {
 
     public PlateToxicWasteEvent(){
@@ -43,7 +44,7 @@ public class ToxicWasteEnt : ModelEntity
         damage.Damage = 0.1f;
     }
 
-    [Event.Tick.Server]
+    [GameEvent.Tick.Server]
     public void Tick(){
         var part = Particles.Create("particles/stinky.vpcf");
         part.SetPosition(0, Position + Vector3.Up*20);

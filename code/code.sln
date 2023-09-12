@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.002.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plates of Fate", "Plates of Fate.csproj", "{F3A7C1B5-6719-4D14-9910-1C2E44C97A34}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "plates", "plates.csproj", "{6F328015-FD22-4856-80D4-FBB3BE09F513}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F3A7C1B5-6719-4D14-9910-1C2E44C97A34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3A7C1B5-6719-4D14-9910-1C2E44C97A34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3A7C1B5-6719-4D14-9910-1C2E44C97A34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3A7C1B5-6719-4D14-9910-1C2E44C97A34}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F328015-FD22-4856-80D4-FBB3BE09F513}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F328015-FD22-4856-80D4-FBB3BE09F513}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F328015-FD22-4856-80D4-FBB3BE09F513}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F328015-FD22-4856-80D4-FBB3BE09F513}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {92526D31-E5EC-47FE-AE67-5C71D0AB977C}
+	EndGlobalSection
+EndGlobal

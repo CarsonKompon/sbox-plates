@@ -1,8 +1,9 @@
 using Sandbox;
 using System.Linq;
 
+namespace Plates;
  
-public class ArenaPlateGrow10Event : PlatesEventAttribute
+public class ArenaPlateGrow10Event : PlatesEvent
 {
     public ArenaPlateGrow10Event(){
         name = "All Plates Grow 10%";
@@ -23,7 +24,7 @@ public class ArenaPlateGrow10Event : PlatesEventAttribute
 }
 
  
-public class ArenaPlateShrink10Event : PlatesEventAttribute
+public class ArenaPlateShrink10Event : PlatesEvent
 {
     public ArenaPlateShrink10Event(){
         name = "All Plates Shrink 10%";
@@ -44,7 +45,7 @@ public class ArenaPlateShrink10Event : PlatesEventAttribute
 }
 
  
-public class ArenaPlateShrinkHalfEvent : PlatesEventAttribute
+public class ArenaPlateShrinkHalfEvent : PlatesEvent
 {
     public ArenaPlateShrinkHalfEvent(){
         name = "All Plates Shrink 1/2";
@@ -67,7 +68,7 @@ public class ArenaPlateShrinkHalfEvent : PlatesEventAttribute
 
 
  
-public class ArenaPlateGrowDoubleEvent : PlatesEventAttribute
+public class ArenaPlateGrowDoubleEvent : PlatesEvent
 {
     public ArenaPlateGrowDoubleEvent(){
         name = "All Plates Grow 2x";

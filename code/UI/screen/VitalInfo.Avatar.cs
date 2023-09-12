@@ -3,6 +3,8 @@ using Sandbox.UI;
 using Sandbox.UI.Construct;
 using System.Collections.Generic;
 
+namespace Plates;
+
 public partial class VitalInfo
 {
     public ScenePanel AvatarScene  {get;set;}
@@ -50,7 +52,7 @@ public partial class VitalInfo
     {
         // if(CitizenModel == null) return;
 
-        // if(Local.Pawn is PlatesPlayer ply)
+        // if(Local.Pawn is Player ply)
         // {
         //     // CitizenModel.SetAnimParameter("move_x", ply.GetAnimParameterFloat("move_x"));
         //     // CitizenModel.SetAnimParameter("move_y", ply.GetAnimParameterFloat("move_y"));

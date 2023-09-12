@@ -2,7 +2,9 @@ using Sandbox;
 using System;
 using System.Linq;
 
-partial class Inventory : BaseInventory
+namespace Plates;
+
+public partial class Inventory : BaseInventory
 {
 	public Inventory( Player player ) : base( player )
 	{

@@ -1,8 +1,8 @@
 using Sandbox;
 
-
+namespace Plates;
  
-public class PlateReturnToNormalEvent : PlatesEventAttribute
+public class PlateReturnToNormalEvent : PlatesEvent
 {
     public PlateReturnToNormalEvent(){
         name = "Plate Returns To Normal";
@@ -17,7 +17,7 @@ public class PlateReturnToNormalEvent : PlatesEventAttribute
         if(plate.owner.IsValid())
         {
             newPlate = new Plate(plate.Position, 1, plate.owner);
-            if(plate.owner is PlatesPlayer ply)
+            if(plate.owner is Player ply)
             {
                 ply.CurrentPlate = newPlate;
             }

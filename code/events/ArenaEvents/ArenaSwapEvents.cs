@@ -2,8 +2,9 @@ using Sandbox;
 using System;
 using System.Linq;
 
+namespace Plates;
  
-public class PlayerSwapEvent : PlatesEventAttribute
+public class PlayerSwapEvent : PlatesEvent
 {
 
     public PlayerSwapEvent(){
@@ -18,7 +19,7 @@ public class PlayerSwapEvent : PlatesEventAttribute
 
     public override void OnEvent(){
         Random Rand = new();
-        var ar = PlatesGame.GameClients.OrderBy(x => Rand.Double(0f,1f)).ToArray();
+        var ar = PlatesGame.Current.GameClients.OrderBy(x => Rand.Double(0f,1f)).ToArray();
         if(ar.Length < 2) return;
         var ply1 = ar[0];
         var ply2 = ar[1];
@@ -26,13 +27,13 @@ public class PlayerSwapEvent : PlatesEventAttribute
         ply1.Pawn.Position = ply2.Pawn.Position;
         ply2.Pawn.Position = ply1Pos;
         subtext =  ply1.Name + " and " + ply2.Name + " have swapped";
-        (ply1.Pawn as PlatesPlayer).SetGlow( true, Color.Blue );
-		(ply2.Pawn as PlatesPlayer).SetGlow( true, Color.Blue );
+        (ply1.Pawn as Player).SetGlow( true, Color.Blue );
+		(ply2.Pawn as Player).SetGlow( true, Color.Blue );
 	}
 }
 
  
-public class PlateSwapEvent : PlatesEventAttribute
+public class PlateSwapEvent : PlatesEvent
 {
     public PlateSwapEvent(){
         name = "2 Plates Swap Places";

@@ -1,10 +1,12 @@
 using Sandbox;
 using System;
 
+namespace Plates;
+
 // TODO: Fix these events
 
 // 
-public class PlateRiseEvent : PlatesEventAttribute
+public class PlateRiseEvent : PlatesEvent
 {
     public PlateRiseEvent(){
         name = "Plate Rises";
@@ -19,7 +21,7 @@ public class PlateRiseEvent : PlatesEventAttribute
 }
 
 // 
-public class PlateLowerEvent : PlatesEventAttribute
+public class PlateLowerEvent : PlatesEvent
 {
     public PlateLowerEvent(){
         name = "Plate Lowers";
@@ -34,7 +36,7 @@ public class PlateLowerEvent : PlatesEventAttribute
 }
 
 // 
-public class PlateRiseRandomEvent : PlatesEventAttribute
+public class PlateRiseRandomEvent : PlatesEvent
 {
     public PlateRiseRandomEvent(){
         name = "Plate Rise/Lower Random Amount";

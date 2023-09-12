@@ -3,6 +3,8 @@ using Sandbox.UI;
 using Sandbox.UI.Construct;
 using System;
 
+namespace Plates;
+
 public partial class VitalInfo : Panel
 {
 	public Panel VitalsPanel;
@@ -33,7 +35,7 @@ public partial class VitalInfo : Panel
 
 	public override void Tick()
 	{
-		if(Game.LocalPawn is PlatesPlayer player)
+		if(Game.LocalPawn is Player player)
 		{
 			var plateSize = "N/A";
 			if(player.CurrentPlate.IsValid())
@@ -42,8 +44,8 @@ public partial class VitalInfo : Panel
 			}
 			InfoPanel.SetClass("open", player.InGame);
 
-			if(player.Controller is PlatesWalkController){
-				var walkController = ((player as PlatesPlayer).Controller as PlatesWalkController);
+			if(player.Controller is WalkController){
+				var walkController = ((player as Player).Controller as WalkController);
 				if(player == null) return;
 
 				HealthBar.Style.Width = Length.Percent(player.Health);

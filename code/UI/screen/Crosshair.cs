@@ -1,5 +1,7 @@
 using Sandbox.UI;
 
+namespace Plates;
+
 public partial class Crosshair : Panel
 {
 	public static Crosshair Current;

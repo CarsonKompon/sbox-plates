@@ -2,7 +2,9 @@ using System.Xml.Schema;
 using Sandbox;
 using System;
 
-public partial class BarrelRainEvent : PlatesEventAttribute
+namespace Plates;
+
+public partial class BarrelRainEvent : PlatesEvent
 {
     public BarrelRainEvent(){
         name = "Explosive Barrel Rain";
@@ -26,7 +28,7 @@ public partial class BarrelRainEnt : Entity
 
     public BarrelRainEnt() {}
     public BarrelRainEnt(float time = 2*60){
-        PlatesGame.AddEntity(this);
+        PlatesGame.Current.AddEntity(this);
         timer = -time;
     }
 
@@ -40,7 +42,7 @@ public partial class BarrelRainEnt : Entity
             ent.Rotation = Rotation.From(new Angles(Rand.Float()*360,Rand.Float()*360,Rand.Float()*360));
             ent.SetModel("models/rust_props/barrels/fuel_barrel.vmdl");
             ent.Name = "Explosive Barrel";
-            PlatesGame.AddEntity(ent);
+            PlatesGame.Current.AddEntity(ent);
         }
         if(timer >= 0) this.Delete();
     }

@@ -1,8 +1,9 @@
 using Sandbox;
 using System.Linq;
 
+namespace Plates;
  
-public class GravityDownEvent : PlatesEventAttribute
+public class GravityDownEvent : PlatesEvent
 {
     public GravityDownEvent(){
         name = "Low Gravity";
@@ -16,8 +17,8 @@ public class GravityDownEvent : PlatesEventAttribute
     }
 
     public override void OnEvent(){
-        foreach(var ply in Entity.All.OfType<PlatesPlayer>()){
-            if(ply.Controller is PlatesWalkController wc)
+        foreach(var ply in Entity.All.OfType<Player>()){
+            if(ply.Controller is WalkController wc)
             {
                 wc.Gravity -= 800*0.2f;
                 ply.SetGlow( true, Color.Blue );
@@ -27,7 +28,7 @@ public class GravityDownEvent : PlatesEventAttribute
 }
 
  
-public class GravityUpEvent : PlatesEventAttribute
+public class GravityUpEvent : PlatesEvent
 {
     public GravityUpEvent(){
         name = "High Gravity";
@@ -41,8 +42,8 @@ public class GravityUpEvent : PlatesEventAttribute
     }
 
     public override void OnEvent(){
-        foreach(var ply in Entity.All.OfType<PlatesPlayer>()){
-            if(ply.Controller is PlatesWalkController wc)
+        foreach(var ply in Entity.All.OfType<Player>()){
+            if(ply.Controller is WalkController wc)
             {
                 wc.Gravity += 800*0.2f;
                 ply.SetGlow( true, Color.Blue );

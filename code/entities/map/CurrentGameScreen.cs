@@ -7,6 +7,8 @@ using System;
 using System.Net;
 using System.Collections.Generic;
 
+namespace Plates;
+
 [Library("plates_screen_current_game", Description = "A screen that displays the top ranks in a leaderboard"), HammerEntity]
 [EditorModel("models/leaderboard_screen.vmdl")]
 public partial class CurrentGameScreen : Prop

@@ -1,5 +1,7 @@
 using Sandbox;
 
+namespace Plates;
+
 public partial class MeshEntity : Prop
 {
 	[Net] public string ModelString { get; set; }

@@ -1,6 +1,8 @@
 using Sandbox;
 using Editor;
 
+namespace Plates;
+
 [Library("plates_kill_trigger", Description = "A trigger that instantly kills players.")]
 [HammerEntity, Solid]
 public class KillWallEntity : ModelEntity

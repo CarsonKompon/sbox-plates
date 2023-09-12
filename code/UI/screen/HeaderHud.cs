@@ -3,6 +3,8 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
+namespace Plates;
+
 public partial class HeaderText : Panel
 {
 	public Label headerLabel;

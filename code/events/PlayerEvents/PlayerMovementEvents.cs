@@ -1,8 +1,9 @@
 using Sandbox;
 using System;
 
+namespace Plates;
  
-public class PlayerSpeedUpEvent : PlatesEventAttribute
+public class PlayerSpeedUpEvent : PlatesEvent
 {
     public PlayerSpeedUpEvent(){
         name = "Player Speeds Up";
@@ -13,7 +14,7 @@ public class PlayerSpeedUpEvent : PlatesEventAttribute
     }
 
     public override void OnEvent(Entity ent){
-        if(ent is PlatesPlayer ply && ply.Controller is PlatesWalkController wc)
+        if(ent is Player ply && ply.Controller is WalkController wc)
         {
             wc.Speed += 0.25f;
         }
@@ -21,7 +22,7 @@ public class PlayerSpeedUpEvent : PlatesEventAttribute
 }
 
  
-public class PlayerSpeedDownEvent : PlatesEventAttribute
+public class PlayerSpeedDownEvent : PlatesEvent
 {
     public PlayerSpeedDownEvent(){
         name = "Player Speeds Down";
@@ -32,14 +33,14 @@ public class PlayerSpeedDownEvent : PlatesEventAttribute
     }
     
     public override void OnEvent(Entity ent){
-        PlatesWalkController ply = (ent as PlatesPlayer).Controller as PlatesWalkController;
+        WalkController ply = (ent as Player).Controller as WalkController;
         ply.Speed -= 0.25f;
         if(ply.Speed < 0.1f) ply.Speed = 0.1f;
     }
 }
 
  
-public class PlayerJumpUpEvent : PlatesEventAttribute
+public class PlayerJumpUpEvent : PlatesEvent
 {
     public PlayerJumpUpEvent(){
         name = "Player Jumps Higher";
@@ -50,13 +51,13 @@ public class PlayerJumpUpEvent : PlatesEventAttribute
     }
 
     public override void OnEvent(Entity ent){
-        PlatesPlayer ply = ent as PlatesPlayer;
-        (ply.Controller as PlatesWalkController).JumpPower += 0.25f;
+        Player ply = ent as Player;
+        (ply.Controller as WalkController).JumpPower += 0.25f;
     }
 }
 
  
-public class PlayerJumpDownEvent : PlatesEventAttribute
+public class PlayerJumpDownEvent : PlatesEvent
 {
     public PlayerJumpDownEvent(){
         name = "Player Jumps Lower";
@@ -67,15 +68,15 @@ public class PlayerJumpDownEvent : PlatesEventAttribute
     }
 
     public override void OnEvent(Entity ent){
-        PlatesPlayer ply = ent as PlatesPlayer;
-        var wc = (ply.Controller as PlatesWalkController);
+        Player ply = ent as Player;
+        var wc = (ply.Controller as WalkController);
         wc.JumpPower -= 0.25f;
         if(wc.JumpPower < 0) wc.JumpPower = 0;
     }
 }
 
  
-public class PlayerWalkBackwardsEvent : PlatesEventAttribute
+public class PlayerWalkBackwardsEvent : PlatesEvent
 {
     public PlayerWalkBackwardsEvent(){
         name = "Player Reversed Controls";
@@ -86,14 +87,14 @@ public class PlayerWalkBackwardsEvent : PlatesEventAttribute
     }
 
     public override void OnEvent(Entity ent){
-        PlatesPlayer ply = ent as PlatesPlayer;
-        var wc = (ply.Controller as PlatesWalkController);
+        Player ply = ent as Player;
+        var wc = (ply.Controller as WalkController);
         wc.InputMultiplier *= -1;
     }
 }
 
  
-public class PlayerWalkRandomlyEvent : PlatesEventAttribute
+public class PlayerWalkRandomlyEvent : PlatesEvent
 {
     public PlayerWalkRandomlyEvent(){
         name = "Player Walks Randomly";
@@ -104,20 +105,20 @@ public class PlayerWalkRandomlyEvent : PlatesEventAttribute
     }
 
     public override void OnEvent(Entity ent){
-        PlatesPlayer ply = ent as PlatesPlayer;
-        var wc = (ply.Controller as PlatesWalkController);
+        Player ply = ent as Player;
+        var wc = (ply.Controller as WalkController);
         new WalkRandomlyEnt(wc);
     }
 }
 
 public class WalkRandomlyEnt : Entity
 {
-    public PlatesWalkController walkController;
+    public WalkController walkController;
 
     public WalkRandomlyEnt(){}
-    public WalkRandomlyEnt(PlatesWalkController wc){
+    public WalkRandomlyEnt(WalkController wc){
         walkController = wc;
-        PlatesGame.AddEntity(this);
+        PlatesGame.Current.AddEntity(this);
     }
 
     [GameEvent.Tick.Server]

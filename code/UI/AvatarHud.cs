@@ -7,6 +7,8 @@ using Sandbox.Utility;
 using Sandbox.UI.Construct;
 using System.Collections.Generic;
 
+namespace Plates;
+
 public class AvatarHud : ScenePanel
 {
     private SceneModel AvatarModel;
@@ -72,7 +74,7 @@ public class AvatarHud : ScenePanel
         }
 
         ClothingContainer clothing = new();
-        clothing.Deserialize((Game.LocalPawn as PlatesPlayer)?.ClothingString ?? "");
+        clothing.Deserialize((Game.LocalPawn as Player)?.ClothingString ?? "");
         if(clothing != null)
         {
             Log.Info("CLOTHING:");
@@ -107,7 +109,7 @@ public class AvatarHud : ScenePanel
         var speed = ( Noise.Perlin( RealTime.Now * 2.0f ) - 0.33f) * 2.0f;
 		if ( speed < 0 ) speed = 0;
 
-        PlatesPlayer LocalAvatar = Game.LocalClient.Pawn as PlatesPlayer;
+        Player LocalAvatar = Game.LocalClient.Pawn as Player;
 
         if(LocalAvatar != null)
         {

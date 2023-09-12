@@ -1,8 +1,9 @@
 using Sandbox;
 using System;
 
+namespace Plates;
  
-public class BarrelDropPlayerEvent : PlatesEventAttribute
+public class BarrelDropPlayerEvent : PlatesEvent
 {
 
     public BarrelDropPlayerEvent(){
@@ -19,7 +20,7 @@ public class BarrelDropPlayerEvent : PlatesEventAttribute
         barrel.Rotation = Rotation.From(new Angles(Rand.Float()*360,Rand.Float()*360,Rand.Float()*360));
         barrel.AngularVelocity = new Angles(Rand.Float()*5,Rand.Float()*5,Rand.Float()*5) * Rand.FromArray(new int[] {1,-1});
         barrel.SetModel("models/rust_props/barrels/fuel_barrel.vmdl");
-        PlatesGame.AddEntity(barrel);
+        PlatesGame.Current.AddEntity(barrel);
     }
 }
 

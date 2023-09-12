@@ -5,59 +5,58 @@ using Sandbox.UI.Construct;
 using System;
 using System.Collections.Generic;
 
-namespace Sandbox.UI
+namespace Plates;
+
+public partial class PlatesScoreboardEntry : Panel
 {
-	public partial class PlatesScoreboardEntry : Panel
+	public IClient Client;
+
+	public Label PlayerName;
+	public Label Wins;
+	public Label Rank;
+	public Label Ping;
+
+	public PlatesScoreboardEntry()
 	{
-		public IClient Client;
+		AddClass( "entry" );
 
-		public Label PlayerName;
-		public Label Wins;
-		public Label Rank;
-		public Label Ping;
+		PlayerName = Add.Label( "PlayerName", "name" );
+		Rank = Add.Label( "", "rank" );
+		Wins = Add.Label( "", "wins" );
+		Ping = Add.Label( "", "ping" );
+	}
 
-		public PlatesScoreboardEntry()
-		{
-			AddClass( "entry" );
+	RealTimeSince TimeSinceUpdate = 0;
 
-			PlayerName = Add.Label( "PlayerName", "name" );
-			Rank = Add.Label( "", "rank" );
-			Wins = Add.Label( "", "wins" );
-			Ping = Add.Label( "", "ping" );
-		}
+	public override void Tick()
+	{
+		base.Tick();
 
-		RealTimeSince TimeSinceUpdate = 0;
+		if ( !IsVisible )
+			return;
 
-		public override void Tick()
-		{
-			base.Tick();
+		if ( !Client.IsValid() )
+			return;
 
-			if ( !IsVisible )
-				return;
+		if ( TimeSinceUpdate < 0.1f )
+			return;
 
-			if ( !Client.IsValid() )
-				return;
+		TimeSinceUpdate = 0;
+		UpdateData();
+	}
 
-			if ( TimeSinceUpdate < 0.1f )
-				return;
+	public virtual void UpdateData()
+	{
+		PlayerName.Text = Client.Name;
+		Rank.Text = PlayerDataManager.GetMoney(Client.SteamId).ToString();
+		Wins.Text = Client.GetInt( "wins" ).ToString();
+		Ping.Text = Client.Ping.ToString();
+		SetClass( "me", Client == Game.LocalClient );
+	}
 
-			TimeSinceUpdate = 0;
-			UpdateData();
-		}
-
-		public virtual void UpdateData()
-		{
-			PlayerName.Text = Client.Name;
-			Rank.Text = PlayerDataManager.GetMoney(Client.SteamId).ToString();
-			Wins.Text = Client.GetInt( "wins" ).ToString();
-			Ping.Text = Client.Ping.ToString();
-			SetClass( "me", Client == Game.LocalClient );
-		}
-
-		public virtual void UpdateFrom( IClient client )
-		{
-			Client = client;
-			UpdateData();
-		}
+	public virtual void UpdateFrom( IClient client )
+	{
+		Client = client;
+		UpdateData();
 	}
 }

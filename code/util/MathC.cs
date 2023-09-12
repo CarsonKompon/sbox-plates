@@ -1,3 +1,6 @@
+
+namespace Plates;
+
 public class MathC
 {
 	public static float Lerp(float numFrom, float numTo, float by){

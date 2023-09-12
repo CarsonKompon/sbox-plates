@@ -2,9 +2,9 @@ using System;
 using System.Linq;
 using Sandbox;
 
-
+namespace Plates;
  
-public class BigPlatesRoundType : PlatesRoundAttribute
+public class BigPlatesRoundType : PlatesRound
 {
     public BigPlatesRoundType(){
         name = "Big Plates";
@@ -20,7 +20,7 @@ public class BigPlatesRoundType : PlatesRoundAttribute
 }
 
  
-public class RandomSizePlatesRoundType : PlatesRoundAttribute
+public class RandomSizePlatesRoundType : PlatesRound
 {
     public RandomSizePlatesRoundType(){
         name = "Random Sizes";
@@ -38,7 +38,7 @@ public class RandomSizePlatesRoundType : PlatesRoundAttribute
 }
 
  
-public class MicroPlatesRoundType : PlatesRoundAttribute
+public class MicroPlatesRoundType : PlatesRound
 {
     public MicroPlatesRoundType(){
         name = "Micro Plates";

@@ -1,6 +1,8 @@
 using Sandbox;
 using Sandbox.UI;
 
+namespace Plates;
+
 public partial class PlatesHud : HudEntity<RootPanel>
 {
     public PlatesHud()

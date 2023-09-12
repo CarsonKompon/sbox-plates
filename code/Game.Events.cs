@@ -3,14 +3,16 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 
+namespace Plates;
+
 public partial class PlatesGame
 {
-    public static PlatesEventAttribute CurrentEvent {get;set;} = new();
-	public static List<PlatesEventAttribute> EventQueue {get;set;} = new();
+    public static PlatesEvent CurrentEvent {get;set;} = new();
+	public static List<PlatesEvent> EventQueue {get;set;} = new();
 
-    public static List<PlatesEventAttribute> Events = new List<PlatesEventAttribute>();
-	public static List<PlatesRoundAttribute> RoundTypes = new List<PlatesRoundAttribute>();
-	public static List<PlatesRoundAttribute> RoundQueue {get;set;} = new();
+    public static List<PlatesEvent> Events = new List<PlatesEvent>();
+	public static List<PlatesRound> RoundTypes = new List<PlatesRound>();
+	public static List<PlatesRound> RoundQueue {get;set;} = new();
 
 
     [Event.Hotload] // Reload Events on Hotload (Makes life easier when developing)
@@ -20,18 +22,18 @@ public partial class PlatesGame
 		Events = new();
 		RoundTypes = new();
 		// Populate it with classes that match the attribute
-		foreach(TypeDescription _td in TypeLibrary.GetTypes<PlatesEventAttribute>()){
-			Events.Add(TypeLibrary.Create<PlatesEventAttribute>(_td.TargetType));
+		foreach(TypeDescription _td in TypeLibrary.GetTypes<PlatesEvent>()){
+			Events.Add(TypeLibrary.Create<PlatesEvent>(_td.TargetType));
 		}
-		foreach(TypeDescription _td in TypeLibrary.GetTypes<PlatesRoundAttribute>()){
-			RoundTypes.Add(TypeLibrary.Create<PlatesRoundAttribute>(_td.TargetType));
+		foreach(TypeDescription _td in TypeLibrary.GetTypes<PlatesRound>()){
+			RoundTypes.Add(TypeLibrary.Create<PlatesRound>(_td.TargetType));
 		}
 	}
 
     /// <summary>
 	/// Gets the next event in the queue or adds a new one if none exist
 	/// </summary>
-	public static void GetNextEvent()
+	public void GetNextEvent()
 	{
 		GameState = PlatesGameState.SELECTING_EVENT;
 		EventSubtext = "";
@@ -68,7 +70,7 @@ public partial class PlatesGame
 		if(GameClients.Count <= finishCount) EndGame();
 	}
 
-	public static void PerformEvent()
+	public void PerformEvent()
 	{
 		GameState = PlatesGameState.PERFORMING_EVENT;
 		Entity ent;
@@ -83,11 +85,11 @@ public partial class PlatesGame
 		{
 			case EventType.Player:
 				if(GameClients.Count == 0) return;
-				var ply = Rand.FromList(GameClients);
+				IClient ply = Rand.FromList<IClient>(GameClients.ToList<IClient>());
 				ent = (Entity)ply.Pawn;
 				EventSubtext = EventSubtext + ply.Name;
 				CurrentEvent.OnEvent(ent);
-				(ply.Pawn as PlatesPlayer).EventCount++;
+				(ply.Pawn as Player).EventCount++;
 				break;
 			case EventType.Plate:
 				if(Entity.All.OfType<Plate>().ToArray().Length == 0) return;
@@ -108,7 +110,7 @@ public partial class PlatesGame
 				CurrentEvent.OnEvent(ent as Plate);
                 if(plat.owner is IClient)
                 {
-                    if(plat.owner.Pawn is PlatesPlayer player) player.EventCount++;
+                    if(plat.owner.Pawn is Player player) player.EventCount++;
                 }
 				break;
 			default:
@@ -126,14 +128,14 @@ public partial class PlatesGame
 		{
 			Sound.FromEntity("plates_buzzer", ent);
 			if(ent is Plate _plate) _plate.SetGlow(true, Color.Blue);
-			if(ent is PlatesPlayer _player) _player.SetGlow(true, Color.Blue);
+			if(ent is Player _player) _player.SetGlow(true, Color.Blue);
 		}
 
 		if(AffectedPlayers == 0) GameTimer = -2f;
 		else EventSubtext = EventSubtext + ", ";
 	}
 
-    public static PlatesEventAttribute GetEventFromCommand(string eventName)
+    public static PlatesEvent GetEventFromCommand(string eventName)
 	{
 		foreach(var _ev in Events)
 		{
@@ -145,7 +147,7 @@ public partial class PlatesGame
 		return null;
 	}
 
-    public static PlatesRoundAttribute GetRoundFromCommand(string roundName)
+    public static PlatesRound GetRoundFromCommand(string roundName)
 	{
 		foreach(var _round in RoundTypes)
 		{
@@ -204,7 +206,7 @@ public partial class PlatesGame
 		}
     }
 
-    public static void QueueRound(PlatesRoundAttribute round = null)
+    public static void QueueRound(PlatesRound round = null)
     {
 		if(round == null)
 		{

@@ -1,7 +1,8 @@
 using Sandbox;
 
+namespace Plates;
  
-public class PlateGrow10Event : PlatesEventAttribute
+public class PlateGrow10Event : PlatesEvent
 {
     public PlateGrow10Event(){
         name = "Plate Grows 10%";
@@ -16,7 +17,7 @@ public class PlateGrow10Event : PlatesEventAttribute
 }
 
  
-public class PlateGrow25Event : PlatesEventAttribute
+public class PlateGrow25Event : PlatesEvent
 {
     public PlateGrow25Event(){
         name = "Plate Grows 25%";
@@ -32,7 +33,7 @@ public class PlateGrow25Event : PlatesEventAttribute
 }
 
  
-public class PlateShrink10Event : PlatesEventAttribute
+public class PlateShrink10Event : PlatesEvent
 {
     public PlateShrink10Event(){
         name = "Plate Shrinks 10%";
@@ -47,7 +48,7 @@ public class PlateShrink10Event : PlatesEventAttribute
 }
 
  
-public class PlateShrink25Event : PlatesEventAttribute
+public class PlateShrink25Event : PlatesEvent
 {
     public PlateShrink25Event(){
         name = "Plate Shrinks 25%";
@@ -63,7 +64,7 @@ public class PlateShrink25Event : PlatesEventAttribute
 }
 
  
-public class PlateShrinkInfinitely : PlatesEventAttribute
+public class PlateShrinkInfinitely : PlatesEvent
 {
     public PlateShrinkInfinitely(){
         name = "Plate Shrinks Infinitely";
@@ -104,7 +105,7 @@ public partial class PlateShrinkInfinitelyEnt : Entity
 }
 
  
-public class PlateGrowInfinitely : PlatesEventAttribute
+public class PlateGrowInfinitely : PlatesEvent
 {
     public PlateGrowInfinitely(){
         name = "Plate Grows Infinitely";

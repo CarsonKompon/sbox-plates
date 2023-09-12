@@ -1,6 +1,8 @@
 using Sandbox;
 using Editor;
 
+namespace Plates;
+
 [Library("plates_conveyor_belt", Description = "A conveyor belt that pushes entities on top")]
 [HammerEntity, Solid]
 

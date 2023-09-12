@@ -1,6 +1,8 @@
 using Sandbox;
 using System;
 
+namespace Plates;
+
 public class TriggerEnt : ModelEntity
 {
     public Func<Entity, bool> StartTrigger;

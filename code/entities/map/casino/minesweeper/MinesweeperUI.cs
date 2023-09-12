@@ -4,7 +4,7 @@ using Sandbox.UI.Construct;
 using System;
 using System.Collections.Generic;
 
-
+namespace Plates;
 
 public partial class MinesweeperUI : WorldPanel
 {
@@ -28,7 +28,6 @@ public partial class MinesweeperUI : WorldPanel
 
 		StyleSheet.Load( "/entities/map/casino/minesweeper/MinesweeperUI.scss" );
 		AddClass( "minesweeper-ui" );
-
 
 		var width = 200 * 20 * scale;
 		var height = 200 * 20 * scale;

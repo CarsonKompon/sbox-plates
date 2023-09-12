@@ -2,8 +2,9 @@ using System;
 using System.Linq;
 using Sandbox;
 
+namespace Plates;
 
-public class CircleFormationRoundType : PlatesRoundAttribute
+public class CircleFormationRoundType : PlatesRound
 {
     public CircleFormationRoundType(){
         name = "Circular Formation";
@@ -13,12 +14,12 @@ public class CircleFormationRoundType : PlatesRoundAttribute
 
     public override void OnEvent()
     {
-        float clientCount = PlatesGame.GameClients.Count;
+        float clientCount = PlatesGame.Current.GameClients.Count;
         float distance = MathX.Clamp((clientCount/32f)*1200f, 100f, 1200f);
         var i = 0;
-        foreach(var client in PlatesGame.GameClients)
+        foreach(var client in PlatesGame.Current.GameClients)
         {
-            if(client.Pawn is PlatesPlayer ply && ply.CurrentPlate is Plate plate)
+            if(client.Pawn is Player ply && ply.CurrentPlate is Plate plate)
             {
                 plate.SetPosition(new Vector3(MathF.Sin(2f * MathF.PI * ((float)i/(float)clientCount))*distance, MathF.Cos(2f * MathF.PI * ((float)i/(float)clientCount))*distance, 0));
                 ply.Position = plate.Position + Vector3.Up*100;

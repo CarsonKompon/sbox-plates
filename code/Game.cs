@@ -4,23 +4,26 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text.Json;
 
+namespace Plates;
+
 public enum PlatesGameState {NOT_ENOUGH_PLAYERS = -2, GAME_OVER = -1, STARTING_SOON = 0, SELECTING_EVENT = 1, PERFORMING_EVENT = 2}
 
 public partial class PlatesGame : GameManager
 {
+	public static new PlatesGame Current {get;set;}
 	public static PlatesGameState GameState {get;set;} = PlatesGameState.STARTING_SOON;
 
 	// Game-related variables
-	public static RealTimeSince GameTimer {get;set;} = -30f;
-	public static RealTimeSince GameLength {get;set;} = 0f;
-	public static float LastTimer {get;set;} = -10f;
-	public static List<IClient> GameClients {get;set;} = new();
-	public static List<LossInformation> Eliminated {get;set;} = new();
-	public static List<Entity> GameEntities {get;set;} = new();
-	public static int StartingPlayerCount {get;set;} = 1;
-	public static PlatesRoundAttribute GameRound {get;set;}
-	public static int AffectedPlayers {get;set;} = 0;
-	public static int TotalAffectedPlayers {get;set;} = 0;
+	[Net] public RealTimeSince GameTimer {get;set;} = -30f;
+	[Net] public RealTimeSince GameLength {get;set;} = 0f;
+	[Net] public float LastTimer {get;set;} = -10f;
+	[Net] public IList<IClient> GameClients {get;set;} = new();
+	[Net] public IList<LossInformation> Eliminated {get;set;} = new();
+	[Net] public IList<Entity> GameEntities {get;set;} = new();
+	[Net] public int StartingPlayerCount {get;set;} = 1;
+	[Net] public PlatesRound GameRound {get;set;}
+	[Net] public int AffectedPlayers {get;set;} = 0;
+	[Net] public int TotalAffectedPlayers {get;set;} = 0;
 	
 	// Console variables
 	[ConVar.Replicated("plates_round_timer", Help = "Set the time between rounds in seconds")]
@@ -29,11 +32,13 @@ public partial class PlatesGame : GameManager
 	public static int MinimumRequiredPlayers {get;set;} = 2;
 
 	// Networked text
-	public static string EventText {get;set;} = "";
-	public static string EventSubtext {get;set;} = "";
+	[Net] public string EventText {get;set;} = "";
+	[Net] public string EventSubtext {get;set;} = "";
 
 	public PlatesGame()
 	{
+		Current = this;
+
 		if(Game.IsServer)
 		{
 			// Create the HUD Instance
@@ -52,7 +57,7 @@ public partial class PlatesGame : GameManager
 		base.ClientJoined( client );
 
 		// Create a player for this client to play with
-		var player = new PlatesPlayer( client );
+		var player = new Player( client );
 		player.Respawn();
 		client.Pawn = player;
 
@@ -106,7 +111,7 @@ public partial class PlatesGame : GameManager
 				{
 					for(var i=0; i<GameClients.Count; i++)
 					{
-						(GameClients[i].Pawn as PlatesPlayer)?.Respawn();
+						(GameClients[i].Pawn as Player)?.Respawn();
 					}
 					GameTimer = -TimeBetweenRounds;
 					GameState = PlatesGameState.STARTING_SOON;
@@ -163,7 +168,7 @@ public partial class PlatesGame : GameManager
 		if((int)GameState > (int)PlatesGameState.STARTING_SOON) return;
 
 		// Start keeping track of game length
-		GameLength = 0f;
+		Current.GameLength = 0f;
 
 		// Respawn all players
 		RespawnAllPlayers();
@@ -172,16 +177,16 @@ public partial class PlatesGame : GameManager
 		RoundReport.ClearEntries();
 
 		// Add clients to the GameClients list
-		GameClients = new();
-		Eliminated = new();
+		Current.GameClients = new List<IClient>();
+		Current.Eliminated = new List<LossInformation>();
 		foreach(var client in Game.Clients)
 		{
-			GameClients.Add(client);
+			Current.GameClients.Add(client);
 			//GetClientRank(client);
 		}
 
 		// Keep track of how many players we started with
-		StartingPlayerCount = Game.Clients.Count;
+		Current.StartingPlayerCount = Game.Clients.Count;
 
 		// Initialize plates and assign a plate to each player
 		InitPlates();
@@ -191,15 +196,15 @@ public partial class PlatesGame : GameManager
 		FillQueue(5);
 
 		// Get the oldest round in the queue
-		GameRound = RoundQueue[0];
-		GameRound.OnEvent();
+		Current.GameRound = RoundQueue[0];
+		Current.GameRound.OnEvent();
 		RoundQueue.RemoveAt(0);
 		
 		RequestGamePlayersForScreen();
 		RoundQueueScreen.RemoveLatest();
-		RoundInfo.SetRoundText(GameRound.name, GameRound.description);
+		RoundInfo.SetRoundText(Current.GameRound.name, Current.GameRound.description);
 
-		GetNextEvent();
+		Current.GetNextEvent();
 	}
 
 	/// <summary>
@@ -212,16 +217,16 @@ public partial class PlatesGame : GameManager
 		if((int)GameState <= (int)PlatesGameState.STARTING_SOON) return;
 
 		// Make sure winners are set proper
-		foreach(var client in GameClients)
+		foreach(var client in Current.GameClients)
 		{
-			SetLose(client);
+			Current.SetLose(client);
 		}
 
 		// Set winners podiums
 		foreach(var podium in Entity.All.OfType<WinnersPodium>().ToList())
 		{
-			if(podium.IsValid() && podium.WinPosition <= Eliminated.Count){
-				podium.Dress(Eliminated[Eliminated.Count - podium.WinPosition].client);
+			if(podium.IsValid() && podium.WinPosition <= Current.Eliminated.Count){
+				podium.Dress(Current.Eliminated[Current.Eliminated.Count - podium.WinPosition].client);
 			}
 		}
 
@@ -233,18 +238,18 @@ public partial class PlatesGame : GameManager
 		// Show Round Report UI
 		RoundReport.Show();
 
-		foreach(var cl in GameClients)
+		foreach(var cl in Current.GameClients)
 		{
-			(cl.Pawn as PlatesPlayer).Respawn();
+			(cl.Pawn as Player).Respawn();
 		}
-		GameClients = new();
+		Current.GameClients = new List<IClient>();
 		foreach(var plate in Entity.All.OfType<Plate>()) plate.Delete();
-		foreach(var ent in GameEntities)
+		foreach(var ent in Current.GameEntities)
 		{
 			if(ent.IsValid()) ent.Delete();
 		}
-		GameEntities = new();
-		GameTimer = -10;
+		Current.GameEntities = new List<Entity>();
+		Current.GameTimer = -10;
 		GameState = PlatesGameState.GAME_OVER;
 
 		CurrentGameScreen.ClearList();
@@ -293,7 +298,7 @@ public partial class PlatesGame : GameManager
 				var client = Game.Clients.ElementAt(_curPlayer);
 				plate.owner = client;
 				plate.ownerName = plate.owner.Name;
-				if(client.Pawn is PlatesPlayer ply)
+				if(client.Pawn is Player ply)
 				{
 					ply.CurrentPlate = plate;
 					ply.InGame = true;
@@ -306,26 +311,26 @@ public partial class PlatesGame : GameManager
 		}
 	}
 
-	public static void AddEntity(Entity ent)
+	public void AddEntity(Entity ent)
 	{
 		GameEntities.Add(ent);
 	}
 
-	public static IClient GetWinner()
+	public IClient GetWinner()
 	{
 		return Eliminated[Eliminated.Count-1].client;
 	}
 
-	public static void SetLose(IClient client)
+	public void SetLose(IClient client)
 	{
 		if(GameClients.Contains(client)){
-			var _loss = new LossInformation(client, GameLength, (client.Pawn as PlatesPlayer).EventCount, GameClients.Count);
+			var _loss = new LossInformation(client, GameLength, (client.Pawn as Player).EventCount, GameClients.Count);
 			Eliminated.Add(_loss);
 			RoundReport.AddEntry(_loss.position, _loss.client.SteamId, _loss.client.Name, _loss.timeAlive, _loss.eventCount);
 		}
 	}
 
-	public static void ResetGlows()
+	public void ResetGlows()
 	{
 		foreach(var plate in Entity.All.OfType<Plate>())
 		{
@@ -333,7 +338,7 @@ public partial class PlatesGame : GameManager
 		}
 		foreach(var client in Game.Clients)
 		{
-			if(client.Pawn is PlatesPlayer player)
+			if(client.Pawn is Player player)
 			{
 				player.SetGlow(false);
 			}
@@ -393,7 +398,7 @@ public partial class PlatesGame : GameManager
 	{
 		List<long> ingameIds = new();
 		List<string> ingameNames = new();
-		foreach(var cl in GameClients)
+		foreach(var cl in Current.GameClients)
 		{
 			ingameIds.Add(cl.SteamId);
 			ingameNames.Add(cl.Name);
@@ -423,7 +428,7 @@ public partial class PlatesGame : GameManager
 	{
 		foreach(var client in Game.Clients)
 		{
-			if(client.Pawn is not PlatesPlayer player) continue;
+			if(client.Pawn is not Player player) continue;
 			player.Respawn();
 		}
 	}
@@ -451,7 +456,7 @@ public partial class PlatesGame : GameManager
 		var _showKill = false;
 		foreach(IClient cl in Game.Clients)
 		{
-			if(cl.SteamId == rightid && cl.Pawn is PlatesPlayer ply)
+			if(cl.SteamId == rightid && cl.Pawn is Player ply)
 			{
 				_showKill = ply.InGame;
 				break;

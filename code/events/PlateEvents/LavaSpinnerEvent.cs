@@ -3,7 +3,9 @@ using System;
 using System.Collections.Generic;
 using Sandbox;
 
-public class PlateLavaSpinnerEvent : PlatesEventAttribute
+namespace Plates;
+
+public class PlateLavaSpinnerEvent : PlatesEvent
 {
     public PlateLavaSpinnerEvent(){
         name = "Plate Lava Spinner";
@@ -53,7 +55,7 @@ public class PlateLavaSpinnerEnt : Prop
     }
 }
 
-public partial class PlatesPlayer
+public partial class Player
 {
     
 }

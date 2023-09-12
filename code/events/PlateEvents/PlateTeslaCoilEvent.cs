@@ -2,8 +2,9 @@ using System.Linq;
 using Sandbox;
 using System;
 
+namespace Plates;
  
-public class PlateTeslaCoilEvent : PlatesEventAttribute
+public class PlateTeslaCoilEvent : PlatesEvent
 {
 
     public PlateTeslaCoilEvent(){

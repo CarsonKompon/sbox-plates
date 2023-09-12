@@ -2,8 +2,9 @@ using System.Xml.Schema;
 using Sandbox;
 using System;
 
+namespace Plates;
  
-public partial class LetterRainEvent : PlatesEventAttribute
+public partial class LetterRainEvent : PlatesEvent
 {
     public LetterRainEvent(){
         name = "Letter Rain";
@@ -42,7 +43,7 @@ public partial class LetterRainEnt : Entity
 
     public LetterRainEnt(){}
     public LetterRainEnt(float time = 2*60){
-        PlatesGame.AddEntity(this);
+        PlatesGame.Current.AddEntity(this);
         timer = -time;
     }
 
@@ -58,7 +59,7 @@ public partial class LetterRainEnt : Entity
             //ent.Velocity = new Vector3(0,0,-1000000);
             ent.SetModel("models/letters/" + Rand.FromArray(letters) + ".vmdl");
             ent.RenderColor = Color.FromBytes(Rand.Int(0,255),Rand.Int(0,255),Rand.Int(0,255));
-            PlatesGame.AddEntity(ent);
+            PlatesGame.Current.AddEntity(ent);
         }
         if(timer >= 0) this.Delete();
     }

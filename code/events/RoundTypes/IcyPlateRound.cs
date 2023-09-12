@@ -1,9 +1,9 @@
 using System.Linq;
 using Sandbox;
 
-
+namespace Plates;
  
-public class IcyPlateRound : PlatesRoundAttribute
+public class IcyPlateRound : PlatesRound
 {
     public IcyPlateRound(){
         name = "Icy Plates";

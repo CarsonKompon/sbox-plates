@@ -5,6 +5,8 @@ using Editor;
 using System;
 using System.Collections.Generic;
 
+namespace Plates;
+
 [Library("plates_casino_event_wheel", Description = "The big wheel in the casino that determines the fate of the current game")]
 [HammerEntity, EditorModel("models/casino/spinning_wheel.vmdl")]
 public partial class EventWheel : Prop, IUse

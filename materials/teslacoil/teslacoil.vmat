@@ -1,43 +1,21 @@
-// THIS FILE IS AUTO-GENERATED
-
-Layer0
+"Layer0"
 {
-	shader "vr_simple.vfx"
-
-	//---- PBR ----
-	F_METALNESS_TEXTURE 1
-
-	//---- Ambient Occlusion ----
-	TextureAmbientOcclusion "materials/default/default_ao.tga"
-
-	//---- Color ----
-	g_flModelTintAmount "1.000"
-	g_vColorTint "[1.000000 1.000000 1.000000 0.000000]"
-	TextureColor "materials/teslacoil/TeslaCoil_Base_Color.png"
-
-	//---- Fade ----
-	g_flFadeExponent "1.000"
-
-	//---- Fog ----
-	g_bFogEnabled "1"
-
-	//---- Lighting ----
-	g_flDirectionalLightmapMinZ "0.050"
-	g_flDirectionalLightmapStrength "1.000"
-
-	//---- Metalness ----
-	TextureMetalness "materials/teslacoil/TeslaCoil_Metal.png"
-
-	//---- Normal ----
-	TextureNormal "materials/teslacoil/TeslaCoil_Normal.png"
-
-	//---- Roughness ----
-	TextureRoughness "materials/teslacoil/TeslaCoil_Rough.png"
-
-	//---- Texture Coordinates ----
-	g_nScaleTexCoordUByModelScaleAxis "0"
-	g_nScaleTexCoordVByModelScaleAxis "0"
-	g_vTexCoordOffset "[0.000 0.000]"
-	g_vTexCoordScale "[1.000 1.000]"
-	g_vTexCoordScrollSpeed "[0.000 0.000]"
+	"shader"		"shaders/simple.shader_c"
+	"F_METALNESS_TEXTURE"		"1"
+	"TextureAmbientOcclusion"		"materials/default/default_ao.tga"
+	"g_flModelTintAmount"		"1.000000"
+	"g_vColorTint"		"[1.000000 1.000000 1.000000 0.000000]"
+	"TextureColor"		"materials/teslacoil/TeslaCoil_Base_Color.png"
+	"g_flFadeExponent"		"1.000000"
+	"g_bFogEnabled"		"1"
+	"g_flDirectionalLightmapMinZ"		"0.050000"
+	"g_flDirectionalLightmapStrength"		"1.000000"
+	"TextureMetalness"		"materials/teslacoil/TeslaCoil_Metal.png"
+	"TextureNormal"		"materials/teslacoil/TeslaCoil_Normal.png"
+	"TextureRoughness"		"materials/teslacoil/TeslaCoil_Rough.png"
+	"g_nScaleTexCoordUByModelScaleAxis"		"0"
+	"g_nScaleTexCoordVByModelScaleAxis"		"0"
+	"g_vTexCoordOffset"		"[0.000 0.000]"
+	"g_vTexCoordScale"		"[1.000 1.000]"
+	"g_vTexCoordScrollSpeed"		"[0.000 0.000]"
 }

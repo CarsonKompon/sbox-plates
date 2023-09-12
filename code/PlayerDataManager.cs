@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 
+namespace Plates;
+
 public static partial class PlayerDataManager
 {
     private static IDictionary<long, PlayerData> Players {get;set;} = new Dictionary<long, PlayerData>();
@@ -45,7 +47,7 @@ public static partial class PlayerDataManager
         var sendingClients = new List<IClient>();
         foreach(var client in Game.Clients)
         {
-            if(client.Pawn is PlatesPlayer ply && (force || ply.InGame))
+            if(client.Pawn is Player ply && (force || ply.InGame))
             {
                 PlayerData data = Players[client.SteamId];
                 data.Money += amount;

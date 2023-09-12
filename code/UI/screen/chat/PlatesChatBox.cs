@@ -3,6 +3,8 @@ using Sandbox.UI;
 using Sandbox.UI.Construct;
 using System;
 
+namespace Plates;
+
 public partial class PlatesChatBox : ChatBox
 {
 

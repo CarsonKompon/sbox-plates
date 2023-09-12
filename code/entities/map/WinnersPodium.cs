@@ -1,6 +1,8 @@
 using Sandbox;
 using Editor;
 
+namespace Plates;
+
 [Library("plates_winners_podium", Description = "A character to be placed on a podium. This represents the winner in the specified position on round end."), HammerEntity]
 [EditorModel("models/citizen/citizen.vmdl")]
 public partial class WinnersPodium : AnimatedEntity

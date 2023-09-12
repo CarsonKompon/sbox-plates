@@ -2,8 +2,9 @@ using System;
 using System.Linq;
 using Sandbox;
 
+namespace Plates;
 
-public class BigPlateRoundType : PlatesRoundAttribute
+public class BigPlateRoundType : PlatesRound
 {
     public BigPlateRoundType(){
         name = "Big Plate";
@@ -19,7 +20,7 @@ public class BigPlateRoundType : PlatesRoundAttribute
         bigPlate.SetSize(11f);
 
         Random Rand = new();
-        foreach(var client in PlatesGame.GameClients)
+        foreach(var client in PlatesGame.Current.GameClients)
         {
             client.Pawn.Position = new Vector3(Rand.Float(-300f,300f), Rand.Float(-300f,300f), 150f);
         }

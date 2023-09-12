@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+namespace Plates;
+
 public partial class RoundReport : Panel
 {
     public static RoundReport instance;

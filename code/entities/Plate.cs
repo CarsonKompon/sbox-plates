@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;  
 using System.Threading.Tasks;
 
-namespace Sandbox;
+namespace Plates;
 
 [Spawnable]
 public partial class Plate : MeshEntity
@@ -13,7 +13,7 @@ public partial class Plate : MeshEntity
     [Net] public string ownerName {get;set;}
     [Net] public bool isDead {get;set;} = false;
 
-    [Net] public List<Entity> PlateEnts {get;set;} = new();
+    [Net] public IList<Entity> PlateEnts {get;set;} = new();
     [Net] private Vector3 TargetPosition {get;set;}
     [Net] private Rotation TargetRotation {get;set;}
     [Net] private RealTimeSince MovementTime {get;set;}

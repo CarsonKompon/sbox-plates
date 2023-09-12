@@ -1,7 +1,8 @@
 using Sandbox;
 
+namespace Plates;
  
-public class PlateIceEvent : PlatesEventAttribute
+public class PlateIceEvent : PlatesEvent
 {
     public PlateIceEvent(){
         name = "Icy Plate";

@@ -2,6 +2,8 @@ using Sandbox;
 using Sandbox.UI;
 using System.Collections.Generic;
 
+namespace Plates;
+
 public class InventoryBar : Panel
 {
 	readonly List<InventoryIcon> slots = new();
@@ -20,7 +22,7 @@ public class InventoryBar : Panel
 	{
 		base.Tick();
 
-		if(Game.LocalPawn is not PlatesPlayer player) return;
+		if(Game.LocalPawn is not Player player) return;
 		if ( player.Inventory == null ) return;
 
 		for ( int i = 0; i < slots.Count; i++ )
@@ -31,7 +33,7 @@ public class InventoryBar : Panel
 
 	private static void UpdateIcon( Entity ent, InventoryIcon inventoryIcon, int i )
 	{
-		if(Game.LocalPawn is not PlatesPlayer player) return;
+		if(Game.LocalPawn is not Player player) return;
 
 		if ( ent == null )
 		{
@@ -49,7 +51,7 @@ public class InventoryBar : Panel
 	[GameEvent.Client.BuildInput]
 	public void ProcessClientInput()
 	{
-		if(Game.LocalPawn is not PlatesPlayer player) return;
+		if(Game.LocalPawn is not Player player) return;
 		var inventory = player.Inventory;
 		if ( inventory == null )
 			return;
@@ -74,7 +76,7 @@ public class InventoryBar : Panel
 
 	private static void SetActiveSlot( IBaseInventory inventory, int i )
 	{
-		if(Game.LocalPawn is PlatesPlayer player)
+		if(Game.LocalPawn is Player player)
         {
             var ent = inventory.GetSlot( i );
             if ( player.ActiveChild == ent )

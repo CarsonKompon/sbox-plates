@@ -1,6 +1,8 @@
 ﻿using Sandbox;
 using System.Collections.Generic;
 
+namespace Plates;
+
 public partial class Weapon : BaseWeapon, IUse
 {
 	public virtual float ReloadTime => 3.0f;

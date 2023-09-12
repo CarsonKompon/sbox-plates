@@ -8,6 +8,8 @@ using System.Net;
 using System.Collections.Generic;
 using System.Linq;
 
+namespace Plates;
+
 [Library("plates_screen_round_queue", Description = "A screen that displays the top ranks in a leaderboard"), HammerEntity]
 [EditorModel("models/leaderboard_screen.vmdl")]
 public partial class RoundQueueScreen : Prop
@@ -141,6 +143,7 @@ public partial class RoundQueueScreenUI : WorldPanel
 
     public void RemoveLatest()
     {
+        if(Content.Children.Count() == 0) return;
         Content.Children.ToList()[0]?.Delete();
     }
 }

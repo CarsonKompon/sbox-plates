@@ -4,6 +4,8 @@ using Sandbox.UI.Construct;
 using System;
 using System.Collections.Generic;
 
+namespace Plates;
+
 public enum MinesweeperState
 {
 	Idle,

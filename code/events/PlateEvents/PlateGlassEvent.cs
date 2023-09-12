@@ -1,7 +1,8 @@
 using Sandbox;
 
- 
-public class PlateGlassEvent : PlatesEventAttribute
+namespace Plates;
+
+public class PlateGlassEvent : PlatesEvent
 {
     public PlateGlassEvent(){
         name = "Glass Plate";

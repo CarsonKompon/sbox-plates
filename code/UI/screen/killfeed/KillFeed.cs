@@ -1,6 +1,8 @@
 using Sandbox;
 using Sandbox.UI;
 
+namespace Plates;
+
 public partial class KillFeed : Panel
 {
 	public static KillFeed Current;

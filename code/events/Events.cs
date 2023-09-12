@@ -2,8 +2,10 @@ using Sandbox;
 using System;
 using System.Collections.Generic;  
 
-[AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
-public class PlatesEventAttribute : LibraryAttribute
+namespace Plates;
+
+[Library]
+public class PlatesEvent
 {
     public virtual string name {get;set;} = "Nothing";
     public virtual string command {get;set;} = "nothing";
@@ -23,8 +25,8 @@ public class PlatesEventAttribute : LibraryAttribute
 
 }
 
-[AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
-public class PlatesRoundAttribute : LibraryAttribute
+[Library]
+public class PlatesRound
 {
     public virtual string name {get;set;} = "Normal Round";
     public virtual string command {get;set;} = "round_normal";

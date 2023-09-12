@@ -1,5 +1,7 @@
 using Sandbox;
 
+namespace Plates;
+
 [Spawnable]
 [Library( "weapon_pistol", Title = "Pistol" )]
 partial class Pistol : Weapon

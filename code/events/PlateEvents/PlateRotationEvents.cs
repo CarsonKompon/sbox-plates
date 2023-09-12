@@ -1,8 +1,9 @@
 using Sandbox;
 using System;
 
+namespace Plates;
 
-public class PlateRotateEvent : PlatesEventAttribute
+public class PlateRotateEvent : PlatesEvent
 {
     public PlateRotateEvent(){
         name = "Plate Rotates";
@@ -36,7 +37,7 @@ public partial class PlateRotateEnt : Entity
     
 }
 
-public class PlateFlipEvent : PlatesEventAttribute
+public class PlateFlipEvent : PlatesEvent
 {
     public PlateFlipEvent(){
         name = "Plate Flips";

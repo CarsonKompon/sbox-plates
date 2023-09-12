@@ -7,7 +7,7 @@
 
 Here's an example of an empty event class that does nothing
 ```c#
-public class ExampleEvent : PlatesEventAttribute
+public class ExampleEvent : PlatesEvent
 {
     public ExampleEvent(){
         name = "example_event";
@@ -30,7 +30,7 @@ When `type = EventType.Plate`, the affected Plate is highlighted and the `OnEven
 
 ```c#
  
-public class PlateGrow10Event : PlatesEventAttribute
+public class PlateGrow10Event : PlatesEvent
 {
     public PlateGrow10Event(){
         name = "plate_grow_10";
@@ -50,7 +50,7 @@ When `type = EventType.Player`, the affected Player is highlighted and the `OnEv
 
 ```c#
  
-public class PlayerGrowEvent : PlatesEventAttribute
+public class PlayerGrowEvent : PlatesEvent
 {
     public PlayerGrowEvent(){
         name = "player_grow";
@@ -72,7 +72,7 @@ Because nothing is highlighted, you'll have to apply glow to the entities you af
 
 ```c#
  
-public class ArenaPlateGrow10Event : PlatesEventAttribute
+public class ArenaPlateGrow10Event : PlatesEvent
 {
     public ArenaPlateGrow10Event(){
         name = "arena_grow_10";
@@ -103,7 +103,7 @@ public class ArenaPlateGrow10Event : PlatesEventAttribute
 Here's an example of a round type that does nothing
 
 ```c#
-public class BigPlatesRoundType : PlatesRoundAttribute
+public class BigPlatesRoundType : PlatesRound
 {
     public BigPlatesRoundType(){
         name = "Nothing";

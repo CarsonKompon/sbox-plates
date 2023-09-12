@@ -1,8 +1,9 @@
 using Sandbox;
 using System;
 
+namespace Plates;
  
-public class PlateColourEvent : PlatesEventAttribute
+public class PlateColourEvent : PlatesEvent
 {
 
     public PlateColourEvent(){
@@ -19,7 +20,7 @@ public class PlateColourEvent : PlatesEventAttribute
 }
 
  
-public class PlateInvisibleEvent : PlatesEventAttribute
+public class PlateInvisibleEvent : PlatesEvent
 {
     public PlateInvisibleEvent(){
         name = "Invisible Plate";
@@ -33,7 +34,7 @@ public class PlateInvisibleEvent : PlatesEventAttribute
     }
 }
 
-public class PlateFadeInOutEvent : PlatesEventAttribute
+public class PlateFadeInOutEvent : PlatesEvent
 {
     public PlateFadeInOutEvent(){
         name = "Plate Fade In And Out";

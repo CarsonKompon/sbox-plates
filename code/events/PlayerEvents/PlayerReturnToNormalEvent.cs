@@ -1,8 +1,9 @@
 using Sandbox;
 
+namespace Plates;
 
  
-public class PlayerReturnToNormalEvent : PlatesEventAttribute
+public class PlayerReturnToNormalEvent : PlatesEvent
 {
     public PlayerReturnToNormalEvent(){
         name = "Player Returns To Normal";
@@ -13,7 +14,7 @@ public class PlayerReturnToNormalEvent : PlatesEventAttribute
     }
 
     public override void OnEvent(Entity ent){
-        var ply = (ent as PlatesPlayer);
+        var ply = (ent as Player);
         var pos = ply.Position;
         ply.Respawn();
 		ply.Position = pos;

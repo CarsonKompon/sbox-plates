@@ -8,6 +8,8 @@ using System.Linq;
 using System.Numerics;
 using System.Runtime.InteropServices;
 
+namespace Plates;
+
 public class PlateNameTag : WorldPanel
 {
     public Label NameLabel;

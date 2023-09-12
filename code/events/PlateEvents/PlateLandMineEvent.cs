@@ -2,8 +2,9 @@ using System.Linq;
 using Sandbox;
 using System;
 
- 
-public class PlateLandMineEvent : PlatesEventAttribute
+namespace Plates;
+
+public class PlateLandMineEvent : PlatesEvent
 {
 
     public PlateLandMineEvent(){
@@ -59,10 +60,10 @@ public class LandMineEnt : ModelEntity
         };
         trigger.Enabled = true;
 
-        PlatesGame.AddEntity(trigger);
+        PlatesGame.Current.AddEntity(trigger);
     }
 
-    [Event.Tick]
+    [GameEvent.Tick]
     public void Tick()
     {
         if(RenderColor.a < 1f)

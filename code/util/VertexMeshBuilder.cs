@@ -2,6 +2,8 @@ using Sandbox;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
+namespace Plates;
+
 // https://github.com/Nebual/sandbox-plus/blob/main/code/VertexMeshBuilder.cs
 
 public partial class VertexMeshBuilder

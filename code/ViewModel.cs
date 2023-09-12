@@ -1,5 +1,7 @@
 using Sandbox;
 
+namespace Plates;
+
 public class ViewModel : BaseViewModel
 {
 	protected float SwingInfluence => 0.05f;
@@ -58,7 +60,7 @@ public class ViewModel : BaseViewModel
 		{
 			var playerVelocity = Game.LocalPawn.Velocity;
 
-			if ( Game.LocalPawn is PlatesPlayer player )
+			if ( Game.LocalPawn is Player player )
 			{
 				var controller = player.GetActiveController();
 				if ( controller != null && controller.HasTag( "noclip" ) )

@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+namespace Plates;
+
 public class NameTag : WorldPanel
 {
     public Label NameLabel;
@@ -50,7 +52,7 @@ public class NameTag : WorldPanel
     // }
 }
 
-internal class NameTagComponent : EntityComponent<PlatesPlayer>
+internal class NameTagComponent : EntityComponent<Player>
 {
     NameTag NameTag;
 
@@ -78,7 +80,7 @@ internal class NameTagComponent : EntityComponent<PlatesPlayer>
     [GameEvent.Client.Frame]
     public static void SystemUpdate()
     {
-        foreach(var player in Sandbox.Entity.All.OfType<PlatesPlayer>())
+        foreach(var player in Sandbox.Entity.All.OfType<Player>())
         {
             if(player.IsLocalPawn && player.IsFirstPersonMode)
             {

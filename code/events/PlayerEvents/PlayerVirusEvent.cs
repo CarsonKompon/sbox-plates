@@ -5,10 +5,11 @@ using System.Linq;
 using System.Collections.Generic;
 using Sandbox.UI.Construct;
 
-// TODO: Implement
+namespace Plates;
 
+// TODO: Implement
  
-public class PlayerVirusEvent : PlatesEventAttribute
+public class PlayerVirusEvent : PlatesEvent
 {
     public PlayerVirusEvent(){
         name = "Player Gets A Curable Virus";
@@ -19,12 +20,12 @@ public class PlayerVirusEvent : PlatesEventAttribute
     }
 
     public override void OnEvent(Entity ent){
-        //(ent as PlatesPlayer).RenderColor = Color.Green;
+        //(ent as Player).RenderColor = Color.Green;
         Random Rand = new();
         var plate = Rand.FromList(Entity.All.OfType<Plate>().ToList());
-        var cure = new VirusCureEnt(plate as Entity, ent as PlatesPlayer);
+        var cure = new VirusCureEnt(plate as Entity, ent as Player);
         var virus = new PlyVirusEnt(ent, cure);
-        PlatesGame.AddEntity(virus);
+        PlatesGame.Current.AddEntity(virus);
     }
 }
 
@@ -42,7 +43,7 @@ public partial class PlyVirusEnt : Entity
     [GameEvent.Tick]
     public void Tick(){
         Random Rand = new();
-        if(ent is PlatesPlayer ply){
+        if(ent is Player ply){
             if(Rand.Int(4)==0)
             {
                 var part = Particles.Create("particles/virus.vpcf");
@@ -72,7 +73,7 @@ public partial class VirusCureEnt : Prop
     VirusNameTag nameTag = null;
 
     public VirusCureEnt(){}
-    public VirusCureEnt(Entity e, PlatesPlayer p){
+    public VirusCureEnt(Entity e, Player p){
         SetModel("models/teslacoil.vmdl");
 		SetupPhysicsFromModel(PhysicsMotionType.Dynamic);
         RenderColor = Color.Magenta;
@@ -82,7 +83,7 @@ public partial class VirusCureEnt : Prop
         owner = client.SteamId;
         ownerName = client.Name;
         //SetParent(e);
-        PlatesGame.AddEntity(this);
+        PlatesGame.Current.AddEntity(this);
     }
 
     [GameEvent.Tick.Client]
